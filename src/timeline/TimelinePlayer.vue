@@ -1,10 +1,14 @@
 <template>
   <div class="timeline-player">
     <div class="player-border" :class="stanceClass">
-      <component
-        :is="activeComponent"
-        v-if="activeSegment"
-        :segment="activeSegment"
+      <TextualSegmentView
+        v-if="activeSegment && activeSegment.type === 'text'"
+        :segment="activeSegment as TextualSegment"
+        @segment-complete="onSegmentComplete"
+      />
+      <VideoSegmentView
+        v-else-if="activeSegment && activeSegment.type === 'video'"
+        :segment="activeSegment as VideoSegment"
         @segment-complete="onSegmentComplete"
       />
     </div>
@@ -15,12 +19,12 @@
           :key="segment.id"
           :class="dotClass(segment, idx)"
           @click="activateSegment(idx)"
-          @mouseenter="hoveredDescription = segment.description"
-          @mouseleave="hoveredDescription = ''"
+          @mouseenter="handleDotMouseEnter(segment)"
+          @mouseleave="handleDotMouseLeave"
         ></button>
       </div>
-      <div class="timeline-description" v-if="hoveredDescription">
-        {{ hoveredDescription }}
+      <div class="timeline-description" v-if="hoveredSegment">
+        <pre>{{ hoveredInfo }}</pre>
       </div>
       <div class="timeline-controls">
         <button @click="goBack" :disabled="activeIndex === 0">Back</button>
@@ -39,6 +43,7 @@ import VideoSegmentView from './VideoSegmentView.vue';
 const timeline = ref(new Timeline([]));
 const activeIndex = ref(0);
 const hoveredDescription = ref('');
+const hoveredSegment = ref<Segment | null>(null);
 
 onMounted(() => {
   timeline.value.addSegment(new TextualSegment(1, 'main', 'Welcome to the argument!', 8, 'Introduction'));
@@ -51,7 +56,16 @@ onMounted(() => {
   }
 });
 
-const activeSegment = computed(() => timeline.value.activeSegment);
+const activeSegment = computed(() => {
+  const seg = timeline.value.activeSegment;
+  if (!seg) return null;
+  if (seg.type === 'text') {
+    return seg as TextualSegment;
+  } else if (seg.type === 'video') {
+    return seg as VideoSegment;
+  }
+  return null;
+});
 
 const stanceClass = computed(() => {
   switch (activeSegment.value?.stance) {
@@ -64,11 +78,6 @@ const stanceClass = computed(() => {
     default:
       return '';
   }
-});
-
-const activeComponent = computed(() => {
-  if (!activeSegment.value) return null;
-  return activeSegment.value.type === 'text' ? TextualSegmentView : VideoSegmentView;
 });
 
 function activateSegment(idx: number) {
@@ -103,6 +112,39 @@ function dotClass(segment: Segment, idx: number) {
 function onSegmentComplete() {
   goNext();
 }
+
+function handleDotMouseEnter(segment: Segment) {
+  hoveredSegment.value = segment;
+  hoveredDescription.value = segment.description;
+  if (import.meta.env.DEV) {
+    console.log(`[TimelinePlayer] Hovered segment:`, segment);
+  }
+}
+
+function handleDotMouseLeave() {
+  hoveredSegment.value = null;
+  hoveredDescription.value = '';
+}
+
+const hoveredInfo = computed(() => {
+  if (!hoveredSegment.value) return '';
+  let info = hoveredSegment.value.description;
+  if (hoveredSegment.value.type === 'text') {
+    const seg = hoveredSegment.value as TextualSegment;
+    info += `\nType: Text`;
+    info += `\nDuration: ${seg.duration}s`;
+    info += `\nContent: ${seg.content}`;
+  } else if (hoveredSegment.value.type === 'video') {
+    const seg = hoveredSegment.value as VideoSegment;
+    const duration = seg.endAt - seg.startAt;
+    info += `\nType: Video`;
+    info += `\nVideo ID: ${seg.videoId}`;
+    info += `\nStart: ${seg.startAt}s`;
+    info += `\nEnd: ${seg.endAt}s`;
+    info += `\nDuration: ${duration}s`;
+  }
+  return info;
+});
 </script>
 
 <style lang="scss">
