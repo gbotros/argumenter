@@ -38,11 +38,7 @@ This project uses Vue 3 with TypeScript and SCSS. Follow the conventions below w
 
 ## Project Organization
 
-- Organize logic and structure across the following folders:
-  - `components/` for all Vue components
-  - `data/` for application-level data logic
-  - `types/` for global type definitions
-  - `tests/` for unit and integration tests
+- Files are organized by feature for clarity and maintainability.
 
 ## Testing
 

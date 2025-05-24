@@ -40,10 +40,6 @@ This app is an interactive YouTube video player with a smart timeline. The timel
 
 ## Folder Structure
 
-- `components/` — Vue 3 components (Composition API, `<script setup>`)
-- `data/` — Application-level data logic
-- `types/` — Global type definitions
-- `tests/` — Unit and integration tests
 - Files are organized by feature for clarity and maintainability.
 
 ## Data Model
@@ -67,14 +63,10 @@ This app is an interactive YouTube video player with a smart timeline. The timel
 ## Example Usage
 
 ```ts
-const timeline = new Timeline([]);
-timeline.addSegment(
-  new TextualSegment(1, "main", "Introduction", 10, "Intro text")
-);
-timeline.addSegment(
-  new VideoSegment(2, 30, 60, "supporting", "abc123", "Key argument")
-);
-timeline.activateSegmentById(1); // Activates the first segment
+const timeline = new Timeline([])
+timeline.addSegment(new TextualSegment(1, 'main', 'Introduction', 10, 'Intro text'))
+timeline.addSegment(new VideoSegment(2, 30, 60, 'supporting', 'abc123', 'Key argument'))
+timeline.activateSegmentById(1) // Activates the first segment
 ```
 
 ## Development
