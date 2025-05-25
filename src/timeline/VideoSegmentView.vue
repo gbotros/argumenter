@@ -1,50 +1,112 @@
 <template>
   <div class="video-segment-view">
-    <iframe
-      class="yt-frame"
-      :src="youtubeUrl"
-      frameborder="0"
-      allow="autoplay; encrypted-media"
-      allowfullscreen
-      @load="onFrameLoad"
-    ></iframe>
+    <div ref="youtubePlayer" class="yt-frame"></div>
     <button class="complete-btn" @click="completeSegment">Complete Segment</button>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue';
+import { ref, watch, onMounted, onUnmounted, nextTick } from 'vue';
 import type { VideoSegment } from './types';
 
 const props = defineProps<{ segment: VideoSegment }>();
 const emit = defineEmits(['segment-complete']);
 
-const youtubeUrl = ref('');
+const youtubePlayer = ref<HTMLElement | null>(null);
+let player: YT.Player | null = null;
 
-function buildYoutubeUrl() {
+function getYT(): typeof YT | undefined {
+  return window.YT;
+}
+
+function loadYouTubeApi() {
+  return new Promise<void>((resolve) => {
+    const yt = getYT();
+    if (yt && yt.Player) {
+      resolve();
+      return;
+    }
+    const tag = document.createElement('script');
+    tag.src = 'https://www.youtube.com/iframe_api';
+    document.body.appendChild(tag);
+    window.onYouTubeIframeAPIReady = () => {
+      resolve();
+    };
+  });
+}
+
+function createPlayer() {
+  if (!youtubePlayer.value) return;
   const { videoId, startAt, endAt } = props.segment;
-  youtubeUrl.value = `https://www.youtube.com/embed/${videoId}?start=${startAt}&end=${endAt}&autoplay=1&controls=1&modestbranding=1`;
-  if (import.meta.env.DEV) {
-    console.log(`[VideoSegmentView] Built YouTube URL: ${youtubeUrl.value}`);
+  const yt = getYT();
+  if (!yt) return;
+  player = new yt.Player(youtubePlayer.value, {
+    height: '270',
+    width: '480',
+    videoId,
+    playerVars: {
+      autoplay: 1,
+      controls: 1,
+      start: startAt,
+      end: endAt,
+      modestbranding: 1,
+    },
+    events: {
+      onReady: (event) => {
+        event.target.playVideo();
+        if (import.meta.env.DEV) {
+          console.log(`[VideoSegmentView] Player ready for segment ${props.segment.id}`);
+        }
+      },
+      onStateChange: (event) => {
+        const yt = getYT();
+        if (!yt) return;
+        if (import.meta.env.DEV) {
+          if (event.data === yt.PlayerState.ENDED) {
+            console.log(`[VideoSegmentView] Video ended for segment ${props.segment.id}`);
+          } else if (event.data === yt.PlayerState.PLAYING) {
+            console.log(`[VideoSegmentView] Video started playing for segment ${props.segment.id}`);
+          } else if (event.data === yt.PlayerState.PAUSED) {
+            console.log(`[VideoSegmentView] Video paused for segment ${props.segment.id}`);
+          }
+        }
+        if (event.data === yt.PlayerState.ENDED) {
+          completeSegment();
+        }
+      },
+    },
+  });
+}
+
+function destroyPlayer() {
+  if (player && player.destroy) {
+    player.destroy();
+    player = null;
   }
 }
 
 function completeSegment() {
+  destroyPlayer();
   emit('segment-complete');
   if (import.meta.env.DEV) {
     console.log(`[VideoSegmentView] Segment ${props.segment.id} completed`);
   }
 }
 
-function onFrameLoad() {
-  if (import.meta.env.DEV) {
-    console.log(`[VideoSegmentView] YouTube iframe loaded for segment ${props.segment.id}`);
-  }
+async function setupPlayer() {
+  destroyPlayer();
+  await loadYouTubeApi();
+  await nextTick();
+  createPlayer();
 }
 
-onMounted(buildYoutubeUrl);
+onMounted(setupPlayer);
 
-watch(() => props.segment, buildYoutubeUrl);
+watch(() => props.segment, setupPlayer);
+
+onUnmounted(() => {
+  destroyPlayer();
+});
 </script>
 
 <style lang="scss">
