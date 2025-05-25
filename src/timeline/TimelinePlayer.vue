@@ -148,33 +148,35 @@ const hoveredInfo = computed(() => {
 </script>
 
 <style lang="scss">
-@import '../assets/main.css';
 
 .timeline-player {
-  background: #181a1b;
-  color: #f1f1f1;
+  background: $color-bg;
+  color: $color-fg;
   padding: 2rem;
   border-radius: 1rem;
   max-width: 700px;
   margin: 2rem auto;
-  box-shadow: 0 2px 16px #000a;
+  box-shadow: 0 2px 16px $color-shadow;
 }
 
 .player-border {
-  border: 3px solid #333;
+  border: 3px solid $color-border;
   border-radius: 1rem;
   padding: 1.5rem;
   margin-bottom: 2rem;
   transition: border-color 0.3s;
 }
+
 .stance-main {
-  border-color: #14532d;
+  border-color: $color-main;
 }
+
 .stance-supporting {
-  border-color: #22c55e;
+  border-color: $color-supporting;
 }
+
 .stance-against {
-  border-color: #dc2626;
+  border-color: $color-against;
 }
 
 .timeline-bar {
@@ -182,44 +184,46 @@ const hoveredInfo = computed(() => {
   flex-direction: column;
   align-items: center;
 }
+
 .timeline-dots {
   display: flex;
   gap: 1.2rem;
   margin-bottom: 0.5rem;
 }
+
 .timeline-dot {
   width: 1.1rem;
   height: 1.1rem;
   border-radius: 50%;
   border: none;
-  background: #444;
+  background: $color-border-light;
   transition: background 0.2s, transform 0.2s;
   cursor: pointer;
   outline: none;
 }
 .timeline-dot.visited {
-  background: #22c55e;
+  background: $color-supporting;
 }
 .timeline-dot.unvisited {
-  background: #444;
+  background: $color-border-light;
 }
 .timeline-dot.active {
-  background: #2563eb;
+  background: $color-active;
   transform: scale(1.3);
-  box-shadow: 0 0 0 3px #2563eb44;
+  box-shadow: 0 0 0 3px $color-active-shadow;
 }
 .timeline-dot.stance-main {
-  box-shadow: 0 0 0 2px #14532d99;
+  box-shadow: 0 0 0 2px $color-main-shadow;
 }
 .timeline-dot.stance-supporting {
-  box-shadow: 0 0 0 2px #22c55e99;
+  box-shadow: 0 0 0 2px $color-supporting-shadow;
 }
 .timeline-dot.stance-against {
-  box-shadow: 0 0 0 2px #dc262699;
+  box-shadow: 0 0 0 2px $color-against-shadow;
 }
 .timeline-description {
-  background: #23272a;
-  color: #f1f1f1;
+  background: $color-bg-alt;
+  color: $color-fg;
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
   margin-bottom: 0.5rem;
@@ -233,9 +237,9 @@ const hoveredInfo = computed(() => {
   margin-top: 0.5rem;
 }
 .timeline-controls button {
-  background: #23272a;
-  color: #f1f1f1;
-  border: 1px solid #444;
+  background: $color-bg-alt;
+  color: $color-fg;
+  border: 1px solid $color-border-light;
   border-radius: 0.4rem;
   padding: 0.4rem 1.2rem;
   font-size: 1rem;

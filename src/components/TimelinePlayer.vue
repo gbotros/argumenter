@@ -32,7 +32,8 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { Timeline, Segment, TextualSegment, VideoSegment } from '../data/timeLine.data';
+import { Timeline, Segment } from '../timeline/timeLine.data';
+import { demoSegments } from '../timeline/data/demoTimelineData';
 import TextualSegmentView from './TextualSegmentView.vue';
 import VideoSegmentView from './VideoSegmentView.vue';
 
@@ -40,11 +41,8 @@ const timeline = ref(new Timeline([]));
 const activeIndex = ref(0);
 const hoveredDescription = ref('');
 
-// Example: Add demo segments (replace with real data loading)
 onMounted(() => {
-  timeline.value.addSegment(new TextualSegment(1, 'main', 'Welcome to the argument!', 8, 'Introduction'));
-  timeline.value.addSegment(new VideoSegment(2, 0, 30, 'supporting', 'dQw4w9WgXcQ', 'Opening argument video'));
-  timeline.value.addSegment(new TextualSegment(3, 'against', 'Counterpoint: Consider the other side.', 6, 'Counterpoint'));
+  (demoSegments as Segment[]).forEach((segment: Segment) => timeline.value.addSegment(segment));
   timeline.value.activateSegmentByIndex(0);
   activeIndex.value = 0;
   if (import.meta.env.DEV) {
@@ -107,7 +105,6 @@ function onSegmentComplete() {
 </script>
 
 <style lang="scss">
-@import '../assets/main.css';
 
 .timeline-player {
   background: #181a1b;

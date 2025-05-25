@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineProps, defineEmits, watch, onMounted } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import type { VideoSegment } from './types';
 
 const props = defineProps<{ segment: VideoSegment }>();
@@ -52,10 +52,10 @@ watch(() => props.segment, buildYoutubeUrl);
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #23272a;
+  background: $color-bg-alt;
   border-radius: 0.7rem;
   padding: 1.2rem 1.5rem;
-  box-shadow: 0 1px 8px #0006;
+  box-shadow: 0 1px 8px $color-shadow-light;
 }
 .yt-frame {
   width: 480px;
@@ -65,9 +65,9 @@ watch(() => props.segment, buildYoutubeUrl);
   background: #000;
 }
 .complete-btn {
-  background: #181a1b;
-  color: #f1f1f1;
-  border: 1px solid #444;
+  background: $color-bg;
+  color: $color-fg;
+  border: 1px solid $color-border-light;
   border-radius: 0.4rem;
   padding: 0.4rem 1.2rem;
   font-size: 1rem;
@@ -75,7 +75,7 @@ watch(() => props.segment, buildYoutubeUrl);
   transition: background 0.2s, border-color 0.2s;
 }
 .complete-btn:hover {
-  background: #14532d;
-  border-color: #22c55e;
+  background: $color-btn-hover;
+  border-color: $color-btn-hover-border;
 }
 </style>

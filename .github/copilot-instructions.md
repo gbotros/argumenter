@@ -32,9 +32,13 @@ This project uses Vue 3 with TypeScript and SCSS. Follow the conventions below w
 
 - Use a minimalist dark theme for all UI components.
 - Use SCSS for all styles.
-- Define styles in the `<style lang="scss">` section only.
+- Use BEM (Block Element Modifier) naming conventions for CSS classes.
+- Use `scoped` styles in Vue components to avoid global style conflicts.
+- Use the `lang="scss"` attribute in the `<style>` tag for SCSS files.
+- Use CSS variables for colors and common styles defined in `variables.scss`.
 - Do not use inline styles under any circumstance.
 - Use shared CSS classes from `main.scss` whenever applicable.
+- Leave one empty line between all css classes definitions.
 
 ## Project Organization
 
@@ -53,3 +57,7 @@ This project uses Vue 3 with TypeScript and SCSS. Follow the conventions below w
   - Maintain consistent formatting using `.prettierrc` settings.
 - Do not ignore or disable linting or formatting rules unless explicitly justified.
 - Ensure all code passes lint and format checks before committing.
+
+## Vue 3 Compiler Macros
+
+- Do not import `defineProps`, `defineEmits`, or `defineExpose` in `<script setup>` blocks. These are compiler macros and should be used without import statements.

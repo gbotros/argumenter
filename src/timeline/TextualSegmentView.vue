@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, onUnmounted, defineProps, defineEmits } from 'vue';
+import { ref, watch, onMounted, onUnmounted, defineEmits } from 'vue';
 import type { TextualSegment } from './types';
 
 const props = defineProps<{ segment: TextualSegment }>();
@@ -61,26 +61,26 @@ watch(() => props.segment, (newSeg) => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #23272a;
+  background: $color-bg-alt;
   border-radius: 0.7rem;
   padding: 1.2rem 1.5rem;
-  box-shadow: 0 1px 8px #0006;
+  box-shadow: 0 1px 8px $color-shadow-light;
 }
 .text-content {
   font-size: 1.2rem;
   margin-bottom: 1rem;
-  color: #f1f1f1;
+  color: $color-fg;
   text-align: center;
 }
 .timer {
   font-size: 1.1rem;
-  color: #22c55e;
+  color: $color-timer;
   margin-bottom: 1rem;
 }
 .skip-btn {
-  background: #181a1b;
-  color: #f1f1f1;
-  border: 1px solid #444;
+  background: $color-bg;
+  color: $color-fg;
+  border: 1px solid $color-border-light;
   border-radius: 0.4rem;
   padding: 0.4rem 1.2rem;
   font-size: 1rem;
@@ -88,7 +88,7 @@ watch(() => props.segment, (newSeg) => {
   transition: background 0.2s, border-color 0.2s;
 }
 .skip-btn:hover {
-  background: #14532d;
-  border-color: #22c55e;
+  background: $color-btn-hover;
+  border-color: $color-btn-hover-border;
 }
 </style>
