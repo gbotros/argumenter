@@ -1,6 +1,9 @@
 <template>
   <div class="timeline-player">
-    <div class="timeline-player__player-border" :class="`timeline-player__player-border--${activeSegment?.stance ?? ''}`">
+    <div
+      class="timeline-player__player-border"
+      :class="`timeline-player__player-border--${activeSegment?.stance ?? ''}`"
+    >
       <TextualSegmentView
         v-if="activeSegment && activeSegment.type === 'text'"
         :segment="activeSegment as TextualSegment"
@@ -12,6 +15,7 @@
         @segment-complete="onSegmentComplete"
       />
     </div>
+
     <div class="timeline-player__bar">
       <TimelineBarDots
         :segments="timeline.getSegments()"
@@ -21,11 +25,13 @@
         @dot-mouse-enter="handleDotMouseEnter"
         @dot-mouse-leave="handleDotMouseLeave"
       />
+      <TimelineControls
+        :activeIndex="activeIndex"
+        :segmentsCount="timeline.getSegments().length"
+        @back="goBack"
+        @next="goNext"
+      />
       <SegmentInfo :segment="hoveredSegmentInfo || activeSegment" />
-      <div class="timeline-player__bar-controls">
-        <button class="timeline-player__bar-controls-button" @click="goBack" :disabled="activeIndex === 0">Back</button>
-        <button class="timeline-player__bar-controls-button" @click="goNext" :disabled="activeIndex === timeline.getSegments().length - 1">Next</button>
-      </div>
     </div>
   </div>
 </template>
@@ -38,6 +44,7 @@ import TextualSegmentView from './TextualSegmentView.vue';
 import VideoSegmentView from './VideoSegmentView.vue';
 import SegmentInfo from './SegmentInfo.vue';
 import TimelineBarDots from './TimelineBarDots.vue';
+import TimelineControls from './TimelineControls.vue';
 import type { Logger } from '../types/logger';
 
 const timeline = ref(new Timeline([]));
@@ -47,7 +54,7 @@ const hoveredSegment = ref<Segment | null>(null);
 const logger = inject<Logger>('logger');
 
 onMounted(() => {
-  demoSegments.forEach(segment => timeline.value.addSegment(segment));
+  demoSegments.forEach((segment) => timeline.value.addSegment(segment));
   timeline.value.activateSegmentByIndex(0);
   activeIndex.value = 0;
   logger?.debug('[TimelinePlayer] Timeline initialized:', timeline.value.getSegments());
@@ -109,7 +116,6 @@ function handleDotMouseLeave() {
 </script>
 
 <style lang="scss" scoped>
-
 .timeline-player {
   background: $color-bg;
   color: $color-fg;
@@ -142,28 +148,6 @@ function handleDotMouseLeave() {
     display: flex;
     flex-direction: column;
     align-items: center;
-
-    &-controls {
-      display: flex;
-      gap: 1.5rem;
-      margin-top: 0.5rem;
-
-      &-button {
-        background: $color-bg-alt;
-        color: $color-fg;
-        border: 1px solid $color-border-light;
-        border-radius: 0.4rem;
-        padding: 0.4rem 1.2rem;
-        font-size: 1rem;
-        cursor: pointer;
-        transition: background 0.2s, border-color 0.2s;
-
-        &:disabled {
-          opacity: 0.5;
-          cursor: not-allowed;
-        }
-      }
-    }
   }
 }
 </style>
