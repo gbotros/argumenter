@@ -1,7 +1,9 @@
 <template>
   <div class="video-segment-view">
     <div ref="youtubePlayer" class="video-segment-view__yt-frame"></div>
-    <button class="video-segment-view__complete-btn" @click="completeSegment">Complete Segment</button>
+    <button class="video-segment-view__complete-btn" @click="completeSegment">
+      Complete Segment
+    </button>
   </div>
 </template>
 
@@ -27,8 +29,8 @@ function createPlayer() {
   logger?.debug(`[VideoSegmentView] Creating player for segment ${props.segment.id}`);
 
   player = new YT.Player(youtubePlayer.value, {
-    height: '270',
-    width: '480',
+    height: '100%',
+    width: '100%',
     videoId,
     playerVars: {
       autoplay: 1,
@@ -122,12 +124,59 @@ onUnmounted(() => {
   box-shadow: 0 1px 8px $color-shadow-light;
 
   &__yt-frame {
-    width: 480px;
-    height: 270px;
+    width: 100%;
+    max-width: 640px;
+    aspect-ratio: 16 / 9;
+    height: auto !important;
+    max-height: 80vh;
     border-radius: 0.5rem;
     margin-bottom: 1rem;
     background: #000;
+    display: block;
+    position: relative;
+    overflow: hidden;
+
+    // Ensure iframe fills the container and maintains aspect ratio
+    & > iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100% !important;
+      height: 100% !important;
+      min-width: 0;
+      min-height: 0;
+      aspect-ratio: 16 / 9;
+      display: block;
+      border: none;
+      background: #000;
+      max-height: 80vh;
+    }
   }
+
+  @media (max-width: 900px) {
+    &__yt-frame {
+      max-width: 100vw;
+      width: 100vw;
+      border-radius: 0;
+    }
+    padding: 0.7rem 0.2rem;
+  }
+
+  @media (max-width: 600px) {
+    &__yt-frame {
+      max-width: 100vw;
+      width: 100vw;
+      min-width: 0;
+      border-radius: 0;
+    }
+    padding: 0.3rem 0;
+  }
+
+  // Ensure parent container doesn't restrict width
+  width: 100%;
+  box-sizing: border-box;
+  aspect-ratio: 16 / 9;
+  min-height: 0;
 
   &__complete-btn {
     background: $color-bg;
@@ -137,7 +186,9 @@ onUnmounted(() => {
     padding: 0.4rem 1.2rem;
     font-size: 1rem;
     cursor: pointer;
-    transition: background 0.2s, border-color 0.2s;
+    transition:
+      background 0.2s,
+      border-color 0.2s;
 
     &:hover {
       background: $color-btn-hover;

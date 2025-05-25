@@ -1,8 +1,13 @@
 @use './variables.scss' as *;
 
+html,
 body {
+  width: 100%;
+  min-height: 100vh;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
   background: $color-bg;
   color: $color-fg;
 }
-
-// Add BEM utility classes or global helpers here if needed

@@ -125,7 +125,6 @@ function handleDotMouseLeave() {
   color: $color-fg;
   padding: 2rem;
   border-radius: 1rem;
-  max-width: 700px;
   margin: 2rem auto;
   box-shadow: 0 2px 16px $color-shadow;
 
