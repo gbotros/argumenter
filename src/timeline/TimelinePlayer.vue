@@ -1,9 +1,6 @@
 <template>
   <div class="timeline-player">
-    <div
-      class="timeline-player__player-border"
-      :class="`timeline-player__player-border--${activeSegment?.stance ?? ''}`"
-    >
+    <StanceTheme :segment="activeSegment">
       <TextualSegmentView
         v-if="activeSegment && activeSegment.type === 'text'"
         :segment="activeSegment as TextualSegment"
@@ -14,7 +11,7 @@
         :segment="activeSegment as VideoSegment"
         @segment-complete="onSegmentComplete"
       />
-    </div>
+    </StanceTheme>
 
     <div class="timeline-player__bar">
       <TimelineBarDots
@@ -45,6 +42,7 @@ import VideoSegmentView from './VideoSegmentView.vue';
 import SegmentInfo from './SegmentInfo.vue';
 import TimelineBarDots from './TimelineBarDots.vue';
 import TimelineControls from './TimelineControls.vue';
+import StanceTheme from './StanceTheme.vue';
 import type { Logger } from '../types/logger';
 
 const timeline = ref(new Timeline([]));
@@ -123,26 +121,6 @@ function handleDotMouseLeave() {
   border-radius: 1rem;
   margin: 2rem auto;
   box-shadow: 0 2px 16px $color-shadow;
-
-  &__player-border {
-    border: 3px solid $color-border;
-    border-radius: 1rem;
-    padding: 1.5rem;
-    margin-bottom: 2rem;
-    transition: border-color 0.3s;
-    height: 100%;
-    aspect-ratio: 16/9;
-
-    &--main {
-      border-color: $color-main;
-    }
-    &--supporting {
-      border-color: $color-supporting;
-    }
-    &--against {
-      border-color: $color-against;
-    }
-  }
 
   &__bar {
     display: flex;
