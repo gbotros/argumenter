@@ -22,40 +22,23 @@ export const demoSegmentsRaw = [
     concurrentTextSegments: [
       {
         id: 1.1,
-        content: 'Pay attention to the speaker’s main argument in this section.',
-        startAt: 10,
-        endAt: 20,
+        content: 'I agree with you father Luka that this is not the evolution theory.',
+        startAt: 40,
+        endAt: 50,
         stance: 'main' as StanceType,
-        description: 'Highlighting main argument'
+        description: 'We agree'
       }
     ]
-  },
-  {
-    id: 3,
-    type: 'text',
-    stance: 'against' as StanceType,
-    content: 'since we agree that this is not the evolution theory, I\'m not going to comment on some innaccurate points made in the video.',
-    duration: 5,
-    description: 'this is not the evolution theory',
   },
   {
     id: 4,
     type: 'video',
     stance: 'main' as StanceType,
     videoId: 'LEx3K50DQ4M',
-    startAt: 0,
+    startAt: 1,
     endAt: 56,
     description: 'Evolution hypothesis',
-    concurrentTextSegments: [
-      {
-        id: 4.1,
-        content: 'Notice the evidence presented here.',
-        startAt: 5,
-        endAt: 13,
-        stance: 'supporting' as StanceType,
-        description: 'Supporting evidence highlight'
-      }
-    ]
+    concurrentTextSegments: []
   },
   {
     id: 5,
@@ -65,16 +48,7 @@ export const demoSegmentsRaw = [
     startAt: 175,
     endAt: 236,
     description: 'Evolution is a theory',
-    concurrentTextSegments: [
-      {
-        id: 5.1,
-        content: 'This part of the video is often debated.',
-        startAt: 20,
-        endAt: 27,
-        stance: 'against' as StanceType,
-        description: 'Controversial section'
-      }
-    ]
+    concurrentTextSegments: []
   },
   {
     id: 6,
@@ -84,15 +58,24 @@ export const demoSegmentsRaw = [
     startAt: 56,
     endAt: 247,
     description: 'Origin of life and the big bang theory',
-    concurrentTextSegments: []
+    concurrentTextSegments: [
+      {
+        id: 1.1,
+        content: 'We agree again that is not the theory of evolution.',
+        startAt: 56,
+        endAt: 93,
+        stance: 'main' as StanceType,
+        description: 'We agree'
+      }
+    ]
   },
   {
     id: 10,
     type: 'text',
-    stance: 'against' as StanceType,
-    content: 'Evolution theory does not answer, Origin of life and the big bang theory',
+    stance: 'main' as StanceType,
+    content: 'The End',
     duration: 10,
-    description: 'Evolution theory does not answer, Origin of life and the big bang theory',
+    description: 'The End',
   }
 ];
 
