@@ -40,7 +40,7 @@ export const demoSegmentsRaw = [
   {
     id: 5,
     type: 'video',
-    stance: 'supporing' as StanceType,
+    stance: 'supporting' as StanceType,
     videoId: 'u8ntFIwmZjg',
     startAt: 370,
     endAt: 380,
