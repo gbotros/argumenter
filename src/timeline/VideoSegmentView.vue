@@ -1,24 +1,52 @@
 <template>
   <div class="video-segment-view">
-    <div ref="youtubePlayer" class="video-segment-view__yt-frame"></div>
-    <button class="video-segment-view__complete-btn" @click="completeSegment">
-      Complete Segment
-    </button>
+    <div
+      class="video-segment-view__main-row"
+      :class="{
+        'video-segment-view__main-row--single': visibleConcurrentTextSegments.length === 0,
+      }"
+    >
+      <div
+        ref="youtubePlayer"
+        class="video-segment-view__yt-frame"
+        :class="{
+          'video-segment-view__yt-frame--full': visibleConcurrentTextSegments.length === 0,
+        }"
+      ></div>
+      <div
+        v-if="visibleConcurrentTextSegments.length > 0"
+        class="video-segment-view__concurrent-texts"
+      >
+        <ConcurrentTextualSegmentView
+          v-for="textSeg in visibleConcurrentTextSegments"
+          :key="textSeg.id"
+          :segment="textSeg"
+        />
+      </div>
+    </div>
+    <button class="video-segment-view__complete-btn" @click="completeSegment">Skip</button>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, onUnmounted, nextTick, inject } from 'vue';
-import type { VideoSegment } from './types';
+import { ref, watch, onMounted, onUnmounted, nextTick, inject, computed } from 'vue';
+import type { VideoSegment, ConcurrentTextualSegment } from './types';
 import type { Logger } from '../types/logger';
+import ConcurrentTextualSegmentView from './ConcurrentTextualSegmentView.vue';
 
 const props = defineProps<{ segment: VideoSegment }>();
 const emit = defineEmits(['segment-complete']);
-
 const youtubePlayer = ref<HTMLElement | null>(null);
 let player: YT.Player | null = null;
-
 const logger = inject<Logger>('logger');
+const currentTime = ref(0);
+
+const visibleConcurrentTextSegments = computed(() => {
+  return props.segment.concurrentTextSegments.filter(
+    (ct: ConcurrentTextualSegment) =>
+      currentTime.value >= ct.startAt && currentTime.value < ct.endAt,
+  );
+});
 
 function createPlayer() {
   if (!youtubePlayer.value) return;
@@ -97,11 +125,21 @@ function completeSegment() {
   logger?.info(`[VideoSegmentView] Segment ${props.segment.id} completed`);
 }
 
+function updateCurrentTime() {
+  if (player && typeof player.getCurrentTime === 'function') {
+    currentTime.value = player.getCurrentTime();
+  }
+}
+
+let interval: number | null = null;
+
 async function setupPlayer() {
   logger?.debug(`[VideoSegmentView] Setting up player for segment ${props.segment.id}`);
   destroyPlayer();
   await nextTick();
   createPlayer();
+  if (interval) clearInterval(interval);
+  interval = window.setInterval(updateCurrentTime, 500);
 }
 
 onMounted(setupPlayer);
@@ -109,6 +147,7 @@ onMounted(setupPlayer);
 watch(() => props.segment, setupPlayer);
 
 onUnmounted(() => {
+  if (interval) clearInterval(interval);
   destroyPlayer();
 });
 </script>
@@ -122,13 +161,32 @@ onUnmounted(() => {
   border-radius: 0.7rem;
   padding: 1.2rem 1.5rem;
   box-shadow: 0 1px 8px $color-shadow-light;
+   height: 100%;
+
+  &__main-row {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    width: 100%;
+    height: 100%;
+    gap: 2rem;
+
+    &--single {
+      // Only video, no concurrent text
+      flex-direction: row;
+      gap: 0;
+    }
+  }
 
   &__yt-frame {
+    flex: 2 1 0;
+    width: 0;
+    min-width: 0;
     width: 100%;
-    max-width: 640px;
+    max-width: 100%;
     aspect-ratio: 16 / 9;
-    height: auto !important;
     max-height: 80vh;
+    min-height: 0;
     border-radius: 0.5rem;
     margin-bottom: 1rem;
     background: #000;
@@ -136,7 +194,11 @@ onUnmounted(() => {
     position: relative;
     overflow: hidden;
 
-    // Ensure iframe fills the container and maintains aspect ratio
+    &--full {
+      flex: 1 1 0 !important;
+      max-width: 100%;
+    }
+
     & > iframe {
       position: absolute;
       top: 0;
@@ -153,16 +215,31 @@ onUnmounted(() => {
     }
   }
 
-  @media (max-width: 900px) {
-    &__yt-frame {
+  &__concurrent-texts {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    min-width: 220px;
+    max-width: 400px;
+    flex: 1 1 0;
+    margin-left: 1.5rem;
+    margin-top: 0;
+
+    @media (max-width: 900px) {
+      margin-left: 0;
+      margin-top: 1rem;
       max-width: 100vw;
-      width: 100vw;
-      border-radius: 0;
+      min-width: 0;
     }
-    padding: 0.7rem 0.2rem;
   }
 
   @media (max-width: 600px) {
+    &__concurrent-texts {
+      margin-left: 0;
+      margin-top: 0.5rem;
+      max-width: 100vw;
+      min-width: 0;
+    }
     &__yt-frame {
       max-width: 100vw;
       width: 100vw;
@@ -172,13 +249,8 @@ onUnmounted(() => {
     padding: 0.3rem 0;
   }
 
-  // Ensure parent container doesn't restrict width
-  width: 100%;
-  box-sizing: border-box;
-  aspect-ratio: 16 / 9;
-  min-height: 0;
-
   &__complete-btn {
+    margin-top: 1rem;
     background: $color-bg;
     color: $color-fg;
     border: 1px solid $color-border-light;

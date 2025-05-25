@@ -1,4 +1,4 @@
-import { Segment, TextualSegment, VideoSegment } from './types';
+import { Segment, TextualSegment, VideoSegment, ConcurrentTextualSegment } from './types';
 
 export class Timeline {
   segments: Segment[];
@@ -43,4 +43,4 @@ export class Timeline {
   }
 }
 
-export { Segment, TextualSegment, VideoSegment };
+export { Segment, TextualSegment, VideoSegment, ConcurrentTextualSegment };

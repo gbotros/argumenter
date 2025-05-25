@@ -28,11 +28,7 @@
           @mouseleave="handleDotMouseLeave"
         ></button>
       </div>
-
-
-        <SegmentInfo :segment="hoveredSegmentInfo || activeSegment" />
-
-
+      <SegmentInfo :segment="hoveredSegmentInfo || activeSegment" />
       <div class="timeline-player__bar-controls">
         <button class="timeline-player__bar-controls-button" @click="goBack" :disabled="activeIndex === 0">Back</button>
         <button class="timeline-player__bar-controls-button" @click="goNext" :disabled="activeIndex === timeline.getSegments().length - 1">Next</button>
@@ -134,6 +130,8 @@ function handleDotMouseLeave() {
     padding: 1.5rem;
     margin-bottom: 2rem;
     transition: border-color 0.3s;
+    height: 100%;
+    aspect-ratio: 16/9;
 
     &--main {
       border-color: $color-main;

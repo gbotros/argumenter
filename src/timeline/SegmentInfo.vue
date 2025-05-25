@@ -18,6 +18,13 @@
       <div class="segment-info__start">▶️ Start: <span>{{ (props.segment as VideoSegment).startAt }}s</span></div>
       <div class="segment-info__end">⏹️ End: <span>{{ (props.segment as VideoSegment).endAt }}s</span></div>
       <div class="segment-info__duration">⏳ Duration: <span>{{ (props.segment as VideoSegment).endAt - (props.segment as VideoSegment).startAt }}s</span></div>
+      <div v-if="hasConcurrentTextSegments" class="segment-info__concurrent">
+        <div v-for="(textSeg, idx) in (props.segment as VideoSegment).concurrentTextSegments" :key="idx">
+          <span>📝 Concurrent Text: <span>{{ textSeg.content }}</span></span>
+          <span>⏱️ Time: <span>{{ textSeg.startAt }}s - {{ textSeg.endAt }}s</span></span>
+          <span>🗒️ Desc: <span>{{ textSeg.description }}</span></span>
+        </div>
+      </div>
     </template>
   </div>
 </template>
@@ -28,6 +35,13 @@ import type { TextualSegment, VideoSegment } from './timeLine.data';
 const props = defineProps<{
   segment: TextualSegment | VideoSegment | null;
 }>();
+
+const hasConcurrentTextSegments =
+  props.segment &&
+  props.segment.type === 'video' &&
+  Array.isArray((props.segment as VideoSegment).concurrentTextSegments) &&
+  (props.segment as VideoSegment).concurrentTextSegments.length > 0;
+  
 </script>
 
 <style lang="scss" scoped>
@@ -84,6 +98,19 @@ const props = defineProps<{
   span {
     font-weight: bold;
     color: $color-supporting;
+  }
+}
+
+.segment-info__concurrent {
+  margin-top: 0.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.98rem;
+  color: $color-supporting;
+  span {
+    color: $color-supporting;
+    font-weight: 500;
   }
 }
 </style>
