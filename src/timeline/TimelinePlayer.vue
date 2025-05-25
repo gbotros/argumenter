@@ -13,21 +13,14 @@
       />
     </div>
     <div class="timeline-player__bar">
-      <div class="timeline-player__bar-dots">
-        <button
-          v-for="(segment, idx) in timeline.getSegments()"
-          :key="segment.id"
-          :class="[
-            'timeline-player__bar-dot',
-            idx === activeIndex ? 'timeline-player__bar-dot--active' : '',
-            timeline.visitedSegments.includes(segment) ? 'timeline-player__bar-dot--visited' : 'timeline-player__bar-dot--unvisited',
-            `timeline-player__bar-dot--${segment.stance}`
-          ]"
-          @click="activateSegment(idx)"
-          @mouseenter="handleDotMouseEnter(segment)"
-          @mouseleave="handleDotMouseLeave"
-        ></button>
-      </div>
+      <TimelineBarDots
+        :segments="timeline.getSegments()"
+        :activeIndex="activeIndex"
+        :visitedSegments="timeline.visitedSegments"
+        @activate-segment="activateSegment"
+        @dot-mouse-enter="handleDotMouseEnter"
+        @dot-mouse-leave="handleDotMouseLeave"
+      />
       <SegmentInfo :segment="hoveredSegmentInfo || activeSegment" />
       <div class="timeline-player__bar-controls">
         <button class="timeline-player__bar-controls-button" @click="goBack" :disabled="activeIndex === 0">Back</button>
@@ -44,6 +37,7 @@ import { demoSegments } from './data/demoTimelineData';
 import TextualSegmentView from './TextualSegmentView.vue';
 import VideoSegmentView from './VideoSegmentView.vue';
 import SegmentInfo from './SegmentInfo.vue';
+import TimelineBarDots from './TimelineBarDots.vue';
 import type { Logger } from '../types/logger';
 
 const timeline = ref(new Timeline([]));
@@ -148,88 +142,6 @@ function handleDotMouseLeave() {
     display: flex;
     flex-direction: column;
     align-items: center;
-
-    &-dots {
-      display: flex;
-      gap: 1.2rem;
-      margin-bottom: 0.5rem;
-      width: 100%;
-      justify-content: space-around;
-      position: relative;
-      align-items: center;
-
-      // Line connecting the dots (start at first dot, end at last dot)
-      &::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 0;
-        right: 0;
-        height: 2px;
-        background: $color-border-light;
-        border-radius: 2px;
-        z-index: 0;
-        transform: translateY(-50%);
-        width: calc(100% - 1.4rem); // 1rem = dot diameter
-        left: 0.7rem;
-        right: 0.7rem;
-        margin: 0;
-      }
-    }
-
-    &-dot {
-      position: relative;
-      z-index: 1;
-      width: 1rem;
-      height: 1rem;
-      border-radius: 50%;
-      border: none;
-      background: $color-border-light;
-      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
-      cursor: pointer;
-      outline: none;
-
-      // --- UNVISITED DOTS ---
-      &--unvisited {
-        &.timeline-player__bar-dot--main,
-        &.timeline-player__bar-dot--supporting {
-          background: lighten($color-supporting, 30%);
-        }
-        &.timeline-player__bar-dot--against {
-          background: lighten($color-against, 30%);
-        }
-      }
-
-      // --- VISITED DOTS ---
-      &--visited {
-        &.timeline-player__bar-dot--main,
-        &.timeline-player__bar-dot--supporting {
-          background: darken($color-supporting, 30%);
-        }
-        &.timeline-player__bar-dot--against {
-          background: darken($color-against, 30%);
-        }
-      }
-
-      // --- ACTIVE DOT ---
-      &--active {
-        background: $color-active;
-        transform: scale(2);
-        box-shadow: 0 0 0 6px $color-active-shadow;
-        z-index: 2;
-      }
-
-      // --- DOT SHADOWS BY STANCE ---
-      &--main {
-        box-shadow: 0 0 0 2px $color-main-shadow;
-      }
-      &--supporting {
-        box-shadow: 0 0 0 2px $color-supporting-shadow;
-      }
-      &--against {
-        box-shadow: 0 0 0 2px $color-against-shadow;
-      }
-    }
 
     &-controls {
       display: flex;
