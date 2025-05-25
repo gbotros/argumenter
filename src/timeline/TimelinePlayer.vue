@@ -214,8 +214,8 @@ const activeSegmentInfo = computed(() => {
 }
 
 .timeline-dot {
-  width: 1.1rem;
-  height: 1.1rem;
+  width: 1rem;
+  height: 1rem;
   border-radius: 50%;
   border: none;
   background: $color-border-light;
@@ -231,7 +231,7 @@ const activeSegmentInfo = computed(() => {
 }
 .timeline-dot.active {
   background: $color-active;
-  transform: scale(1.3);
+  transform: scale(1.5);
   box-shadow: 0 0 0 3px $color-active-shadow;
 }
 .timeline-dot.stance-main {

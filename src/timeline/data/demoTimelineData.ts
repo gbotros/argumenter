@@ -8,7 +8,7 @@ export const demoSegmentsRaw = [
     type: 'text',
     stance: 'main' as StanceType,
     content: 'Welcome to the argument!',
-    duration: 4,
+    duration: 5,
     description: 'Introduction',
   },
   {

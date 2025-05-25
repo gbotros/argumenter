@@ -15,32 +15,17 @@ const emit = defineEmits(['segment-complete']);
 const youtubePlayer = ref<HTMLElement | null>(null);
 let player: YT.Player | null = null;
 
-function getYT(): typeof YT | undefined {
-  return window.YT;
-}
-
-function loadYouTubeApi() {
-  return new Promise<void>((resolve) => {
-    const yt = getYT();
-    if (yt && yt.Player) {
-      resolve();
-      return;
-    }
-    const tag = document.createElement('script');
-    tag.src = 'https://www.youtube.com/iframe_api';
-    document.body.appendChild(tag);
-    window.onYouTubeIframeAPIReady = () => {
-      resolve();
-    };
-  });
-}
-
 function createPlayer() {
   if (!youtubePlayer.value) return;
   const { videoId, startAt, endAt } = props.segment;
-  const yt = getYT();
-  if (!yt) return;
-  player = new yt.Player(youtubePlayer.value, {
+  const YT = window.YT;
+  if (!YT) return;
+
+  if (import.meta.env.DEV) {
+    console.log(`[VideoSegmentView] Creating player for segment ${props.segment.id}`);
+  }
+
+  player = new YT.Player(youtubePlayer.value, {
     height: '270',
     width: '480',
     videoId,
@@ -59,23 +44,56 @@ function createPlayer() {
         }
       },
       onStateChange: (event) => {
-        const yt = getYT();
-        if (!yt) return;
+        if (!YT) return;
         if (import.meta.env.DEV) {
-          if (event.data === yt.PlayerState.ENDED) {
+          if (event.data === YT.PlayerState.ENDED) {
             console.log(`[VideoSegmentView] Video ended for segment ${props.segment.id}`);
-          } else if (event.data === yt.PlayerState.PLAYING) {
+          } else if (event.data === YT.PlayerState.PLAYING) {
             console.log(`[VideoSegmentView] Video started playing for segment ${props.segment.id}`);
-          } else if (event.data === yt.PlayerState.PAUSED) {
+          } else if (event.data === YT.PlayerState.PAUSED) {
             console.log(`[VideoSegmentView] Video paused for segment ${props.segment.id}`);
           }
         }
-        if (event.data === yt.PlayerState.ENDED) {
+        if (event.data === YT.PlayerState.ENDED) {
           completeSegment();
+        }
+      },
+      onError: (event) => {
+        console.error(`[VideoSegmentView] Error occurred for segment ${props.segment.id}`, event);
+        if (import.meta.env.DEV) {
+          console.log(`[VideoSegmentView] Error occurred for segment ${props.segment.id}`, event);
+        }
+      },
+      onPlaybackQualityChange: (event) => {
+        if (import.meta.env.DEV) {
+          console.log(
+            `[VideoSegmentView] Playback quality changed for segment ${props.segment.id}`,
+            event,
+          );
+        }
+      },
+      onPlaybackRateChange: (event) => {
+        if (import.meta.env.DEV) {
+          console.log(
+            `[VideoSegmentView] Playback rate changed for segment ${props.segment.id}`,
+            event,
+          );
+        }
+      },
+      onApiChange: (event) => {
+        if (import.meta.env.DEV) {
+          console.log(`[VideoSegmentView] API changed for segment ${props.segment.id}`, event);
+        }
+      },
+      onAutoplayBlocked: (event) => {
+        if (import.meta.env.DEV) {
+          console.log(`[VideoSegmentView] Autoplay blocked for segment ${props.segment.id}`, event);
         }
       },
     },
   });
+
+  console.log(`[VideoSegmentView] Created player for segment ${props.segment.id}`);
 }
 
 function destroyPlayer() {
@@ -94,8 +112,10 @@ function completeSegment() {
 }
 
 async function setupPlayer() {
+  if (import.meta.env.DEV) {
+    console.log(`[VideoSegmentView] Setting up player for segment ${props.segment.id}`);
+  }
   destroyPlayer();
-  await loadYouTubeApi();
   await nextTick();
   createPlayer();
 }
@@ -134,7 +154,9 @@ onUnmounted(() => {
   padding: 0.4rem 1.2rem;
   font-size: 1rem;
   cursor: pointer;
-  transition: background 0.2s, border-color 0.2s;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
 }
 .complete-btn:hover {
   background: $color-btn-hover;
