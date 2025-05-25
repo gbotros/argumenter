@@ -5,9 +5,8 @@
       :key="segment.id"
       :class="[
         'timeline-player__bar-dot',
-        idx === activeIndex ? 'timeline-player__bar-dot--active' : '',
-        visitedSegments.includes(segment) ? 'timeline-player__bar-dot--visited' : 'timeline-player__bar-dot--unvisited',
-        `timeline-player__bar-dot--${segment.stance}`
+        getDotStatusClass(idx, segment),
+        `timeline-player__bar-dot--${segment.stance}`,
       ]"
       @click="activateSegment(idx)"
       @mouseenter="handleDotMouseEnter(segment)"
@@ -42,10 +41,20 @@ function handleDotMouseEnter(segment: Segment) {
 function handleDotMouseLeave() {
   emit('dot-mouse-leave');
 }
+
+function getDotStatusClass(idx: number, segment: Segment): string {
+  if (idx === props.activeIndex) {
+    return 'timeline-player__bar-dot--active';
+  }
+  if (props.visitedSegments.includes(segment)) {
+    return 'timeline-player__bar-dot--visited';
+  }
+  return 'timeline-player__bar-dot--unvisited';
+}
 </script>
 
 <style lang="scss" scoped>
-@use "@/assets/variables.scss" as *;
+@use '@/assets/variables.scss' as *;
 
 .timeline-bar-dots {
   display: flex;
@@ -61,41 +70,54 @@ function handleDotMouseLeave() {
   width: 1.2rem;
   height: 1.2rem;
   border-radius: 50%;
-  border: 2px solid var(--color-border, #444);
-  background: var(--color-neutral, #222);
+
+  // background: var(--color-neutral, #222);
   box-shadow: 0 0 0 2px transparent;
-  transition: box-shadow 0.2s, border-color 0.2s, background 0.2s;
+  transition:
+    box-shadow 0.2s,
+    border-color 0.2s,
+    background 0.2s;
   cursor: pointer;
   outline: none;
   padding: 0;
   appearance: none;
   display: inline-block;
-}
-
-.timeline-player__bar-dot--active {
-  box-shadow: 0 0 0 3px var(--color-accent, #fff);
-  border-color: var(--color-accent, #fff);
-}
-
-.timeline-player__bar-dot--visited {
-  opacity: 1;
+  border-width: 3px;
   border-style: solid;
-}
 
-.timeline-player__bar-dot--unvisited {
-  opacity: 0.5;
-  border-style: dashed;
-}
+  &--active {
+    box-shadow: 0 0 0 3px $color-fg;
+    border-color: $color-fg;
+  }
 
-.timeline-player__bar-dot--main {
-  background-color: $color-main !important;
-}
+  &--unvisited {
+    background-color: $color-bg;
 
-.timeline-player__bar-dot--supporting {
-  background-color: $color-supporting !important;
-}
+    &.timeline-player__bar-dot--main {
+      border-color: $color-main-shadow;
+    }
+    &.timeline-player__bar-dot--supporting {
+      border-color: $color-supporting-shadow;
+    }
+    &.timeline-player__bar-dot--against {
+      border-color: $color-against-shadow;
+    }
+  }
 
-.timeline-player__bar-dot--against {
-  background-color: $color-against !important;
+  &--visited {
+
+    &.timeline-player__bar-dot--main {
+      background-color: $color-main;
+      border-color: $color-main-shadow;
+    }
+    &.timeline-player__bar-dot--supporting {
+      background-color: $color-supporting;
+      border-color: $color-supporting-shadow;
+    }
+    &.timeline-player__bar-dot--against {
+      background-color: $color-against;
+      border-color: $color-against-shadow;
+    }
+  }
 }
 </style>
