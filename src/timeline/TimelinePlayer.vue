@@ -26,6 +26,9 @@
       <div class="timeline-description" v-if="hoveredSegment">
         <pre>{{ hoveredInfo }}</pre>
       </div>
+      <div class="timeline-description active-info" v-if="activeSegment && !hoveredSegment">
+        <pre>{{ activeSegmentInfo }}</pre>
+      </div>
       <div class="timeline-controls">
         <button @click="goBack" :disabled="activeIndex === 0">Back</button>
         <button @click="goNext" :disabled="activeIndex === timeline.getSegments().length - 1">Next</button>
@@ -37,6 +40,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { Timeline, Segment, TextualSegment, VideoSegment } from './timeLine.data';
+import { demoSegments } from './data/demoTimelineData';
 import TextualSegmentView from './TextualSegmentView.vue';
 import VideoSegmentView from './VideoSegmentView.vue';
 
@@ -46,9 +50,7 @@ const hoveredDescription = ref('');
 const hoveredSegment = ref<Segment | null>(null);
 
 onMounted(() => {
-  timeline.value.addSegment(new TextualSegment(1, 'main', 'Welcome to the argument!', 8, 'Introduction'));
-  timeline.value.addSegment(new VideoSegment(2, 0, 30, 'supporting', 'dQw4w9WgXcQ', 'Opening argument video'));
-  timeline.value.addSegment(new TextualSegment(3, 'against', 'Counterpoint: Consider the other side.', 6, 'Counterpoint'));
+  demoSegments.forEach(segment => timeline.value.addSegment(segment));
   timeline.value.activateSegmentByIndex(0);
   activeIndex.value = 0;
   if (import.meta.env.DEV) {
@@ -145,6 +147,26 @@ const hoveredInfo = computed(() => {
   }
   return info;
 });
+
+const activeSegmentInfo = computed(() => {
+  if (!activeSegment.value) return '';
+  let info = activeSegment.value.description;
+  if (activeSegment.value.type === 'text') {
+    const seg = activeSegment.value as TextualSegment;
+    info += `\nType: Text`;
+    info += `\nDuration: ${seg.duration}s`;
+    info += `\nContent: ${seg.content}`;
+  } else if (activeSegment.value.type === 'video') {
+    const seg = activeSegment.value as VideoSegment;
+    const duration = seg.endAt - seg.startAt;
+    info += `\nType: Video`;
+    info += `\nVideo ID: ${seg.videoId}`;
+    info += `\nStart: ${seg.startAt}s`;
+    info += `\nEnd: ${seg.endAt}s`;
+    info += `\nDuration: ${duration}s`;
+  }
+  return info;
+});
 </script>
 
 <style lang="scss">
@@ -230,6 +252,13 @@ const hoveredInfo = computed(() => {
   font-size: 0.95rem;
   min-width: 180px;
   text-align: center;
+}
+.timeline-description.active-info {
+  margin-top: 0.5rem;
+  background: $color-bg-alt;
+  color: $color-fg;
+  border: 1px solid $color-border-light;
+  font-weight: bold;
 }
 .timeline-controls {
   display: flex;
