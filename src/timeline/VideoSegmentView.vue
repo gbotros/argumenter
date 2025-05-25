@@ -6,13 +6,15 @@
         'video-segment-view__main-row--single': visibleConcurrentTextSegments.length === 0,
       }"
     >
-      <div
-        ref="youtubePlayer"
-        class="video-segment-view__yt-frame"
-        :class="{
-          'video-segment-view__yt-frame--full': visibleConcurrentTextSegments.length === 0,
-        }"
-      ></div>
+
+        <div
+          ref="youtubePlayer"
+          class="video-segment-view__yt-frame"
+          :class="{
+            'video-segment-view__yt-frame--full': visibleConcurrentTextSegments.length === 0,
+          }"
+        ></div>
+
       <div
         v-if="visibleConcurrentTextSegments.length > 0"
         class="video-segment-view__concurrent-texts"
@@ -161,7 +163,7 @@ onUnmounted(() => {
   border-radius: 0.7rem;
   padding: 1.2rem 1.5rem;
   box-shadow: 0 1px 8px $color-shadow-light;
-   height: 100%;
+  height: 100%;
 
   &__main-row {
     display: flex;
@@ -169,7 +171,6 @@ onUnmounted(() => {
     align-items: flex-start;
     width: 100%;
     height: 100%;
-    gap: 2rem;
 
     &--single {
       // Only video, no concurrent text
@@ -219,35 +220,12 @@ onUnmounted(() => {
     display: flex;
     flex-direction: column;
     gap: 1.2rem;
-    min-width: 220px;
-    max-width: 400px;
     flex: 1 1 0;
     margin-left: 1.5rem;
     margin-top: 0;
 
-    @media (max-width: 900px) {
-      margin-left: 0;
-      margin-top: 1rem;
-      max-width: 100vw;
-      min-width: 0;
-    }
   }
 
-  @media (max-width: 600px) {
-    &__concurrent-texts {
-      margin-left: 0;
-      margin-top: 0.5rem;
-      max-width: 100vw;
-      min-width: 0;
-    }
-    &__yt-frame {
-      max-width: 100vw;
-      width: 100vw;
-      min-width: 0;
-      border-radius: 0;
-    }
-    padding: 0.3rem 0;
-  }
 
   &__complete-btn {
     margin-top: 1rem;
