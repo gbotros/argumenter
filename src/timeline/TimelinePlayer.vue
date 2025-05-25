@@ -28,12 +28,11 @@
           @mouseleave="handleDotMouseLeave"
         ></button>
       </div>
-      <div class="timeline-player__bar-description" v-if="hoveredSegment">
-        <pre>{{ hoveredInfo }}</pre>
-      </div>
-      <div class="timeline-player__bar-description timeline-player__bar-description--active-info" v-if="activeSegment && !hoveredSegment">
-        <pre>{{ activeSegmentInfo }}</pre>
-      </div>
+
+
+        <SegmentInfo :segment="hoveredSegmentInfo || activeSegment" />
+
+
       <div class="timeline-player__bar-controls">
         <button class="timeline-player__bar-controls-button" @click="goBack" :disabled="activeIndex === 0">Back</button>
         <button class="timeline-player__bar-controls-button" @click="goNext" :disabled="activeIndex === timeline.getSegments().length - 1">Next</button>
@@ -48,6 +47,7 @@ import { Timeline, Segment, TextualSegment, VideoSegment } from './timeLine.data
 import { demoSegments } from './data/demoTimelineData';
 import TextualSegmentView from './TextualSegmentView.vue';
 import VideoSegmentView from './VideoSegmentView.vue';
+import SegmentInfo from './SegmentInfo.vue';
 import type { Logger } from '../types/logger';
 
 const timeline = ref(new Timeline([]));
@@ -70,6 +70,16 @@ const activeSegment = computed(() => {
     return seg as TextualSegment;
   } else if (seg.type === 'video') {
     return seg as VideoSegment;
+  }
+  return null;
+});
+
+const hoveredSegmentInfo = computed(() => {
+  if (!hoveredSegment.value) return null;
+  if (hoveredSegment.value.type === 'text') {
+    return hoveredSegment.value as TextualSegment;
+  } else if (hoveredSegment.value.type === 'video') {
+    return hoveredSegment.value as VideoSegment;
   }
   return null;
 });
@@ -106,46 +116,6 @@ function handleDotMouseLeave() {
   hoveredSegment.value = null;
   hoveredDescription.value = '';
 }
-
-const hoveredInfo = computed(() => {
-  if (!hoveredSegment.value) return '';
-  let info = hoveredSegment.value.description;
-  if (hoveredSegment.value.type === 'text') {
-    const seg = hoveredSegment.value as TextualSegment;
-    info += `\nType: Text`;
-    info += `\nDuration: ${seg.duration}s`;
-    info += `\nContent: ${seg.content}`;
-  } else if (hoveredSegment.value.type === 'video') {
-    const seg = hoveredSegment.value as VideoSegment;
-    const duration = seg.endAt - seg.startAt;
-    info += `\nType: Video`;
-    info += `\nVideo ID: ${seg.videoId}`;
-    info += `\nStart: ${seg.startAt}s`;
-    info += `\nEnd: ${seg.endAt}s`;
-    info += `\nDuration: ${duration}s`;
-  }
-  return info;
-});
-
-const activeSegmentInfo = computed(() => {
-  if (!activeSegment.value) return '';
-  let info = activeSegment.value.description;
-  if (activeSegment.value.type === 'text') {
-    const seg = activeSegment.value as TextualSegment;
-    info += `\nType: Text`;
-    info += `\nDuration: ${seg.duration}s`;
-    info += `\nContent: ${seg.content}`;
-  } else if (activeSegment.value.type === 'video') {
-    const seg = activeSegment.value as VideoSegment;
-    const duration = seg.endAt - seg.startAt;
-    info += `\nType: Video`;
-    info += `\nVideo ID: ${seg.videoId}`;
-    info += `\nStart: ${seg.startAt}s`;
-    info += `\nEnd: ${seg.endAt}s`;
-    info += `\nDuration: ${duration}s`;
-  }
-  return info;
-});
 </script>
 
 <style lang="scss" scoped>
@@ -261,25 +231,6 @@ const activeSegmentInfo = computed(() => {
       }
       &--against {
         box-shadow: 0 0 0 2px $color-against-shadow;
-      }
-    }
-
-    &-description {
-      background: $color-bg-alt;
-      color: $color-fg;
-      padding: 0.5rem 1rem;
-      border-radius: 0.5rem;
-      margin-bottom: 0.5rem;
-      font-size: 0.95rem;
-      min-width: 180px;
-      text-align: center;
-
-      &--active-info {
-        margin-top: 0.5rem;
-        background: $color-bg-alt;
-        color: $color-fg;
-        border: 1px solid $color-border-light;
-        font-weight: bold;
       }
     }
 
