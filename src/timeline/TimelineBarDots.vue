@@ -93,27 +93,32 @@ function getDotStatusClass(idx: number, segment: Segment): string {
   &--unvisited {
     background-color: $color-bg;
 
+    // BEM: Unvisited + Stance modifiers
     &.timeline-player__bar-dot--main {
       border-color: $color-main-shadow;
     }
+
     &.timeline-player__bar-dot--supporting {
       border-color: $color-supporting-shadow;
     }
+
     &.timeline-player__bar-dot--against {
       border-color: $color-against-shadow;
     }
   }
 
   &--visited {
-
+    // BEM: Visited + Stance modifiers
     &.timeline-player__bar-dot--main {
       background-color: $color-main;
       border-color: $color-main-shadow;
     }
+
     &.timeline-player__bar-dot--supporting {
       background-color: $color-supporting;
       border-color: $color-supporting-shadow;
     }
+
     &.timeline-player__bar-dot--against {
       background-color: $color-against;
       border-color: $color-against-shadow;
