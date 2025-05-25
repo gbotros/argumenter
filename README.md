@@ -9,9 +9,11 @@ This app is an interactive YouTube video player with a smart timeline. The timel
 - **Timeline Visualization:**
 
   - The timeline is shown as a line with dots for each segment.
-  - **Visited segments:** Green dots
-  - **Unvisited segments:** Gray dots
-  - **Active segment:** Blue, larger dot
+  - **unvisited Main and supporting segments dots** 30% lighten green
+  - **unvisited against segments dots** 30% lighten red
+  - **unvisited Main and supporting segments dots** 30% darken green
+  - **unvisited against segments dots** 30% darken red
+  - **Active segment:** larger dot, with a shadow
   - Hovering over a dot shows a description of the segment.
   - Clicking a dot jumps to that segment.
   - Next and Back buttons let users move through segments in order.
@@ -63,10 +65,10 @@ This app is an interactive YouTube video player with a smart timeline. The timel
 ## Example Usage
 
 ```ts
-const timeline = new Timeline([])
-timeline.addSegment(new TextualSegment(1, 'main', 'Introduction', 10, 'Intro text'))
-timeline.addSegment(new VideoSegment(2, 30, 60, 'supporting', 'abc123', 'Key argument'))
-timeline.activateSegmentById(1) // Activates the first segment
+const timeline = new Timeline([]);
+timeline.addSegment(new TextualSegment(1, 'main', 'Introduction', 10, 'Intro text'));
+timeline.addSegment(new VideoSegment(2, 30, 60, 'supporting', 'abc123', 'Key argument'));
+timeline.activateSegmentById(1); // Activates the first segment
 ```
 
 ## Development

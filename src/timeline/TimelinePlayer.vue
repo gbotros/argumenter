@@ -186,29 +186,73 @@ const activeSegmentInfo = computed(() => {
       display: flex;
       gap: 1.2rem;
       margin-bottom: 0.5rem;
+      width: 100%;
+      justify-content: space-around;
+      position: relative;
+      align-items: center;
+
+      // Line connecting the dots (start at first dot, end at last dot)
+      &::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: $color-border-light;
+        border-radius: 2px;
+        z-index: 0;
+        transform: translateY(-50%);
+        width: calc(100% - 1.4rem); // 1rem = dot diameter
+        left: 0.7rem;
+        right: 0.7rem;
+        margin: 0;
+      }
     }
 
     &-dot {
+      position: relative;
+      z-index: 1;
       width: 1rem;
       height: 1rem;
       border-radius: 50%;
       border: none;
       background: $color-border-light;
-      transition: background 0.2s, transform 0.2s;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
       cursor: pointer;
       outline: none;
 
-      &--visited {
-        background: $color-supporting;
-      }
+      // --- UNVISITED DOTS ---
       &--unvisited {
-        background: $color-border-light;
+        &.timeline-player__bar-dot--main,
+        &.timeline-player__bar-dot--supporting {
+          background: lighten($color-supporting, 30%);
+        }
+        &.timeline-player__bar-dot--against {
+          background: lighten($color-against, 30%);
+        }
       }
+
+      // --- VISITED DOTS ---
+      &--visited {
+        &.timeline-player__bar-dot--main,
+        &.timeline-player__bar-dot--supporting {
+          background: darken($color-supporting, 30%);
+        }
+        &.timeline-player__bar-dot--against {
+          background: darken($color-against, 30%);
+        }
+      }
+
+      // --- ACTIVE DOT ---
       &--active {
         background: $color-active;
-        transform: scale(1.5);
-        box-shadow: 0 0 0 3px $color-active-shadow;
+        transform: scale(2);
+        box-shadow: 0 0 0 6px $color-active-shadow;
+        z-index: 2;
       }
+
+      // --- DOT SHADOWS BY STANCE ---
       &--main {
         box-shadow: 0 0 0 2px $color-main-shadow;
       }
