@@ -6,8 +6,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, onUnmounted, nextTick } from 'vue';
+import { ref, watch, onMounted, onUnmounted, nextTick, inject } from 'vue';
 import type { VideoSegment } from './types';
+import type { Logger } from '../types/logger';
 
 const props = defineProps<{ segment: VideoSegment }>();
 const emit = defineEmits(['segment-complete']);
@@ -15,15 +16,15 @@ const emit = defineEmits(['segment-complete']);
 const youtubePlayer = ref<HTMLElement | null>(null);
 let player: YT.Player | null = null;
 
+const logger = inject<Logger>('logger');
+
 function createPlayer() {
   if (!youtubePlayer.value) return;
   const { videoId, startAt, endAt } = props.segment;
   const YT = window.YT;
   if (!YT) return;
 
-  if (import.meta.env.DEV) {
-    console.log(`[VideoSegmentView] Creating player for segment ${props.segment.id}`);
-  }
+  logger?.debug(`[VideoSegmentView] Creating player for segment ${props.segment.id}`);
 
   player = new YT.Player(youtubePlayer.value, {
     height: '270',
@@ -39,61 +40,46 @@ function createPlayer() {
     events: {
       onReady: (event) => {
         event.target.playVideo();
-        if (import.meta.env.DEV) {
-          console.log(`[VideoSegmentView] Player ready for segment ${props.segment.id}`);
-        }
+        logger?.debug(`[VideoSegmentView] Player ready for segment ${props.segment.id}`);
       },
       onStateChange: (event) => {
         if (!YT) return;
-        if (import.meta.env.DEV) {
-          if (event.data === YT.PlayerState.ENDED) {
-            console.log(`[VideoSegmentView] Video ended for segment ${props.segment.id}`);
-          } else if (event.data === YT.PlayerState.PLAYING) {
-            console.log(`[VideoSegmentView] Video started playing for segment ${props.segment.id}`);
-          } else if (event.data === YT.PlayerState.PAUSED) {
-            console.log(`[VideoSegmentView] Video paused for segment ${props.segment.id}`);
-          }
+        if (event.data === YT.PlayerState.ENDED) {
+          logger?.info(`[VideoSegmentView] Video ended for segment ${props.segment.id}`);
+        } else if (event.data === YT.PlayerState.PLAYING) {
+          logger?.info(`[VideoSegmentView] Video started playing for segment ${props.segment.id}`);
+        } else if (event.data === YT.PlayerState.PAUSED) {
+          logger?.info(`[VideoSegmentView] Video paused for segment ${props.segment.id}`);
         }
         if (event.data === YT.PlayerState.ENDED) {
           completeSegment();
         }
       },
       onError: (event) => {
-        console.error(`[VideoSegmentView] Error occurred for segment ${props.segment.id}`, event);
-        if (import.meta.env.DEV) {
-          console.log(`[VideoSegmentView] Error occurred for segment ${props.segment.id}`, event);
-        }
+        logger?.error(`[VideoSegmentView] Error occurred for segment ${props.segment.id}`, event);
       },
       onPlaybackQualityChange: (event) => {
-        if (import.meta.env.DEV) {
-          console.log(
-            `[VideoSegmentView] Playback quality changed for segment ${props.segment.id}`,
-            event,
-          );
-        }
+        logger?.info(
+          `[VideoSegmentView] Playback quality changed for segment ${props.segment.id}`,
+          event,
+        );
       },
       onPlaybackRateChange: (event) => {
-        if (import.meta.env.DEV) {
-          console.log(
-            `[VideoSegmentView] Playback rate changed for segment ${props.segment.id}`,
-            event,
-          );
-        }
+        logger?.info(
+          `[VideoSegmentView] Playback rate changed for segment ${props.segment.id}`,
+          event,
+        );
       },
       onApiChange: (event) => {
-        if (import.meta.env.DEV) {
-          console.log(`[VideoSegmentView] API changed for segment ${props.segment.id}`, event);
-        }
+        logger?.info(`[VideoSegmentView] API changed for segment ${props.segment.id}`, event);
       },
       onAutoplayBlocked: (event) => {
-        if (import.meta.env.DEV) {
-          console.log(`[VideoSegmentView] Autoplay blocked for segment ${props.segment.id}`, event);
-        }
+        logger?.warn(`[VideoSegmentView] Autoplay blocked for segment ${props.segment.id}`, event);
       },
     },
   });
 
-  console.log(`[VideoSegmentView] Created player for segment ${props.segment.id}`);
+  logger?.debug(`[VideoSegmentView] Created player for segment ${props.segment.id}`);
 }
 
 function destroyPlayer() {
@@ -106,15 +92,11 @@ function destroyPlayer() {
 function completeSegment() {
   destroyPlayer();
   emit('segment-complete');
-  if (import.meta.env.DEV) {
-    console.log(`[VideoSegmentView] Segment ${props.segment.id} completed`);
-  }
+  logger?.info(`[VideoSegmentView] Segment ${props.segment.id} completed`);
 }
 
 async function setupPlayer() {
-  if (import.meta.env.DEV) {
-    console.log(`[VideoSegmentView] Setting up player for segment ${props.segment.id}`);
-  }
+  logger?.debug(`[VideoSegmentView] Setting up player for segment ${props.segment.id}`);
   destroyPlayer();
   await nextTick();
   createPlayer();

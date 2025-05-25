@@ -7,11 +7,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, onUnmounted, defineEmits } from 'vue';
+import { ref, watch, onMounted, onUnmounted, defineEmits, inject } from 'vue';
 import type { TextualSegment } from './types';
+import type { Logger } from '../types/logger';
 
 const props = defineProps<{ segment: TextualSegment }>();
 const emit = defineEmits(['segment-complete']);
+const logger = inject<Logger>('logger');
 
 const countdown = ref(props.segment.duration);
 let timer: number | null = null;
@@ -24,9 +26,7 @@ function startTimer() {
       completeSegment();
     }
   }, 1000);
-  if (import.meta.env.DEV) {
-    console.log(`[TextualSegmentView] Timer started for segment ${props.segment.id}`);
-  }
+  logger?.debug(`[TextualSegmentView] Timer started for segment ${props.segment.id}`);
 }
 
 function completeSegment() {
@@ -35,9 +35,7 @@ function completeSegment() {
     timer = null;
   }
   emit('segment-complete');
-  if (import.meta.env.DEV) {
-    console.log(`[TextualSegmentView] Segment ${props.segment.id} completed`);
-  }
+  logger?.info(`[TextualSegmentView] Segment ${props.segment.id} completed`);
 }
 
 onMounted(() => {

@@ -38,24 +38,24 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, inject } from 'vue';
 import { Timeline, Segment, TextualSegment, VideoSegment } from './timeLine.data';
 import { demoSegments } from './data/demoTimelineData';
 import TextualSegmentView from './TextualSegmentView.vue';
 import VideoSegmentView from './VideoSegmentView.vue';
+import type { Logger } from '../types/logger';
 
 const timeline = ref(new Timeline([]));
 const activeIndex = ref(0);
 const hoveredDescription = ref('');
 const hoveredSegment = ref<Segment | null>(null);
+const logger = inject<Logger>('logger');
 
 onMounted(() => {
   demoSegments.forEach(segment => timeline.value.addSegment(segment));
   timeline.value.activateSegmentByIndex(0);
   activeIndex.value = 0;
-  if (import.meta.env.DEV) {
-    console.log('[TimelinePlayer] Timeline initialized:', timeline.value.getSegments());
-  }
+  logger?.debug('[TimelinePlayer] Timeline initialized:', timeline.value.getSegments());
 });
 
 const activeSegment = computed(() => {
@@ -85,9 +85,7 @@ const stanceClass = computed(() => {
 function activateSegment(idx: number) {
   timeline.value.activateSegmentByIndex(idx);
   activeIndex.value = idx;
-  if (import.meta.env.DEV) {
-    console.log(`[TimelinePlayer] Activated segment at index ${idx}`);
-  }
+  logger?.info(`[TimelinePlayer] Activated segment at index ${idx}`);
 }
 
 function goNext() {
@@ -118,9 +116,7 @@ function onSegmentComplete() {
 function handleDotMouseEnter(segment: Segment) {
   hoveredSegment.value = segment;
   hoveredDescription.value = segment.description;
-  if (import.meta.env.DEV) {
-    console.log(`[TimelinePlayer] Hovered segment:`, segment);
-  }
+  logger?.debug(`[TimelinePlayer] Hovered segment:`, segment);
 }
 
 function handleDotMouseLeave() {
