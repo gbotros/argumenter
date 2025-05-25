@@ -1,6 +1,6 @@
 <template>
   <div class="timeline-player">
-    <div class="player-border" :class="stanceClass">
+    <div class="timeline-player__player-border" :class="`timeline-player__player-border--${activeSegment?.stance ?? ''}`">
       <TextualSegmentView
         v-if="activeSegment && activeSegment.type === 'text'"
         :segment="activeSegment as TextualSegment"
@@ -12,26 +12,31 @@
         @segment-complete="onSegmentComplete"
       />
     </div>
-    <div class="timeline-bar">
-      <div class="timeline-dots">
+    <div class="timeline-player__bar">
+      <div class="timeline-player__bar-dots">
         <button
           v-for="(segment, idx) in timeline.getSegments()"
           :key="segment.id"
-          :class="dotClass(segment, idx)"
+          :class="[
+            'timeline-player__bar-dot',
+            idx === activeIndex ? 'timeline-player__bar-dot--active' : '',
+            timeline.visitedSegments.includes(segment) ? 'timeline-player__bar-dot--visited' : 'timeline-player__bar-dot--unvisited',
+            `timeline-player__bar-dot--${segment.stance}`
+          ]"
           @click="activateSegment(idx)"
           @mouseenter="handleDotMouseEnter(segment)"
           @mouseleave="handleDotMouseLeave"
         ></button>
       </div>
-      <div class="timeline-description" v-if="hoveredSegment">
+      <div class="timeline-player__bar-description" v-if="hoveredSegment">
         <pre>{{ hoveredInfo }}</pre>
       </div>
-      <div class="timeline-description active-info" v-if="activeSegment && !hoveredSegment">
+      <div class="timeline-player__bar-description timeline-player__bar-description--active-info" v-if="activeSegment && !hoveredSegment">
         <pre>{{ activeSegmentInfo }}</pre>
       </div>
-      <div class="timeline-controls">
-        <button @click="goBack" :disabled="activeIndex === 0">Back</button>
-        <button @click="goNext" :disabled="activeIndex === timeline.getSegments().length - 1">Next</button>
+      <div class="timeline-player__bar-controls">
+        <button class="timeline-player__bar-controls-button" @click="goBack" :disabled="activeIndex === 0">Back</button>
+        <button class="timeline-player__bar-controls-button" @click="goNext" :disabled="activeIndex === timeline.getSegments().length - 1">Next</button>
       </div>
     </div>
   </div>
@@ -69,19 +74,6 @@ const activeSegment = computed(() => {
   return null;
 });
 
-const stanceClass = computed(() => {
-  switch (activeSegment.value?.stance) {
-    case 'main':
-      return 'stance-main';
-    case 'supporting':
-      return 'stance-supporting';
-    case 'against':
-      return 'stance-against';
-    default:
-      return '';
-  }
-});
-
 function activateSegment(idx: number) {
   timeline.value.activateSegmentByIndex(idx);
   activeIndex.value = idx;
@@ -98,15 +90,6 @@ function goBack() {
   if (activeIndex.value > 0) {
     activateSegment(activeIndex.value - 1);
   }
-}
-
-function dotClass(segment: Segment, idx: number) {
-  return [
-    'timeline-dot',
-    idx === activeIndex.value ? 'active' : '',
-    timeline.value.visitedSegments.includes(segment) ? 'visited' : 'unvisited',
-    `stance-${segment.stance}`
-  ];
 }
 
 function onSegmentComplete() {
@@ -165,7 +148,7 @@ const activeSegmentInfo = computed(() => {
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 
 .timeline-player {
   background: $color-bg;
@@ -175,104 +158,108 @@ const activeSegmentInfo = computed(() => {
   max-width: 700px;
   margin: 2rem auto;
   box-shadow: 0 2px 16px $color-shadow;
-}
 
-.player-border {
-  border: 3px solid $color-border;
-  border-radius: 1rem;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
-  transition: border-color 0.3s;
-}
+  &__player-border {
+    border: 3px solid $color-border;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    transition: border-color 0.3s;
 
-.stance-main {
-  border-color: $color-main;
-}
+    &--main {
+      border-color: $color-main;
+    }
+    &--supporting {
+      border-color: $color-supporting;
+    }
+    &--against {
+      border-color: $color-against;
+    }
+  }
 
-.stance-supporting {
-  border-color: $color-supporting;
-}
+  &__bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
-.stance-against {
-  border-color: $color-against;
-}
+    &-dots {
+      display: flex;
+      gap: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
 
-.timeline-bar {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+    &-dot {
+      width: 1rem;
+      height: 1rem;
+      border-radius: 50%;
+      border: none;
+      background: $color-border-light;
+      transition: background 0.2s, transform 0.2s;
+      cursor: pointer;
+      outline: none;
 
-.timeline-dots {
-  display: flex;
-  gap: 1.2rem;
-  margin-bottom: 0.5rem;
-}
+      &--visited {
+        background: $color-supporting;
+      }
+      &--unvisited {
+        background: $color-border-light;
+      }
+      &--active {
+        background: $color-active;
+        transform: scale(1.5);
+        box-shadow: 0 0 0 3px $color-active-shadow;
+      }
+      &--main {
+        box-shadow: 0 0 0 2px $color-main-shadow;
+      }
+      &--supporting {
+        box-shadow: 0 0 0 2px $color-supporting-shadow;
+      }
+      &--against {
+        box-shadow: 0 0 0 2px $color-against-shadow;
+      }
+    }
 
-.timeline-dot {
-  width: 1rem;
-  height: 1rem;
-  border-radius: 50%;
-  border: none;
-  background: $color-border-light;
-  transition: background 0.2s, transform 0.2s;
-  cursor: pointer;
-  outline: none;
-}
-.timeline-dot.visited {
-  background: $color-supporting;
-}
-.timeline-dot.unvisited {
-  background: $color-border-light;
-}
-.timeline-dot.active {
-  background: $color-active;
-  transform: scale(1.5);
-  box-shadow: 0 0 0 3px $color-active-shadow;
-}
-.timeline-dot.stance-main {
-  box-shadow: 0 0 0 2px $color-main-shadow;
-}
-.timeline-dot.stance-supporting {
-  box-shadow: 0 0 0 2px $color-supporting-shadow;
-}
-.timeline-dot.stance-against {
-  box-shadow: 0 0 0 2px $color-against-shadow;
-}
-.timeline-description {
-  background: $color-bg-alt;
-  color: $color-fg;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  margin-bottom: 0.5rem;
-  font-size: 0.95rem;
-  min-width: 180px;
-  text-align: center;
-}
-.timeline-description.active-info {
-  margin-top: 0.5rem;
-  background: $color-bg-alt;
-  color: $color-fg;
-  border: 1px solid $color-border-light;
-  font-weight: bold;
-}
-.timeline-controls {
-  display: flex;
-  gap: 1.5rem;
-  margin-top: 0.5rem;
-}
-.timeline-controls button {
-  background: $color-bg-alt;
-  color: $color-fg;
-  border: 1px solid $color-border-light;
-  border-radius: 0.4rem;
-  padding: 0.4rem 1.2rem;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.2s, border-color 0.2s;
-}
-.timeline-controls button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+    &-description {
+      background: $color-bg-alt;
+      color: $color-fg;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+      min-width: 180px;
+      text-align: center;
+
+      &--active-info {
+        margin-top: 0.5rem;
+        background: $color-bg-alt;
+        color: $color-fg;
+        border: 1px solid $color-border-light;
+        font-weight: bold;
+      }
+    }
+
+    &-controls {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 0.5rem;
+
+      &-button {
+        background: $color-bg-alt;
+        color: $color-fg;
+        border: 1px solid $color-border-light;
+        border-radius: 0.4rem;
+        padding: 0.4rem 1.2rem;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background 0.2s, border-color 0.2s;
+
+        &:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
 }
 </style>

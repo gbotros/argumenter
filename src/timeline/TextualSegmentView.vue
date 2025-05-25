@@ -1,8 +1,8 @@
 <template>
   <div class="textual-segment-view">
-    <div class="text-content">{{ segment.content }}</div>
-    <div class="timer">{{ countdown }}s</div>
-    <button class="skip-btn" @click="completeSegment">Skip</button>
+    <div class="textual-segment-view__text-content">{{ segment.content }}</div>
+    <div class="textual-segment-view__timer">{{ countdown }}s</div>
+    <button class="textual-segment-view__skip-btn" @click="completeSegment">Skip</button>
   </div>
 </template>
 
@@ -54,7 +54,7 @@ watch(() => props.segment, (newSeg) => {
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .textual-segment-view {
   display: flex;
   flex-direction: column;
@@ -63,30 +63,34 @@ watch(() => props.segment, (newSeg) => {
   border-radius: 0.7rem;
   padding: 1.2rem 1.5rem;
   box-shadow: 0 1px 8px $color-shadow-light;
-}
-.text-content {
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
-  color: $color-fg;
-  text-align: center;
-}
-.timer {
-  font-size: 1.1rem;
-  color: $color-timer;
-  margin-bottom: 1rem;
-}
-.skip-btn {
-  background: $color-bg;
-  color: $color-fg;
-  border: 1px solid $color-border-light;
-  border-radius: 0.4rem;
-  padding: 0.4rem 1.2rem;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.2s, border-color 0.2s;
-}
-.skip-btn:hover {
-  background: $color-btn-hover;
-  border-color: $color-btn-hover-border;
+
+  &__text-content {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: $color-fg;
+    text-align: center;
+  }
+
+  &__timer {
+    font-size: 1.1rem;
+    color: $color-timer;
+    margin-bottom: 1rem;
+  }
+
+  &__skip-btn {
+    background: $color-bg;
+    color: $color-fg;
+    border: 1px solid $color-border-light;
+    border-radius: 0.4rem;
+    padding: 0.4rem 1.2rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+
+    &:hover {
+      background: $color-btn-hover;
+      border-color: $color-btn-hover-border;
+    }
+  }
 }
 </style>

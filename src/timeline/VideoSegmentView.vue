@@ -1,7 +1,7 @@
 <template>
   <div class="video-segment-view">
-    <div ref="youtubePlayer" class="yt-frame"></div>
-    <button class="complete-btn" @click="completeSegment">Complete Segment</button>
+    <div ref="youtubePlayer" class="video-segment-view__yt-frame"></div>
+    <button class="video-segment-view__complete-btn" @click="completeSegment">Complete Segment</button>
   </div>
 </template>
 
@@ -111,7 +111,7 @@ onUnmounted(() => {
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .video-segment-view {
   display: flex;
   flex-direction: column;
@@ -120,28 +120,29 @@ onUnmounted(() => {
   border-radius: 0.7rem;
   padding: 1.2rem 1.5rem;
   box-shadow: 0 1px 8px $color-shadow-light;
-}
-.yt-frame {
-  width: 480px;
-  height: 270px;
-  border-radius: 0.5rem;
-  margin-bottom: 1rem;
-  background: #000;
-}
-.complete-btn {
-  background: $color-bg;
-  color: $color-fg;
-  border: 1px solid $color-border-light;
-  border-radius: 0.4rem;
-  padding: 0.4rem 1.2rem;
-  font-size: 1rem;
-  cursor: pointer;
-  transition:
-    background 0.2s,
-    border-color 0.2s;
-}
-.complete-btn:hover {
-  background: $color-btn-hover;
-  border-color: $color-btn-hover-border;
+
+  &__yt-frame {
+    width: 480px;
+    height: 270px;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    background: #000;
+  }
+
+  &__complete-btn {
+    background: $color-bg;
+    color: $color-fg;
+    border: 1px solid $color-border-light;
+    border-radius: 0.4rem;
+    padding: 0.4rem 1.2rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+
+    &:hover {
+      background: $color-btn-hover;
+      border-color: $color-btn-hover-border;
+    }
+  }
 }
 </style>
