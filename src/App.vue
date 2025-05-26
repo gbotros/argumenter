@@ -1,10 +1,7 @@
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
-<template class="app">
-  <RouterView />
+<template>
+    <RouterView />
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
