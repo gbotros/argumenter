@@ -32,7 +32,7 @@
 <script setup lang="ts">
 import { useTimelineStore } from '@/stores/timeline/timelineStore';
 import { storeToRefs } from 'pinia';
-import type { TextualSegment, VideoSegment } from './timeLine.data';
+import { TextualSegment, VideoSegment } from './timeLine.data';
 
 const timelineStore = useTimelineStore();
 const { activeSegment } = storeToRefs(timelineStore);

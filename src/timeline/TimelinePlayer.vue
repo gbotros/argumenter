@@ -1,6 +1,8 @@
 <template>
   <div class="timeline-player">
     <StanceTheme>
+      <SegmentInfo :segment="hoveredSegment || activeSegment" />
+
       <TextualSegmentView
         v-if="activeSegment && activeSegment.type === 'text'"
         @segment-complete="onSegmentComplete"
@@ -9,13 +11,13 @@
         v-else-if="activeSegment && activeSegment.type === 'video'"
         @segment-complete="onSegmentComplete"
       />
-    </StanceTheme>
 
     <div class="timeline-player__bar">
-      <TimelineBarDots />
       <TimelineControls />
-      <SegmentInfo :segment="hoveredSegment || activeSegment" />
+      <TimelineBarDots />
     </div>
+    </StanceTheme>
+
   </div>
 </template>
 

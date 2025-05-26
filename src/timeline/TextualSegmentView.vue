@@ -6,7 +6,7 @@
       <button class="textual-segment-view__pause-btn" @click="togglePause">
         {{ isPaused ? 'Resume' : 'Pause' }}
       </button>
-      <button class="textual-segment-view__skip-btn" @click="completeSegment">Skip</button>
+      <!-- <button class="textual-segment-view__skip-btn" @click="completeSegment">Skip</button> -->
     </div>
   </div>
 </template>

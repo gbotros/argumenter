@@ -29,7 +29,7 @@
         />
       </div>
     </div>
-    <button class="video-segment-view__complete-btn" @click="completeSegment">Skip</button>
+    <!-- <button class="video-segment-view__complete-btn" @click="completeSegment">Skip</button> -->
   </div>
 </template>
 
