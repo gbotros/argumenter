@@ -35,10 +35,6 @@ export const useTimelineStore = defineStore('timeline', () => {
     }
   }
 
-  function resetVisited() {
-    visitedSegments.value = [];
-  }
-
   function setHoveredSegment(segment: Segment | null) {
     hoveredSegment.value = segment;
   }
@@ -88,15 +84,14 @@ export const useTimelineStore = defineStore('timeline', () => {
   return {
     segments,
     activeIndex,
+    activeSegment,
     visitedSegments,
     hoveredSegment,
     currentTime,
     setSegments,
     setActiveIndex,
     markVisited,
-    resetVisited,
     setHoveredSegment,
-    activeSegment,
     isVisited,
     activeConcurrentTextualSegment,
     segmentRemainingTime,
