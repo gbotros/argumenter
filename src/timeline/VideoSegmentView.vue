@@ -35,9 +35,9 @@
 
 <script setup lang="ts">
 import { ref, watch, onMounted, onUnmounted, nextTick, inject, computed, defineEmits } from 'vue';
-import { useTimelineStore } from '@/stores/timeline/timelineStore';
+import { useTimelineStore } from '@/timeline/stores/timelineStore';
 import { storeToRefs } from 'pinia';
-import type { VideoSegment, ConcurrentTextualSegment } from './types';
+import type { VideoSegment, ConcurrentTextualSegment } from './types/index';
 import type { Logger } from '../types/logger';
 import ConcurrentTextualSegmentView from './ConcurrentTextualSegmentView.vue';
 
@@ -234,6 +234,13 @@ onUnmounted(() => {
     margin-left: 1.5rem;
     margin-top: 0;
 
+  }
+
+  &__timer {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: $color-fg;
   }
 
 

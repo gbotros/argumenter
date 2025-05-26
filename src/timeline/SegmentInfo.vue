@@ -1,117 +1,100 @@
 <template>
   <div class="timeline-player__bar-segment-info-card" v-if="activeSegment">
-    <div class="segment-info__header">
+    <div class="segment-info__header segment-info__header--inline">
       <span class="segment-info__emoji">
         {{ activeSegment.type === 'text' ? '📝' : '🎬' }}
       </span>
       <span class="segment-info__type-label">
         {{ activeSegment.type === 'text' ? 'Text Segment' : 'Video Segment' }}
       </span>
+      <span class="segment-info__description">🗒️ {{ activeSegment.description }}</span>
+      <span v-if="activeSegment.type === 'video'" class="segment-info__timer">
+        ⏳ {{ Math.max(0, Math.ceil((activeSegment as any).endAt - currentTime)) }}s
+      </span>
     </div>
-    <div class="segment-info__description">🗒️ {{ activeSegment.description }}</div>
-    <template v-if="activeSegment.type === 'text'">
-      <div class="segment-info__duration">⏳ Duration: <span>{{ (activeSegment as TextualSegment).duration }}s</span></div>
-      <div class="segment-info__content">💬 Content: <span>{{ (activeSegment as TextualSegment).content }}</span></div>
-    </template>
-    <template v-else-if="activeSegment.type === 'video'">
-      <div class="segment-info__video-id">🔗 Video ID: <span>{{ (activeSegment as VideoSegment).videoId }}</span></div>
-      <div class="segment-info__start">▶️ Start: <span>{{ (activeSegment as VideoSegment).startAt }}s</span></div>
-      <div class="segment-info__end">⏹️ End: <span>{{ (activeSegment as VideoSegment).endAt }}s</span></div>
-      <div class="segment-info__duration">⏳ Duration: <span>{{ (activeSegment as VideoSegment).endAt - (activeSegment as VideoSegment).startAt }}s</span></div>
-      <div v-if="hasConcurrentTextSegments" class="segment-info__concurrent">
-        <div v-for="(textSeg, idx) in (activeSegment as VideoSegment).concurrentTextSegments" :key="idx">
-          <span>📝 Concurrent Text: <span>{{ textSeg.content }}</span></span>
-          <span>⏱️ Time: <span>{{ textSeg.startAt }}s - {{ textSeg.endAt }}s</span></span>
-          <span>🗒️ Desc: <span>{{ textSeg.description }}</span></span>
-        </div>
-      </div>
-    </template>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useTimelineStore } from '@/stores/timeline/timelineStore';
+import { useTimelineStore } from '@/timeline/stores/timelineStore';
 import { storeToRefs } from 'pinia';
-import { TextualSegment, VideoSegment } from './timeLine.data';
 
 const timelineStore = useTimelineStore();
-const { activeSegment } = storeToRefs(timelineStore);
-
-const hasConcurrentTextSegments =
-  activeSegment.value &&
-  activeSegment.value.type === 'video' &&
-  Array.isArray((activeSegment.value as VideoSegment).concurrentTextSegments) &&
-  (activeSegment.value as VideoSegment).concurrentTextSegments.length > 0;
-
+const { activeSegment, currentTime } = storeToRefs(timelineStore);
 </script>
 
 <style lang="scss" scoped>
 .timeline-player__bar-segment-info-card {
-  width: 80%;
-  // padding: 0.5rem;
-  margin: 2rem;
-  background: $color-bg-alt;
+  width: 100%;
+  margin: 0;
+  background: none;
   color: $color-fg;
-  border: 1.5px solid $color-border-light;
-  border-radius: 1rem;
-  box-shadow: 0 4px 24px $color-shadow-light;
-  padding: 1.2rem 1.5rem;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
   font-size: 1.05rem;
   min-width: 180px;
   text-align: left;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  align-items: flex-start;
+  gap: 0;
+  align-items: stretch;
 }
 
 .segment-info__header {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.8rem;
   font-size: 1.2rem;
-  margin-bottom: 0.2rem;
+  background: $color-bg;
+  border-bottom: 1.5px solid $color-border-light;
+  border-radius: 0;
+  padding: 0.7rem 1.5rem;
+  box-shadow: none;
+  margin-bottom: 1.2rem;
+  position: relative;
+}
+
+.segment-info__header--inline {
+  flex-direction: row;
+  gap: 1.2rem;
 }
 
 .segment-info__emoji {
-  font-size: 1.6rem;
-  margin-right: 0.2rem;
+  font-size: 2.1rem;
+  margin-right: 0.5rem;
+  color: $color-supporting;
 }
 
 .segment-info__type-label {
   font-weight: bold;
-  color: $color-supporting;
+  color: $color-fg;
   font-size: 1.1rem;
+  letter-spacing: 0.02em;
 }
 
 .segment-info__description {
-  font-weight: 500;
-  margin-bottom: 0.2rem;
-  color: $color-fg;
-}
-
-.segment-info__duration,
-.segment-info__content,
-.segment-info__video-id,
-.segment-info__start,
-.segment-info__end {
-  font-weight: normal;
-  span {
-    font-weight: bold;
-    color: $color-supporting;
-  }
-}
-
-.segment-info__concurrent {
-  margin-top: 0.2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-  font-size: 0.98rem;
+  font-size: 1rem;
   color: $color-supporting;
-  span {
-    color: $color-supporting;
-    font-weight: 500;
-  }
+  margin: 0;
+  padding: 0;
+  background: none;
+  border-radius: 0;
+  box-shadow: none;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: none;
+}
+
+.segment-info__timer {
+  margin-left: auto;
+  font-size: 1.1rem;
+  color: $color-timer;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
 }
 </style>

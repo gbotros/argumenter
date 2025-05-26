@@ -1,5 +1,5 @@
 // Demo timeline data for TimelinePlayer
-import { TextualSegment, VideoSegment, ConcurrentTextualSegment } from '../timeLine.data';
+import { TextualSegment, VideoSegment, ConcurrentTextualSegment } from '../types';
 import type { StanceType } from '../types';
 
 export const demoSegmentsRaw = [

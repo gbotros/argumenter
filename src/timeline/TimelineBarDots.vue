@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { useTimelineStore } from '@/stores/timeline/timelineStore';
+import { useTimelineStore } from '@/timeline/stores/timelineStore';
 import { storeToRefs } from 'pinia';
 
 const timelineStore = useTimelineStore();

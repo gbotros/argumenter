@@ -13,13 +13,15 @@
 
 <script setup lang="ts">
 import { ref, watch, onMounted, onUnmounted, inject, computed } from 'vue';
-import { useTimelineStore } from '@/stores/timeline/timelineStore';
+import { useTimelineStore } from '@/timeline/stores/timelineStore';
 import { storeToRefs } from 'pinia';
 import type { Logger } from '../types/logger';
-import type { TextualSegment } from './types';
+import type { TextualSegment } from './types/index';
 
 const timelineStore = useTimelineStore();
+// Use storeToRefs for refs, and access actions directly
 const { activeSegment } = storeToRefs(timelineStore);
+const setTextualTimer = timelineStore.setTextualTimer;
 const logger = inject<Logger>('logger');
 const emit = defineEmits(['segment-complete']);
 
@@ -33,6 +35,14 @@ const countdown = ref(activeTextualSegment.value?.duration ?? 0);
 const isPaused = ref(false);
 let timer: number | null = null;
 
+watch([countdown, isPaused, activeTextualSegment], () => {
+  setTextualTimer(
+    countdown.value,
+    isPaused.value,
+    activeTextualSegment.value?.id ?? null
+  );
+});
+
 function startTimer() {
   timer = window.setInterval(() => {
     if (isPaused.value) return;
@@ -44,6 +54,11 @@ function startTimer() {
     }
   }, 1000);
   logger?.debug(`[TextualSegmentView] Timer started for segment ${activeTextualSegment.value?.id}`);
+  setTextualTimer(
+    countdown.value,
+    isPaused.value,
+    activeTextualSegment.value?.id ?? null
+  );
 }
 
 function completeSegment() {
@@ -61,21 +76,37 @@ function togglePause() {
   logger?.debug(
     `[TextualSegmentView] ${isPaused.value ? 'Paused' : 'Resumed'} segment ${activeTextualSegment.value?.id}`,
   );
+  setTextualTimer(
+    countdown.value,
+    isPaused.value,
+    activeTextualSegment.value?.id ?? null
+  );
 }
 
 onMounted(() => {
   countdown.value = activeTextualSegment.value?.duration ?? 0;
   startTimer();
+  setTextualTimer(
+    countdown.value,
+    isPaused.value,
+    activeTextualSegment.value?.id ?? null
+  );
 });
 
 onUnmounted(() => {
   if (timer) clearInterval(timer);
+  setTextualTimer(0, false, null);
 });
 
 watch(activeTextualSegment, (newSeg) => {
   countdown.value = newSeg?.duration ?? 0;
   if (timer) clearInterval(timer);
   startTimer();
+  setTextualTimer(
+    countdown.value,
+    isPaused.value,
+    newSeg?.id ?? null
+  );
 });
 
 </script>
