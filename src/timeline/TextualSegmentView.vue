@@ -6,12 +6,7 @@
     <div class="text-lg text-zinc-100 mb-4 text-center">{{ activeTextualSegment.content }}</div>
     <div class="text-base text-green-400 mb-4">{{ segmentRemainingTime }}s</div>
     <div class="flex gap-3 mt-2">
-      <button
-        class="px-4 py-2 rounded bg-zinc-900 text-zinc-100 border border-zinc-700 hover:bg-zinc-700 transition"
-        @click="togglePause"
-      >
-        {{ isPaused ? 'Resume' : 'Pause' }}
-      </button>
+      <!-- Pause button removed from here -->
     </div>
   </div>
 </template>
@@ -37,7 +32,6 @@ const activeTextualSegment = computed(() => {
 
 let timer: number | null = null;
 
-
 function startTimer() {
   timer = window.setInterval(() => {
     if (isPaused.value) return;
@@ -60,13 +54,6 @@ function completeSegment() {
 
   emit('segment-complete');
   logger?.info(`[TextualSegmentView] Segment ${activeTextualSegment.value?.id} completed`);
-}
-
-function togglePause() {
-  setIsPaused(!isPaused.value);
-  logger?.debug(
-    `[TextualSegmentView] ${!isPaused.value ? 'Paused' : 'Resumed'} segment ${activeTextualSegment.value?.id}`,
-  );
 }
 
 onMounted(() => {
