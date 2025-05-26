@@ -1,25 +1,25 @@
 <template>
-  <div class="timeline-player__bar-segment-info-card" v-if="props.segment">
+  <div class="timeline-player__bar-segment-info-card" v-if="activeSegment">
     <div class="segment-info__header">
       <span class="segment-info__emoji">
-        {{ props.segment.type === 'text' ? '📝' : '🎬' }}
+        {{ activeSegment.type === 'text' ? '📝' : '🎬' }}
       </span>
       <span class="segment-info__type-label">
-        {{ props.segment.type === 'text' ? 'Text Segment' : 'Video Segment' }}
+        {{ activeSegment.type === 'text' ? 'Text Segment' : 'Video Segment' }}
       </span>
     </div>
-    <div class="segment-info__description">🗒️ {{ props.segment.description }}</div>
-    <template v-if="props.segment.type === 'text'">
-      <div class="segment-info__duration">⏳ Duration: <span>{{ (props.segment as TextualSegment).duration }}s</span></div>
-      <div class="segment-info__content">💬 Content: <span>{{ (props.segment as TextualSegment).content }}</span></div>
+    <div class="segment-info__description">🗒️ {{ activeSegment.description }}</div>
+    <template v-if="activeSegment.type === 'text'">
+      <div class="segment-info__duration">⏳ Duration: <span>{{ (activeSegment as TextualSegment).duration }}s</span></div>
+      <div class="segment-info__content">💬 Content: <span>{{ (activeSegment as TextualSegment).content }}</span></div>
     </template>
-    <template v-else-if="props.segment.type === 'video'">
-      <div class="segment-info__video-id">🔗 Video ID: <span>{{ (props.segment as VideoSegment).videoId }}</span></div>
-      <div class="segment-info__start">▶️ Start: <span>{{ (props.segment as VideoSegment).startAt }}s</span></div>
-      <div class="segment-info__end">⏹️ End: <span>{{ (props.segment as VideoSegment).endAt }}s</span></div>
-      <div class="segment-info__duration">⏳ Duration: <span>{{ (props.segment as VideoSegment).endAt - (props.segment as VideoSegment).startAt }}s</span></div>
+    <template v-else-if="activeSegment.type === 'video'">
+      <div class="segment-info__video-id">🔗 Video ID: <span>{{ (activeSegment as VideoSegment).videoId }}</span></div>
+      <div class="segment-info__start">▶️ Start: <span>{{ (activeSegment as VideoSegment).startAt }}s</span></div>
+      <div class="segment-info__end">⏹️ End: <span>{{ (activeSegment as VideoSegment).endAt }}s</span></div>
+      <div class="segment-info__duration">⏳ Duration: <span>{{ (activeSegment as VideoSegment).endAt - (activeSegment as VideoSegment).startAt }}s</span></div>
       <div v-if="hasConcurrentTextSegments" class="segment-info__concurrent">
-        <div v-for="(textSeg, idx) in (props.segment as VideoSegment).concurrentTextSegments" :key="idx">
+        <div v-for="(textSeg, idx) in (activeSegment as VideoSegment).concurrentTextSegments" :key="idx">
           <span>📝 Concurrent Text: <span>{{ textSeg.content }}</span></span>
           <span>⏱️ Time: <span>{{ textSeg.startAt }}s - {{ textSeg.endAt }}s</span></span>
           <span>🗒️ Desc: <span>{{ textSeg.description }}</span></span>
@@ -30,18 +30,19 @@
 </template>
 
 <script setup lang="ts">
+import { useTimelineStore } from '@/stores/timeline/timelineStore';
+import { storeToRefs } from 'pinia';
 import type { TextualSegment, VideoSegment } from './timeLine.data';
 
-const props = defineProps<{
-  segment: TextualSegment | VideoSegment | null;
-}>();
+const timelineStore = useTimelineStore();
+const { activeSegment } = storeToRefs(timelineStore);
 
 const hasConcurrentTextSegments =
-  props.segment &&
-  props.segment.type === 'video' &&
-  Array.isArray((props.segment as VideoSegment).concurrentTextSegments) &&
-  (props.segment as VideoSegment).concurrentTextSegments.length > 0;
-  
+  activeSegment.value &&
+  activeSegment.value.type === 'video' &&
+  Array.isArray((activeSegment.value as VideoSegment).concurrentTextSegments) &&
+  (activeSegment.value as VideoSegment).concurrentTextSegments.length > 0;
+
 </script>
 
 <style lang="scss" scoped>

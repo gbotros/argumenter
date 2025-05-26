@@ -1,4 +1,6 @@
 // SCSS color variables for dark theme
+@use 'sass:color';
+
 $color-bg: #181a1b;
 $color-bg-alt: #23272a;
 $color-fg: #f1f1f1;
@@ -11,9 +13,9 @@ $color-supporting: #22c55e;
 $color-against: #dc2626;
 $color-active: #2563eb;
 $color-active-shadow: #2563eb44;
-$color-main-shadow: lighten($color-main, 10%);
-$color-supporting-shadow: lighten($color-supporting, 10%);
-$color-against-shadow: lighten($color-against, 10%);
+$color-main-shadow: color.scale($color-main, $lightness: 10%);
+$color-supporting-shadow: color.scale($color-supporting, $lightness: 10%);
+$color-against-shadow: color.scale($color-against, $lightness: 10%);
 $color-timer: #22c55e;
 $color-btn-hover: #14532d;
 $color-btn-hover-border: #22c55e;

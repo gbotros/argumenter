@@ -16,37 +16,29 @@
 </template>
 
 <script setup lang="ts">
-import type { Segment } from './timeLine.data';
+import { useTimelineStore } from '@/stores/timeline/timelineStore';
+import { storeToRefs } from 'pinia';
 
-const props = defineProps<{
-  segments: Segment[];
-  activeIndex: number;
-  visitedSegments: Segment[];
-}>();
-
-const emit = defineEmits<{
-  (e: 'activate-segment', idx: number): void;
-  (e: 'dot-mouse-enter', segment: Segment): void;
-  (e: 'dot-mouse-leave'): void;
-}>();
+const timelineStore = useTimelineStore();
+const { segments, activeIndex, visitedSegments, activeSegment } = storeToRefs(timelineStore);
 
 function activateSegment(idx: number) {
-  emit('activate-segment', idx);
+  timelineStore.setActiveIndex(idx);
 }
 
-function handleDotMouseEnter(segment: Segment) {
-  emit('dot-mouse-enter', segment);
+function handleDotMouseEnter(segment: import('./types').Segment) {
+  timelineStore.setHoveredSegment(segment);
 }
 
 function handleDotMouseLeave() {
-  emit('dot-mouse-leave');
+  timelineStore.setHoveredSegment(null);
 }
 
-function getDotStatusClass(idx: number, segment: Segment): string {
-  if (idx === props.activeIndex) {
+function getDotStatusClass(idx: number, segment: import('./types').Segment): string {
+  if (idx === activeIndex.value) {
     return 'timeline-player__bar-dot--active';
   }
-  if (props.visitedSegments.includes(segment)) {
+  if (timelineStore.isVisited(segment)) {
     return 'timeline-player__bar-dot--visited';
   }
   return 'timeline-player__bar-dot--unvisited';

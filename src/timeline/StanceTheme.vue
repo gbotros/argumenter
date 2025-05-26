@@ -1,17 +1,18 @@
 <template>
   <div
     class="stance-theme"
-    :class="`stance-theme--${segment?.stance ?? ''}`"
+    :class="`stance-theme--${activeSegment?.stance ?? ''}`"
   >
     <slot />
   </div>
 </template>
 
 <script setup lang="ts">
-import type { Segment } from './timeLine.data';
-const props = defineProps<{
-  segment: Segment | null;
-}>();
+import { useTimelineStore } from '@/stores/timeline/timelineStore';
+import { storeToRefs } from 'pinia';
+
+const timelineStore = useTimelineStore();
+const { activeSegment } = storeToRefs(timelineStore);
 </script>
 
 <style lang="scss" scoped>

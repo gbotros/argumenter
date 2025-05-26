@@ -1,5 +1,7 @@
 <template>
-  <div class="video-segment-view">
+  <div class="video-segment-view" v-if="activeVideoSegment">
+
+
     <div
       class="video-segment-view__main-row"
       :class="{
@@ -19,6 +21,7 @@
         v-if="visibleConcurrentTextSegments.length > 0"
         class="video-segment-view__concurrent-texts"
       >
+
         <ConcurrentTextualSegmentView
           v-for="textSeg in visibleConcurrentTextSegments"
           :key="textSeg.id"
@@ -31,32 +34,47 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, onUnmounted, nextTick, inject, computed } from 'vue';
+import { ref, watch, onMounted, onUnmounted, nextTick, inject, computed, defineEmits } from 'vue';
+import { useTimelineStore } from '@/stores/timeline/timelineStore';
+import { storeToRefs } from 'pinia';
 import type { VideoSegment, ConcurrentTextualSegment } from './types';
 import type { Logger } from '../types/logger';
 import ConcurrentTextualSegmentView from './ConcurrentTextualSegmentView.vue';
 
-const props = defineProps<{ segment: VideoSegment }>();
-const emit = defineEmits(['segment-complete']);
+const timelineStore = useTimelineStore();
+const { activeSegment, currentTime } = storeToRefs(timelineStore);
+const logger = inject<Logger>('logger');
 const youtubePlayer = ref<HTMLElement | null>(null);
 let player: YT.Player | null = null;
-const logger = inject<Logger>('logger');
-const currentTime = ref(0);
+const emit = defineEmits(['segment-complete']);
+
+const activeVideoSegment = computed(() => {
+  return activeSegment.value && activeSegment.value.type === 'video'
+    ? (activeSegment.value as VideoSegment)
+    : null;
+});
 
 const visibleConcurrentTextSegments = computed(() => {
-  return props.segment.concurrentTextSegments.filter(
+  if (!activeVideoSegment.value) return [];
+  return activeVideoSegment.value.concurrentTextSegments.filter(
     (ct: ConcurrentTextualSegment) =>
       currentTime.value >= ct.startAt && currentTime.value < ct.endAt,
   );
 });
 
+function completeSegment() {
+  emit('segment-complete');
+  logger?.info(`[VideoSegmentView] Segment ${activeVideoSegment.value?.id} completed`);
+}
+
 function createPlayer() {
   if (!youtubePlayer.value) return;
-  const { videoId, startAt, endAt } = props.segment;
+  if (!activeVideoSegment.value) return;
+  const { videoId, startAt, endAt, id } = activeVideoSegment.value;
   const YT = window.YT;
   if (!YT) return;
 
-  logger?.debug(`[VideoSegmentView] Creating player for segment ${props.segment.id}`);
+  logger?.debug(`[VideoSegmentView] Creating player for segment ${id}`);
 
   player = new YT.Player(youtubePlayer.value, {
     height: '100%',
@@ -70,48 +88,44 @@ function createPlayer() {
       modestbranding: 1,
     },
     events: {
-      onReady: (event) => {
+      onReady: (event ) => {
         event.target.playVideo();
-        logger?.debug(`[VideoSegmentView] Player ready for segment ${props.segment.id}`);
+        logger?.debug(`[VideoSegmentView] Player ready for segment ${id}`);
       },
-      onStateChange: (event) => {
+      onStateChange: (event: YT.OnStateChangeEvent) => {
         if (!YT) return;
-        if (event.data === YT.PlayerState.ENDED) {
-          logger?.info(`[VideoSegmentView] Video ended for segment ${props.segment.id}`);
-        } else if (event.data === YT.PlayerState.PLAYING) {
-          logger?.info(`[VideoSegmentView] Video started playing for segment ${props.segment.id}`);
-        } else if (event.data === YT.PlayerState.PAUSED) {
-          logger?.info(`[VideoSegmentView] Video paused for segment ${props.segment.id}`);
-        }
+debugger;
+        logger?.info(`[VideoSegmentView] Player state changed for segment ${id}`, event);
+
         if (event.data === YT.PlayerState.ENDED) {
           completeSegment();
         }
       },
       onError: (event) => {
-        logger?.error(`[VideoSegmentView] Error occurred for segment ${props.segment.id}`, event);
+        logger?.error(`[VideoSegmentView] Error occurred for segment ${id}`, event);
       },
       onPlaybackQualityChange: (event) => {
         logger?.info(
-          `[VideoSegmentView] Playback quality changed for segment ${props.segment.id}`,
+          `[VideoSegmentView] Playback quality changed for segment ${id}`,
           event,
         );
       },
       onPlaybackRateChange: (event) => {
         logger?.info(
-          `[VideoSegmentView] Playback rate changed for segment ${props.segment.id}`,
+          `[VideoSegmentView] Playback rate changed for segment ${id}`,
           event,
         );
       },
       onApiChange: (event) => {
-        logger?.info(`[VideoSegmentView] API changed for segment ${props.segment.id}`, event);
+        logger?.info(`[VideoSegmentView] API changed for segment ${id}`, event);
       },
       onAutoplayBlocked: (event) => {
-        logger?.warn(`[VideoSegmentView] Autoplay blocked for segment ${props.segment.id}`, event);
+        logger?.warn(`[VideoSegmentView] Autoplay blocked for segment ${id}`, event);
       },
     },
   });
 
-  logger?.debug(`[VideoSegmentView] Created player for segment ${props.segment.id}`);
+  logger?.debug(`[VideoSegmentView] Created player for segment ${id}`);
 }
 
 function destroyPlayer() {
@@ -119,12 +133,6 @@ function destroyPlayer() {
     player.destroy();
     player = null;
   }
-}
-
-function completeSegment() {
-  destroyPlayer();
-  emit('segment-complete');
-  logger?.info(`[VideoSegmentView] Segment ${props.segment.id} completed`);
 }
 
 function updateCurrentTime() {
@@ -136,7 +144,8 @@ function updateCurrentTime() {
 let interval: number | null = null;
 
 async function setupPlayer() {
-  logger?.debug(`[VideoSegmentView] Setting up player for segment ${props.segment.id}`);
+  if (!activeVideoSegment.value) return;
+  logger?.debug(`[VideoSegmentView] Setting up player for segment ${activeVideoSegment.value.id}`);
   destroyPlayer();
   await nextTick();
   createPlayer();
@@ -146,12 +155,13 @@ async function setupPlayer() {
 
 onMounted(setupPlayer);
 
-watch(() => props.segment, setupPlayer);
+watch(activeVideoSegment, setupPlayer);
 
 onUnmounted(() => {
   if (interval) clearInterval(interval);
   destroyPlayer();
 });
+
 </script>
 
 <style lang="scss" scoped>

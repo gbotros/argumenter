@@ -1,38 +1,49 @@
 <template>
-  <div class="textual-segment-view">
-    <div class="textual-segment-view__text-content">{{ segment.content }}</div>
+  <div class="textual-segment-view" v-if="activeTextualSegment">
+    <div class="textual-segment-view__text-content">{{ activeTextualSegment.content }}</div>
     <div class="textual-segment-view__timer">{{ countdown }}s</div>
     <div class="textual-segment-view__controls">
-      <button class="textual-segment-view__pause-btn" @click="togglePause">{{ isPaused ? 'Resume' : 'Pause' }}</button>
+      <button class="textual-segment-view__pause-btn" @click="togglePause">
+        {{ isPaused ? 'Resume' : 'Pause' }}
+      </button>
       <button class="textual-segment-view__skip-btn" @click="completeSegment">Skip</button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, onUnmounted, defineEmits, inject } from 'vue';
-import type { TextualSegment } from './types';
+import { ref, watch, onMounted, onUnmounted, inject, computed } from 'vue';
+import { useTimelineStore } from '@/stores/timeline/timelineStore';
+import { storeToRefs } from 'pinia';
 import type { Logger } from '../types/logger';
+import type { TextualSegment } from './types';
 
-const props = defineProps<{ segment: TextualSegment }>();
-const emit = defineEmits(['segment-complete']);
+const timelineStore = useTimelineStore();
+const { activeSegment } = storeToRefs(timelineStore);
 const logger = inject<Logger>('logger');
+const emit = defineEmits(['segment-complete']);
 
-const countdown = ref(props.segment.duration);
+const activeTextualSegment = computed(() => {
+  return activeSegment.value && activeSegment.value.type === 'text'
+    ? (activeSegment.value as TextualSegment)
+    : null;
+});
+
+const countdown = ref(activeTextualSegment.value?.duration ?? 0);
 const isPaused = ref(false);
 let timer: number | null = null;
 
 function startTimer() {
   timer = window.setInterval(() => {
-    if (!isPaused.value) {
-      if (countdown.value > 0) {
-        countdown.value--;
-      } else {
-        completeSegment();
-      }
+    if (isPaused.value) return;
+
+    if (countdown.value > 0) {
+      countdown.value--;
+    } else {
+      completeSegment();
     }
   }, 1000);
-  logger?.debug(`[TextualSegmentView] Timer started for segment ${props.segment.id}`);
+  logger?.debug(`[TextualSegmentView] Timer started for segment ${activeTextualSegment.value?.id}`);
 }
 
 function completeSegment() {
@@ -40,17 +51,20 @@ function completeSegment() {
     clearInterval(timer);
     timer = null;
   }
+
   emit('segment-complete');
-  logger?.info(`[TextualSegmentView] Segment ${props.segment.id} completed`);
+  logger?.info(`[TextualSegmentView] Segment ${activeTextualSegment.value?.id} completed`);
 }
 
 function togglePause() {
   isPaused.value = !isPaused.value;
-  logger?.debug(`[TextualSegmentView] ${isPaused.value ? 'Paused' : 'Resumed'} segment ${props.segment.id}`);
+  logger?.debug(
+    `[TextualSegmentView] ${isPaused.value ? 'Paused' : 'Resumed'} segment ${activeTextualSegment.value?.id}`,
+  );
 }
 
 onMounted(() => {
-  countdown.value = props.segment.duration;
+  countdown.value = activeTextualSegment.value?.duration ?? 0;
   startTimer();
 });
 
@@ -58,11 +72,12 @@ onUnmounted(() => {
   if (timer) clearInterval(timer);
 });
 
-watch(() => props.segment, (newSeg) => {
-  countdown.value = newSeg.duration;
+watch(activeTextualSegment, (newSeg) => {
+  countdown.value = newSeg?.duration ?? 0;
   if (timer) clearInterval(timer);
   startTimer();
 });
+
 </script>
 
 <style lang="scss" scoped>
@@ -102,7 +117,9 @@ watch(() => props.segment, (newSeg) => {
     padding: 0.4rem 1.2rem;
     font-size: 1rem;
     cursor: pointer;
-    transition: background 0.2s, border-color 0.2s;
+    transition:
+      background 0.2s,
+      border-color 0.2s;
 
     &:hover {
       background: $color-btn-hover;
@@ -118,7 +135,9 @@ watch(() => props.segment, (newSeg) => {
     padding: 0.4rem 1.2rem;
     font-size: 1rem;
     cursor: pointer;
-    transition: background 0.2s, border-color 0.2s;
+    transition:
+      background 0.2s,
+      border-color 0.2s;
 
     &:hover {
       background: $color-btn-hover;

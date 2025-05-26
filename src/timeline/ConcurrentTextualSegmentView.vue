@@ -1,17 +1,19 @@
 <template>
-  <div class="concurrent-textual-segment-view">
-    <div class="concurrent-textual-segment-view__text-content">{{ segment.content }}</div>
+  <div class="concurrent-textual-segment-view" v-if="activeConcurrentTextualSegment">
+    <div class="concurrent-textual-segment-view__text-content">{{ activeConcurrentTextualSegment.content }}</div>
     <div class="concurrent-textual-segment-view__timer">
-      {{ segment.startAt }}s - {{ segment.endAt }}s
+      {{ activeConcurrentTextualSegment.startAt }}s - {{ activeConcurrentTextualSegment.endAt }}s
     </div>
-    <div class="concurrent-textual-segment-view__desc">🗒️ {{ segment.description }}</div>
+    <div class="concurrent-textual-segment-view__desc">🗒️ {{ activeConcurrentTextualSegment.description }}</div>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { ConcurrentTextualSegment } from './types';
+import { useTimelineStore } from '@/stores/timeline/timelineStore';
+import { storeToRefs } from 'pinia';
 
-const props = defineProps<{ segment: ConcurrentTextualSegment }>();
+const timelineStore = useTimelineStore();
+const { activeConcurrentTextualSegment } = storeToRefs(timelineStore);
 </script>
 
 <style lang="scss" scoped>

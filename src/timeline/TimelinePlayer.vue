@@ -1,41 +1,28 @@
 <template>
   <div class="timeline-player">
-    <StanceTheme :segment="activeSegment">
+    <StanceTheme>
       <TextualSegmentView
         v-if="activeSegment && activeSegment.type === 'text'"
-        :segment="activeSegment as TextualSegment"
         @segment-complete="onSegmentComplete"
       />
       <VideoSegmentView
         v-else-if="activeSegment && activeSegment.type === 'video'"
-        :segment="activeSegment as VideoSegment"
         @segment-complete="onSegmentComplete"
       />
     </StanceTheme>
 
     <div class="timeline-player__bar">
-      <TimelineBarDots
-        :segments="timeline.getSegments()"
-        :activeIndex="activeIndex"
-        :visitedSegments="timeline.visitedSegments"
-        @activate-segment="activateSegment"
-        @dot-mouse-enter="handleDotMouseEnter"
-        @dot-mouse-leave="handleDotMouseLeave"
-      />
-      <TimelineControls
-        :activeIndex="activeIndex"
-        :segmentsCount="timeline.getSegments().length"
-        @back="goBack"
-        @next="goNext"
-      />
-      <SegmentInfo :segment="hoveredSegmentInfo || activeSegment" />
+      <TimelineBarDots />
+      <TimelineControls />
+      <SegmentInfo :segment="hoveredSegment || activeSegment" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, inject } from 'vue';
-import { Timeline, Segment, TextualSegment, VideoSegment } from './timeLine.data';
+import { onMounted } from 'vue';
+import { useTimelineStore } from '@/stores/timeline/timelineStore';
+import { storeToRefs } from 'pinia';
 import { demoSegments } from './data/demoTimelineData';
 import TextualSegmentView from './TextualSegmentView.vue';
 import VideoSegmentView from './VideoSegmentView.vue';
@@ -43,73 +30,20 @@ import SegmentInfo from './SegmentInfo.vue';
 import TimelineBarDots from './TimelineBarDots.vue';
 import TimelineControls from './TimelineControls.vue';
 import StanceTheme from './StanceTheme.vue';
-import type { Logger } from '../types/logger';
 
-const timeline = ref(new Timeline([]));
-const activeIndex = ref(0);
-const hoveredDescription = ref('');
-const hoveredSegment = ref<Segment | null>(null);
-const logger = inject<Logger>('logger');
+const timelineStore = useTimelineStore();
+const { segments, activeIndex, activeSegment, hoveredSegment } = storeToRefs(timelineStore);
 
 onMounted(() => {
-  demoSegments.forEach((segment) => timeline.value.addSegment(segment));
-  timeline.value.activateSegmentByIndex(0);
-  activeIndex.value = 0;
-  logger?.debug('[TimelinePlayer] Timeline initialized:', timeline.value.getSegments());
+  if (!segments.value.length) {
+    timelineStore.setSegments(demoSegments);
+  }
 });
-
-const activeSegment = computed(() => {
-  const seg = timeline.value.activeSegment;
-  if (!seg) return null;
-  if (seg.type === 'text') {
-    return seg as TextualSegment;
-  } else if (seg.type === 'video') {
-    return seg as VideoSegment;
-  }
-  return null;
-});
-
-const hoveredSegmentInfo = computed(() => {
-  if (!hoveredSegment.value) return null;
-  if (hoveredSegment.value.type === 'text') {
-    return hoveredSegment.value as TextualSegment;
-  } else if (hoveredSegment.value.type === 'video') {
-    return hoveredSegment.value as VideoSegment;
-  }
-  return null;
-});
-
-function activateSegment(idx: number) {
-  timeline.value.activateSegmentByIndex(idx);
-  activeIndex.value = idx;
-  logger?.info(`[TimelinePlayer] Activated segment at index ${idx}`);
-}
-
-function goNext() {
-  if (activeIndex.value < timeline.value.getSegments().length - 1) {
-    activateSegment(activeIndex.value + 1);
-  }
-}
-
-function goBack() {
-  if (activeIndex.value > 0) {
-    activateSegment(activeIndex.value - 1);
-  }
-}
 
 function onSegmentComplete() {
-  goNext();
-}
-
-function handleDotMouseEnter(segment: Segment) {
-  hoveredSegment.value = segment;
-  hoveredDescription.value = segment.description;
-  logger?.debug(`[TimelinePlayer] Hovered segment:`, segment);
-}
-
-function handleDotMouseLeave() {
-  hoveredSegment.value = null;
-  hoveredDescription.value = '';
+  if (activeIndex.value < segments.value.length - 1) {
+    timelineStore.setActiveIndex(activeIndex.value + 1);
+  }
 }
 </script>
 

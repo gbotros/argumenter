@@ -27,6 +27,14 @@ export const demoSegmentsRaw = [
         endAt: 50,
         stance: 'main' as StanceType,
         description: 'We agree'
+      },
+      {
+        id: 1.2,
+        content: 'I agree with you father Luka that this is not the evolution theory.',
+        startAt: 5,
+        endAt: 50,
+        stance: 'main' as StanceType,
+        description: 'We agree'
       }
     ]
   },

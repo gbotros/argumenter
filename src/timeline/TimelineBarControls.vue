@@ -2,15 +2,15 @@
   <div class="timeline-player__bar-controls">
     <button
       class="timeline-player__bar-controls-button"
-      @click="$emit('back')"
+      @click="goBack"
       :disabled="activeIndex === 0"
     >
       Back
     </button>
     <button
       class="timeline-player__bar-controls-button"
-      @click="$emit('next')"
-      :disabled="activeIndex === segmentsCount - 1"
+      @click="goNext"
+      :disabled="activeIndex === segments.length - 1"
     >
       Next
     </button>
@@ -18,14 +18,23 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{
-  activeIndex: number;
-  segmentsCount: number;
-}>();
-const emit = defineEmits<{
-  (e: 'back'): void;
-  (e: 'next'): void;
-}>();
+import { useTimelineStore } from '@/stores/timeline/timelineStore';
+import { storeToRefs } from 'pinia';
+
+const timelineStore = useTimelineStore();
+const { activeIndex, segments } = storeToRefs(timelineStore);
+
+function goBack() {
+  if (activeIndex.value > 0) {
+    timelineStore.setActiveIndex(activeIndex.value - 1);
+  }
+}
+
+function goNext() {
+  if (activeIndex.value < segments.value.length - 1) {
+    timelineStore.setActiveIndex(activeIndex.value + 1);
+  }
+}
 </script>
 
 <style lang="scss" scoped>
