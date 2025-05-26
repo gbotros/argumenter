@@ -16,7 +16,7 @@ export const useTimelineStore = defineStore('timeline', () => {
   const isPaused = ref(false);
 
   // Actions
-  function setSegments(newSegments: Segment[]) {
+  function initialize(newSegments: Segment[]) {
     segments.value = newSegments;
   }
 
@@ -29,11 +29,6 @@ export const useTimelineStore = defineStore('timeline', () => {
     }
   }
 
-  function markVisited(segment: Segment) {
-    if (!visitedSegments.value.includes(segment)) {
-      visitedSegments.value.push(segment);
-    }
-  }
 
   function setHoveredSegment(segment: Segment | null) {
     hoveredSegment.value = segment;
@@ -95,9 +90,8 @@ export const useTimelineStore = defineStore('timeline', () => {
     activeConcurrentTextualSegment,
     segmentRemainingTime,
     isPaused,
-    setSegments,
+    initialize,
     activateSegmentByIndex,
-    markVisited,
     setHoveredSegment,
     isVisited,
     setSegmentRemainingTime,
