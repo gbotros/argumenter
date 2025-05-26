@@ -24,7 +24,7 @@ const timelineStore = useTimelineStore();
 const { segments, activeIndex } = storeToRefs(timelineStore);
 
 function activateSegment(idx: number) {
-  timelineStore.setActiveIndex(idx);
+  timelineStore.activateSegmentByIndex(idx);
 }
 
 function handleDotMouseEnter(segment: import('./types').Segment) {

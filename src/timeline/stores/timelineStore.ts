@@ -20,7 +20,7 @@ export const useTimelineStore = defineStore('timeline', () => {
     segments.value = newSegments;
   }
 
-  function setActiveIndex(index: number) {
+  function activateSegmentByIndex(index: number) {
     debugger;
     activeIndex.value = index;
     const segment = segments.value[index];
@@ -96,7 +96,7 @@ export const useTimelineStore = defineStore('timeline', () => {
     segmentRemainingTime,
     isPaused,
     setSegments,
-    setActiveIndex,
+    activateSegmentByIndex,
     markVisited,
     setHoveredSegment,
     isVisited,

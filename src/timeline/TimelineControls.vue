@@ -33,13 +33,13 @@ const { pause, resume } = timelineStore;
 
 function goBack() {
   if (activeIndex.value > 0) {
-    timelineStore.setActiveIndex(activeIndex.value - 1);
+    timelineStore.activateSegmentByIndex(activeIndex.value - 1);
   }
 }
 
 function goNext() {
   if (activeIndex.value < segments.value.length - 1) {
-    timelineStore.setActiveIndex(activeIndex.value + 1);
+    timelineStore.activateSegmentByIndex(activeIndex.value + 1);
   }
 }
 

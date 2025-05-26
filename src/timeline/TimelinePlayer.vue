@@ -43,7 +43,7 @@ onMounted(() => {
 
 function onSegmentComplete() {
   if (activeIndex.value < segments.value.length - 1) {
-    timelineStore.setActiveIndex(activeIndex.value + 1);
+    timelineStore.activateSegmentByIndex(activeIndex.value + 1);
   }
 }
 </script>
