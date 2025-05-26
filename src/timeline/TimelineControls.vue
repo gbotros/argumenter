@@ -28,7 +28,8 @@ import { useTimelineStore } from '@/timeline/stores/timelineStore';
 import { storeToRefs } from 'pinia';
 
 const timelineStore = useTimelineStore();
-const { activeIndex, segments, isPaused, activeSegment } = storeToRefs(timelineStore);
+const { activeIndex, segments, isPaused } = storeToRefs(timelineStore);
+const { pause, resume } = timelineStore;
 
 function goBack() {
   if (activeIndex.value > 0) {
@@ -43,6 +44,10 @@ function goNext() {
 }
 
 function togglePause() {
-  timelineStore.setIsPaused(!isPaused.value);
+  if (isPaused.value) {
+    resume();
+  } else {
+    pause();
+  }
 }
 </script>

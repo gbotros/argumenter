@@ -43,8 +43,12 @@ export const useTimelineStore = defineStore('timeline', () => {
     segmentRemainingTime.value = time;
   }
 
-  function setIsPaused(paused: boolean) {
-    isPaused.value = paused;
+  function pause() {
+    isPaused.value = true;
+  }
+
+  function resume() {
+    isPaused.value = false;
   }
 
   // Getters
@@ -88,15 +92,16 @@ export const useTimelineStore = defineStore('timeline', () => {
     visitedSegments,
     hoveredSegment,
     currentTime,
+    activeConcurrentTextualSegment,
+    segmentRemainingTime,
+    isPaused,
     setSegments,
     setActiveIndex,
     markVisited,
     setHoveredSegment,
     isVisited,
-    activeConcurrentTextualSegment,
-    segmentRemainingTime,
-    isPaused,
     setSegmentRemainingTime,
-    setIsPaused,
+    pause,
+    resume,
   };
 });

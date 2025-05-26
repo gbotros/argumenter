@@ -20,7 +20,7 @@ import type { TextualSegment } from './types/index';
 
 const timelineStore = useTimelineStore();
 const { activeSegment, segmentRemainingTime, isPaused } = storeToRefs(timelineStore);
-const { setSegmentRemainingTime, setIsPaused } = timelineStore;
+const { setSegmentRemainingTime } = timelineStore;
 const logger = inject<Logger>('logger');
 const emit = defineEmits(['segment-complete']);
 
@@ -64,7 +64,7 @@ onMounted(() => {
 onUnmounted(() => {
   if (timer) clearInterval(timer);
   setSegmentRemainingTime(0);
-  setIsPaused(false);
+  timelineStore.resume();
 });
 
 watch(activeTextualSegment, (newSeg) => {
