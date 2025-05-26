@@ -5,7 +5,7 @@
       :key="segment.id"
       :class="[
         'w-5 h-5 rounded-full border-2 transition-all duration-200 outline-none',
-        idx === activeIndex ? 'scale-125 shadow-lg border-blue-400' : '',
+        idx === activeIndex ? 'scale-125 border-blue-400' : '',
         getDotStatusClass(idx, segment)
       ]"
       @click="activateSegment(idx)"

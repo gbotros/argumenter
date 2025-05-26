@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full max-w-7xl mx-auto p-6 bg-zinc-900 text-zinc-100 rounded-2xl shadow-lg flex flex-col gap-6">
+  <div class="w-full max-w-7xl mx-auto p-6 bg-zinc-900 text-zinc-100 rounded-2xl flex flex-col gap-6">
     <StanceTheme>
       <SegmentInfo :segment="hoveredSegment || activeSegment" />
 

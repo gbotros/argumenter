@@ -1,5 +1,5 @@
 <template>
-  <div v-if="activeVideoSegment" class="flex flex-col items-center bg-zinc-800 rounded-xl p-6 shadow-md h-full w-full max-w-7xl mx-auto">
+  <div v-if="activeVideoSegment" class="flex flex-col items-center bg-zinc-800 rounded-xl p-6 h-full w-full max-w-7xl mx-auto">
     <div
       class="flex flex-row items-start w-full h-full gap-6"
       :class="{ 'gap-0': visibleConcurrentTextSegments.length === 0 }"

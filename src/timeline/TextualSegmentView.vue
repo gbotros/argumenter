@@ -1,5 +1,5 @@
 <template>
-  <div v-if="activeTextualSegment" class="flex flex-col items-center bg-zinc-800 rounded-xl p-6 shadow-md w-full max-w-lg mx-auto mt-4">
+  <div v-if="activeTextualSegment" class="flex flex-col items-center bg-zinc-800 rounded-xl p-6 w-full max-w-lg mx-auto mt-4">
     <div class="text-lg text-zinc-100 mb-4 text-center">{{ activeTextualSegment.content }}</div>
     <div class="text-base text-green-400 mb-4">{{ countdown }}s</div>
     <div class="flex gap-3 mt-2">
