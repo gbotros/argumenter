@@ -12,11 +12,8 @@ export const useTimelineStore = defineStore('timeline', () => {
   const currentTime = ref(0);
 
   // Timer state for textual segments
-  const textualTimer = ref({
-    remaining: 0,
-    isPaused: false,
-    segmentId: null as number | null,
-  });
+  const segmentRemainingTime = ref(0);
+  const isPaused = ref(false);
 
   // Actions
   function setSegments(newSegments: Segment[]) {
@@ -46,8 +43,12 @@ export const useTimelineStore = defineStore('timeline', () => {
     hoveredSegment.value = segment;
   }
 
-  function setTextualTimer(remaining: number, isPaused: boolean, segmentId: number | null) {
-    textualTimer.value = { remaining, isPaused, segmentId };
+  function setSegmentRemainingTime(time: number) {
+    segmentRemainingTime.value = time;
+  }
+
+  function setIsPaused(paused: boolean) {
+    isPaused.value = paused;
   }
 
   // Getters
@@ -98,7 +99,9 @@ export const useTimelineStore = defineStore('timeline', () => {
     activeSegment,
     isVisited,
     activeConcurrentTextualSegment,
-    textualTimer,
-    setTextualTimer,
+    segmentRemainingTime,
+    isPaused,
+    setSegmentRemainingTime,
+    setIsPaused,
   };
 });

@@ -1,7 +1,10 @@
 <template>
-  <div v-if="activeTextualSegment" class="flex flex-col items-center bg-zinc-800 rounded-xl p-6 w-full max-w-lg mx-auto mt-4">
+  <div
+    v-if="activeTextualSegment"
+    class="flex flex-col items-center bg-zinc-800 rounded-xl p-6 w-full max-w-lg mx-auto mt-4"
+  >
     <div class="text-lg text-zinc-100 mb-4 text-center">{{ activeTextualSegment.content }}</div>
-    <div class="text-base text-green-400 mb-4">{{ countdown }}s</div>
+    <div class="text-base text-green-400 mb-4">{{ segmentRemainingTime }}s</div>
     <div class="flex gap-3 mt-2">
       <button
         class="px-4 py-2 rounded bg-zinc-900 text-zinc-100 border border-zinc-700 hover:bg-zinc-700 transition"
@@ -14,15 +17,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, onUnmounted, inject, computed } from 'vue';
+import { watch, onMounted, onUnmounted, inject, computed } from 'vue';
 import { useTimelineStore } from '@/timeline/stores/timelineStore';
 import { storeToRefs } from 'pinia';
 import type { Logger } from '../types/logger';
 import type { TextualSegment } from './types/index';
 
 const timelineStore = useTimelineStore();
-const { activeSegment } = storeToRefs(timelineStore);
-const setTextualTimer = timelineStore.setTextualTimer;
+const { activeSegment, segmentRemainingTime, isPaused } = storeToRefs(timelineStore);
+const { setSegmentRemainingTime, setIsPaused } = timelineStore;
 const logger = inject<Logger>('logger');
 const emit = defineEmits(['segment-complete']);
 
@@ -32,34 +35,21 @@ const activeTextualSegment = computed(() => {
     : null;
 });
 
-const countdown = ref(activeTextualSegment.value?.duration ?? 0);
-const isPaused = ref(false);
 let timer: number | null = null;
 
-watch([countdown, isPaused, activeTextualSegment], () => {
-  setTextualTimer(
-    countdown.value,
-    isPaused.value,
-    activeTextualSegment.value?.id ?? null
-  );
-});
 
 function startTimer() {
   timer = window.setInterval(() => {
     if (isPaused.value) return;
 
-    if (countdown.value > 0) {
-      countdown.value--;
+    if (segmentRemainingTime.value > 0) {
+      setSegmentRemainingTime(segmentRemainingTime.value - 1);
     } else {
       completeSegment();
     }
   }, 1000);
+
   logger?.debug(`[TextualSegmentView] Timer started for segment ${activeTextualSegment.value?.id}`);
-  setTextualTimer(
-    countdown.value,
-    isPaused.value,
-    activeTextualSegment.value?.id ?? null
-  );
 }
 
 function completeSegment() {
@@ -73,40 +63,26 @@ function completeSegment() {
 }
 
 function togglePause() {
-  isPaused.value = !isPaused.value;
+  setIsPaused(!isPaused.value);
   logger?.debug(
-    `[TextualSegmentView] ${isPaused.value ? 'Paused' : 'Resumed'} segment ${activeTextualSegment.value?.id}`,
-  );
-  setTextualTimer(
-    countdown.value,
-    isPaused.value,
-    activeTextualSegment.value?.id ?? null
+    `[TextualSegmentView] ${!isPaused.value ? 'Paused' : 'Resumed'} segment ${activeTextualSegment.value?.id}`,
   );
 }
 
 onMounted(() => {
-  countdown.value = activeTextualSegment.value?.duration ?? 0;
+  setSegmentRemainingTime(activeTextualSegment.value?.duration ?? 0);
   startTimer();
-  setTextualTimer(
-    countdown.value,
-    isPaused.value,
-    activeTextualSegment.value?.id ?? null
-  );
 });
 
 onUnmounted(() => {
   if (timer) clearInterval(timer);
-  setTextualTimer(0, false, null);
+  setSegmentRemainingTime(0);
+  setIsPaused(false);
 });
 
 watch(activeTextualSegment, (newSeg) => {
-  countdown.value = newSeg?.duration ?? 0;
+  setSegmentRemainingTime(newSeg?.duration ?? 0);
   if (timer) clearInterval(timer);
   startTimer();
-  setTextualTimer(
-    countdown.value,
-    isPaused.value,
-    newSeg?.id ?? null
-  );
 });
 </script>
