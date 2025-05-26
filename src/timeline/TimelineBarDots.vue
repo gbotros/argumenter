@@ -39,7 +39,7 @@ function getDotStatusClass(idx: number, segment: import('./types').Segment): str
   if (idx === activeIndex.value) {
     return 'bg-blue-500 border-blue-400';
   }
-  if (timelineStore.isVisited(segment)) {
+  if (segment.isVisited) {
     if (segment.stance === 'main') return 'bg-green-700 border-green-500';
     if (segment.stance === 'supporting') return 'bg-green-500 border-green-300';
     if (segment.stance === 'against') return 'bg-red-700 border-red-500';

@@ -5,6 +5,7 @@ export abstract class Segment {
   type: SegmentType;
   stance: StanceType;
   description: string;
+  isVisited: boolean;
 
   protected constructor(
     id: number,
@@ -16,5 +17,6 @@ export abstract class Segment {
     this.type = type;
     this.stance = stance;
     this.description = description;
+    this.isVisited = false;
   }
 }

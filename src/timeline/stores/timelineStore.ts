@@ -7,7 +7,6 @@ export const useTimelineStore = defineStore('timeline', () => {
   // State
   const segments = ref<Segment[]>([]);
   const activeIndex = ref<number>(0);
-  const visitedSegments = ref<Segment[]>([]);
   const hoveredSegment = ref<Segment | null>(null);
   const currentTime = ref(0);
 
@@ -16,19 +15,20 @@ export const useTimelineStore = defineStore('timeline', () => {
   const isPaused = ref(false);
 
   // Actions
-  function initialize(newSegments: Segment[]) {
-    segments.value = newSegments;
-  }
-
   function activateSegmentByIndex(index: number) {
     debugger;
     activeIndex.value = index;
     const segment = segments.value[index];
-    if (segment && !visitedSegments.value.includes(segment)) {
-      visitedSegments.value.push(segment);
+    if (segment && !segment.isVisited) {
+      segment.isVisited = true;
     }
   }
 
+  function markVisited(segment: Segment) {
+    if (!segment.isVisited) {
+      segment.isVisited = true;
+    }
+  }
 
   function setHoveredSegment(segment: Segment | null) {
     hoveredSegment.value = segment;
@@ -39,16 +39,21 @@ export const useTimelineStore = defineStore('timeline', () => {
   }
 
   function pause() {
+    if (isPaused.value) return;
     isPaused.value = true;
   }
 
   function resume() {
+    if (!isPaused.value) return;
     isPaused.value = false;
+  }
+
+  function setSegments(newSegments: Segment[]) {
+    segments.value = newSegments;
   }
 
   // Getters
   const activeSegment = computed(() => segments.value[activeIndex.value] || null);
-  const isVisited = (segment: Segment) => visitedSegments.value.includes(segment);
   const activeConcurrentTextualSegment = computed(() => {
 
     if (!isActiveVideoSegment()) {
@@ -84,16 +89,15 @@ export const useTimelineStore = defineStore('timeline', () => {
     segments,
     activeIndex,
     activeSegment,
-    visitedSegments,
     hoveredSegment,
     currentTime,
     activeConcurrentTextualSegment,
     segmentRemainingTime,
     isPaused,
-    initialize,
+    setSegments,
     activateSegmentByIndex,
+    markVisited,
     setHoveredSegment,
-    isVisited,
     setSegmentRemainingTime,
     pause,
     resume,

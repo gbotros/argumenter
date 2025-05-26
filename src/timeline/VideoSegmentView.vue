@@ -1,5 +1,8 @@
 <template>
-  <div v-if="activeVideoSegment" class="flex flex-col items-center bg-zinc-800 rounded-xl p-6 h-full w-full max-w-7xl mx-auto">
+  <div
+    v-if="activeVideoSegment"
+    class="flex flex-col items-center bg-zinc-800 rounded-xl p-6 h-full w-full max-w-7xl mx-auto"
+  >
     <div
       class="flex flex-row items-start w-full h-full gap-6"
       :class="{ 'gap-0': visibleConcurrentTextSegments.length === 0 }"
@@ -78,33 +81,39 @@ function createPlayer() {
       modestbranding: 1,
     },
     events: {
-      onReady: (event ) => {
+      onReady: (event) => {
         event.target.playVideo();
         logger?.debug(`[VideoSegmentView] Player ready for segment ${id}`);
       },
       onStateChange: (event: YT.OnStateChangeEvent) => {
         if (!YT) return;
-debugger;
-        logger?.info(`[VideoSegmentView] Player state changed for segment ${id}`, event);
+        debugger;
 
-        if (event.data === YT.PlayerState.ENDED) {
+        if (event.data === YT.PlayerState.PLAYING) {
+          logger?.info(`[VideoSegmentView] Video started for segment ${id}`);
+          timelineStore.resume();
+        } else if (event.data === YT.PlayerState.PAUSED) {
+          logger?.info(`[VideoSegmentView] Video paused for segment ${id}`);
+          timelineStore.pause();
+        } else if (event.data === YT.PlayerState.BUFFERING) {
+          logger?.info(`[VideoSegmentView] Video buffering for segment ${id}`);
+        } else if (event.data === YT.PlayerState.CUED) {
+          logger?.info(`[VideoSegmentView] Video cued for segment ${id}`);
+        } else if (event.data === YT.PlayerState.ENDED) {
+          logger?.info(`[VideoSegmentView] Video ended for segment ${id}`);
           completeSegment();
+        } else {
+          logger?.info(`[VideoSegmentView] Player state changed for segment ${id}`, event);
         }
       },
       onError: (event) => {
         logger?.error(`[VideoSegmentView] Error occurred for segment ${id}`, event);
       },
       onPlaybackQualityChange: (event) => {
-        logger?.info(
-          `[VideoSegmentView] Playback quality changed for segment ${id}`,
-          event,
-        );
+        logger?.info(`[VideoSegmentView] Playback quality changed for segment ${id}`, event);
       },
       onPlaybackRateChange: (event) => {
-        logger?.info(
-          `[VideoSegmentView] Playback rate changed for segment ${id}`,
-          event,
-        );
+        logger?.info(`[VideoSegmentView] Playback rate changed for segment ${id}`, event);
       },
       onApiChange: (event) => {
         logger?.info(`[VideoSegmentView] API changed for segment ${id}`, event);
@@ -128,6 +137,9 @@ function destroyPlayer() {
 function updateCurrentTime() {
   if (player && typeof player.getCurrentTime === 'function') {
     currentTime.value = player.getCurrentTime();
+
+    // sync timeline store with player state
+    syncPlayerStateWithStoreIfNeeded();
   }
 }
 
@@ -146,6 +158,17 @@ async function setupPlayer() {
 onMounted(setupPlayer);
 
 watch(activeVideoSegment, setupPlayer);
+watch(
+  () => isPaused.value,
+  (paused) => {
+    if (!activeVideoSegment.value) return;
+    if (paused) {
+      pauseVideo();
+    } else {
+      playVideo();
+    }
+  },
+);
 
 onUnmounted(() => {
   if (interval) clearInterval(interval);
@@ -164,13 +187,19 @@ function pauseVideo() {
   }
 }
 
-watch(() => isPaused.value, (paused) => {
-  if (!activeVideoSegment.value) return;
-  if (paused) {
+function syncPlayerStateWithStoreIfNeeded() {
+  const pausedAtStore = isPaused.value;
+  const playingAtStore = !isPaused.value;
+
+  const pausedAtPlayer = player && (player.getPlayerState() === YT.PlayerState.PAUSED || player.getPlayerState() === YT.PlayerState.UNSTARTED);
+  const playingAtPlayer = player && player.getPlayerState() === YT.PlayerState.PLAYING;
+
+  if (pausedAtStore && !pausedAtPlayer) {
+    logger?.debug(`[VideoSegmentView] Syncing player state: pausing video`);
     pauseVideo();
-  } else {
+  } else if (playingAtStore && !playingAtPlayer) {
+    logger?.debug(`[VideoSegmentView] Syncing player state: playing video`);
     playVideo();
   }
-});
-
+}
 </script>

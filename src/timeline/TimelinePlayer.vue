@@ -37,7 +37,7 @@ const { segments, activeIndex, activeSegment, hoveredSegment } = storeToRefs(tim
 
 onMounted(() => {
   if (!segments.value.length) {
-    timelineStore.initialize(demoSegments);
+    timelineStore.setSegments(demoSegments);
   }
 });
 
