@@ -34,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, onUnmounted, nextTick, inject, computed, defineEmits } from 'vue';
+import { ref, watch, onMounted, onUnmounted, nextTick, inject, computed } from 'vue';
 import { useTimelineStore } from '@/timeline/stores/timelineStore';
 import { storeToRefs } from 'pinia';
 import type { VideoSegment, ConcurrentTextualSegment } from './types/index';

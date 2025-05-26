@@ -46,7 +46,6 @@ function getDotStatusClass(idx: number, segment: import('./types').Segment): str
 </script>
 
 <style lang="scss" scoped>
-@use '@/assets/variables.scss' as *;
 
 .timeline-bar-dots {
   display: flex;

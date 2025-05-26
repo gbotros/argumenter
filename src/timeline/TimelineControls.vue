@@ -38,7 +38,6 @@ function goNext() {
 </script>
 
 <style lang="scss" scoped>
-@use "@/assets/variables.scss" as *;
 
 .timeline-player__bar-controls {
   display: flex;

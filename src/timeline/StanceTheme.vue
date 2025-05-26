@@ -16,7 +16,6 @@ const { activeSegment } = storeToRefs(timelineStore);
 </script>
 
 <style lang="scss" scoped>
-@use "@/assets/variables.scss" as *;
 
 .stance-theme {
   border: 3px solid $color-border;

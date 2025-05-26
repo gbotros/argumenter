@@ -1,4 +1,5 @@
 <template>
+
   <div class="timeline-player">
     <StanceTheme>
       <SegmentInfo :segment="hoveredSegment || activeSegment" />
