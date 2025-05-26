@@ -1,12 +1,14 @@
 <template>
-  <div class="textual-segment-view" v-if="activeTextualSegment">
-    <div class="textual-segment-view__text-content">{{ activeTextualSegment.content }}</div>
-    <div class="textual-segment-view__timer">{{ countdown }}s</div>
-    <div class="textual-segment-view__controls">
-      <button class="textual-segment-view__pause-btn" @click="togglePause">
+  <div v-if="activeTextualSegment" class="flex flex-col items-center bg-zinc-800 rounded-xl p-6 shadow-md w-full max-w-lg mx-auto mt-4">
+    <div class="text-lg text-zinc-100 mb-4 text-center">{{ activeTextualSegment.content }}</div>
+    <div class="text-base text-green-400 mb-4">{{ countdown }}s</div>
+    <div class="flex gap-3 mt-2">
+      <button
+        class="px-4 py-2 rounded bg-zinc-900 text-zinc-100 border border-zinc-700 hover:bg-zinc-700 transition"
+        @click="togglePause"
+      >
         {{ isPaused ? 'Resume' : 'Pause' }}
       </button>
-      <!-- <button class="textual-segment-view__skip-btn" @click="completeSegment">Skip</button> -->
     </div>
   </div>
 </template>
@@ -19,7 +21,6 @@ import type { Logger } from '../types/logger';
 import type { TextualSegment } from './types/index';
 
 const timelineStore = useTimelineStore();
-// Use storeToRefs for refs, and access actions directly
 const { activeSegment } = storeToRefs(timelineStore);
 const setTextualTimer = timelineStore.setTextualTimer;
 const logger = inject<Logger>('logger');
@@ -108,72 +109,4 @@ watch(activeTextualSegment, (newSeg) => {
     newSeg?.id ?? null
   );
 });
-
 </script>
-
-<style lang="scss" scoped>
-.textual-segment-view {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: $color-bg-alt;
-  border-radius: 0.7rem;
-  padding: 1.2rem 1.5rem;
-  box-shadow: 0 1px 8px $color-shadow-light;
-
-  &__text-content {
-    font-size: 1.2rem;
-    margin-bottom: 1rem;
-    color: $color-fg;
-    text-align: center;
-  }
-
-  &__timer {
-    font-size: 1.1rem;
-    color: $color-timer;
-    margin-bottom: 1rem;
-  }
-
-  &__controls {
-    display: flex;
-    gap: 1rem;
-    margin-top: 0.5rem;
-  }
-
-  &__pause-btn {
-    background: $color-bg;
-    color: $color-fg;
-    border: 1px solid $color-border-light;
-    border-radius: 0.4rem;
-    padding: 0.4rem 1.2rem;
-    font-size: 1rem;
-    cursor: pointer;
-    transition:
-      background 0.2s,
-      border-color 0.2s;
-
-    &:hover {
-      background: $color-btn-hover;
-      border-color: $color-btn-hover-border;
-    }
-  }
-
-  &__skip-btn {
-    background: $color-bg;
-    color: $color-fg;
-    border: 1px solid $color-border-light;
-    border-radius: 0.4rem;
-    padding: 0.4rem 1.2rem;
-    font-size: 1rem;
-    cursor: pointer;
-    transition:
-      background 0.2s,
-      border-color 0.2s;
-
-    &:hover {
-      background: $color-btn-hover;
-      border-color: $color-btn-hover-border;
-    }
-  }
-}
-</style>

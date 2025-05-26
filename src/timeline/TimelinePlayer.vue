@@ -1,6 +1,5 @@
 <template>
-
-  <div class="timeline-player">
+  <div class="w-full max-w-4xl mx-auto p-6 bg-zinc-900 text-zinc-100 rounded-2xl shadow-lg flex flex-col gap-6">
     <StanceTheme>
       <SegmentInfo :segment="hoveredSegment || activeSegment" />
 
@@ -13,12 +12,11 @@
         @segment-complete="onSegmentComplete"
       />
 
-    <div class="timeline-player__bar">
-      <TimelineControls />
-      <TimelineBarDots />
-    </div>
+      <div class="flex flex-col items-center gap-2 w-full mt-4">
+        <TimelineControls />
+        <TimelineBarDots />
+      </div>
     </StanceTheme>
-
   </div>
 </template>
 
@@ -49,20 +47,3 @@ function onSegmentComplete() {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.timeline-player {
-  background: $color-bg;
-  color: $color-fg;
-  padding: 2rem;
-  border-radius: 1rem;
-  margin: 2rem auto;
-  box-shadow: 0 2px 16px $color-shadow;
-
-  &__bar {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-}
-</style>

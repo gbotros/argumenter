@@ -1,14 +1,14 @@
 <template>
-  <div class="timeline-player__bar-controls">
+  <div class="flex gap-6 w-full justify-center items-center mt-2">
     <button
-      class="timeline-player__bar-controls-button"
+      class="px-4 py-2 rounded bg-zinc-800 text-zinc-100 border border-zinc-700 hover:bg-zinc-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
       @click="goBack"
       :disabled="activeIndex === 0"
     >
       Back
     </button>
     <button
-      class="timeline-player__bar-controls-button"
+      class="px-4 py-2 rounded bg-zinc-800 text-zinc-100 border border-zinc-700 hover:bg-zinc-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
       @click="goNext"
       :disabled="activeIndex === segments.length - 1"
     >
@@ -36,28 +36,3 @@ function goNext() {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-
-.timeline-player__bar-controls {
-  display: flex;
-  gap: 1.5rem;
-  margin-top: 0.5rem;
-}
-
-.timeline-player__bar-controls-button {
-  background: $color-bg-alt;
-  color: $color-fg;
-  border: 1px solid $color-border-light;
-  border-radius: 0.4rem;
-  padding: 0.4rem 1.2rem;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.2s, border-color 0.2s;
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-}
-</style>

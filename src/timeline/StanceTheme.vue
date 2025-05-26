@@ -1,7 +1,12 @@
 <template>
   <div
-    class="stance-theme"
-    :class="`stance-theme--${activeSegment?.stance ?? ''}`"
+    class="border-4 rounded-2xl p-6 mb-6 transition-colors duration-300 h-full"
+    :class="{
+      'border-green-800': activeSegment?.stance === 'main',
+      'border-green-500': activeSegment?.stance === 'supporting',
+      'border-red-700': activeSegment?.stance === 'against',
+      'border-zinc-700': !activeSegment?.stance
+    }"
   >
     <slot />
   </div>
@@ -14,27 +19,3 @@ import { storeToRefs } from 'pinia';
 const timelineStore = useTimelineStore();
 const { activeSegment } = storeToRefs(timelineStore);
 </script>
-
-<style lang="scss" scoped>
-
-.stance-theme {
-  border: 3px solid $color-border;
-  border-radius: 1rem;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
-  transition: border-color 0.3s;
-  height: 100%;
-  aspect-ratio: 16/9;
-  background: transparent;
-
-  &--main {
-    border-color: $color-main;
-  }
-  &--supporting {
-    border-color: $color-supporting;
-  }
-  &--against {
-    border-color: $color-against;
-  }
-}
-</style>

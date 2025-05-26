@@ -1,16 +1,17 @@
 <template>
-  <div class="timeline-bar-dots">
+  <div class="flex gap-3 w-full justify-around items-center mb-2">
     <button
       v-for="(segment, idx) in segments"
       :key="segment.id"
       :class="[
-        'timeline-player__bar-dot',
-        getDotStatusClass(idx, segment),
-        `timeline-player__bar-dot--${segment.stance}`,
+        'w-5 h-5 rounded-full border-2 transition-all duration-200 outline-none',
+        idx === activeIndex ? 'scale-125 shadow-lg border-blue-400' : '',
+        getDotStatusClass(idx, segment)
       ]"
       @click="activateSegment(idx)"
       @mouseenter="handleDotMouseEnter(segment)"
       @mouseleave="handleDotMouseLeave"
+      :aria-label="segment.description"
     ></button>
   </div>
 </template>
@@ -20,7 +21,7 @@ import { useTimelineStore } from '@/timeline/stores/timelineStore';
 import { storeToRefs } from 'pinia';
 
 const timelineStore = useTimelineStore();
-const { segments, activeIndex, visitedSegments, activeSegment } = storeToRefs(timelineStore);
+const { segments, activeIndex } = storeToRefs(timelineStore);
 
 function activateSegment(idx: number) {
   timelineStore.setActiveIndex(idx);
@@ -36,84 +37,17 @@ function handleDotMouseLeave() {
 
 function getDotStatusClass(idx: number, segment: import('./types').Segment): string {
   if (idx === activeIndex.value) {
-    return 'timeline-player__bar-dot--active';
+    return 'bg-blue-500 border-blue-400';
   }
   if (timelineStore.isVisited(segment)) {
-    return 'timeline-player__bar-dot--visited';
+    if (segment.stance === 'main') return 'bg-green-700 border-green-500';
+    if (segment.stance === 'supporting') return 'bg-green-500 border-green-300';
+    if (segment.stance === 'against') return 'bg-red-700 border-red-500';
   }
-  return 'timeline-player__bar-dot--unvisited';
+  // unvisited
+  if (segment.stance === 'main') return 'bg-zinc-800 border-green-700';
+  if (segment.stance === 'supporting') return 'bg-zinc-800 border-green-400';
+  if (segment.stance === 'against') return 'bg-zinc-800 border-red-700';
+  return 'bg-zinc-800 border-zinc-700';
 }
 </script>
-
-<style lang="scss" scoped>
-
-.timeline-bar-dots {
-  display: flex;
-  gap: 1.2rem;
-  margin-bottom: 0.5rem;
-  width: 100%;
-  justify-content: space-around;
-  position: relative;
-  align-items: center;
-}
-
-.timeline-player__bar-dot {
-  width: 1.2rem;
-  height: 1.2rem;
-  border-radius: 50%;
-
-  // background: var(--color-neutral, #222);
-  box-shadow: 0 0 0 2px transparent;
-  transition:
-    box-shadow 0.2s,
-    border-color 0.2s,
-    background 0.2s;
-  cursor: pointer;
-  outline: none;
-  padding: 0;
-  appearance: none;
-  display: inline-block;
-  border-width: 3px;
-  border-style: solid;
-
-  &--active {
-    box-shadow: 0 0 0 3px $color-fg;
-    border-color: $color-fg;
-  }
-
-  &--unvisited {
-    background-color: $color-bg;
-
-    // BEM: Unvisited + Stance modifiers
-    &.timeline-player__bar-dot--main {
-      border-color: $color-main-shadow;
-    }
-
-    &.timeline-player__bar-dot--supporting {
-      border-color: $color-supporting-shadow;
-    }
-
-    &.timeline-player__bar-dot--against {
-      border-color: $color-against-shadow;
-    }
-  }
-
-  &--visited {
-    // BEM: Visited + Stance modifiers
-    &.timeline-player__bar-dot--main {
-      background-color: $color-main;
-      border-color: $color-main-shadow;
-    }
-
-    &.timeline-player__bar-dot--supporting {
-      background-color: $color-supporting;
-      border-color: $color-supporting-shadow;
-    }
-
-    &.timeline-player__bar-dot--against {
-      background-color: $color-against;
-      border-color: $color-against-shadow;
-    }
-  }
-}
-</style>
