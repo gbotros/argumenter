@@ -10,7 +10,6 @@
     <button
       class="px-4 py-2 rounded bg-zinc-800 text-zinc-100 border border-zinc-700 hover:bg-zinc-700 transition"
       @click="togglePause"
-      v-if="activeSegment && activeSegment.type === 'text'"
     >
       {{ isPaused ? 'Resume' : 'Pause' }}
     </button>

@@ -32,7 +32,7 @@ import type { Logger } from '../types/logger';
 import ConcurrentTextualSegmentView from './ConcurrentTextualSegmentView.vue';
 
 const timelineStore = useTimelineStore();
-const { activeSegment, currentTime } = storeToRefs(timelineStore);
+const { activeSegment, currentTime, isPaused } = storeToRefs(timelineStore);
 const logger = inject<Logger>('logger');
 const youtubePlayer = ref<HTMLElement | null>(null);
 let player: YT.Player | null = null;
@@ -150,6 +150,27 @@ watch(activeVideoSegment, setupPlayer);
 onUnmounted(() => {
   if (interval) clearInterval(interval);
   destroyPlayer();
+});
+
+function playVideo() {
+  if (player && typeof player.playVideo === 'function') {
+    player.playVideo();
+  }
+}
+
+function pauseVideo() {
+  if (player && typeof player.pauseVideo === 'function') {
+    player.pauseVideo();
+  }
+}
+
+watch(() => isPaused.value, (paused) => {
+  if (!activeVideoSegment.value) return;
+  if (paused) {
+    pauseVideo();
+  } else {
+    playVideo();
+  }
 });
 
 </script>
