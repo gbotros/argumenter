@@ -16,7 +16,6 @@ export const useTimelineStore = defineStore('timeline', () => {
 
   // Actions
   function activateSegmentByIndex(index: number) {
-    debugger;
     activeIndex.value = index;
     const segment = segments.value[index];
     if (segment && !segment.isVisited) {
@@ -69,8 +68,6 @@ export const useTimelineStore = defineStore('timeline', () => {
     ) ?? null;
 
   });
-
-
 
   //helpers
   function isActiveVideoSegment(): boolean {
