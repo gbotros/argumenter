@@ -29,7 +29,7 @@ function activateSegment(id: number) {
 
 function getDotStatusClass(idx: number, segment: Segment): string {
   if (segment.isActive) {
-    return 'bg-blue-500 border-blue-400';
+    return 'border-3 bg-blue-800 border-blue-400';
   }
   if (segment.isVisited) {
     if (segment.stance === 'main') return 'bg-green-700 border-green-500';
@@ -40,6 +40,7 @@ function getDotStatusClass(idx: number, segment: Segment): string {
   if (segment.stance === 'main') return 'bg-zinc-800 border-green-700';
   if (segment.stance === 'supporting') return 'bg-zinc-800 border-green-400';
   if (segment.stance === 'against') return 'bg-zinc-800 border-red-700';
+
   return 'bg-zinc-800 border-zinc-700';
 }
 
