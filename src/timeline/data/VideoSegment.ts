@@ -1,6 +1,6 @@
 import { Segment } from './Segment';
 import { ConcurrentTextualSegment } from './ConcurrentTextualSegment';
-import type { StanceType } from '../types/index';
+import type { StanceType } from './index';
 
 export class VideoSegment extends Segment {
   videoId: string;
@@ -27,4 +27,11 @@ export class VideoSegment extends Segment {
     this.videoId = videoId;
     this.concurrentTextSegments = concurrentTextSegments;
   }
+
+  getActiveConcurrentTextSegment(): ConcurrentTextualSegment | null {
+    return this.concurrentTextSegments.find(
+      (concurrentSsegment) => concurrentSsegment.startAt <= this.currentlyAt && concurrentSsegment.endAt >= this.currentlyAt
+    ) ?? null;
+  }
+
 }

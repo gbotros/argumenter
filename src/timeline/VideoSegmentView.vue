@@ -1,59 +1,41 @@
 <template>
   <div
-    v-if="activeVideoSegment"
+    v-if="timeline?.getActiveVideoSegment()"
     class="flex flex-col items-center bg-zinc-800 rounded-xl p-6 h-full w-full max-w-7xl mx-auto"
   >
     <div
       class="flex flex-row items-start w-full h-full gap-6"
-      :class="{ 'gap-0': visibleConcurrentTextSegments.length === 0 }"
+      :class="{ 'gap-0': timeline?.getActiveConcurrentTextSegment() }"
     >
       <div
         ref="youtubePlayer"
         class="flex-1 aspect-video rounded-lg bg-black relative overflow-hidden mb-4"
-        :class="{ 'flex-[2_1_0]': visibleConcurrentTextSegments.length > 0 }"
+        :class="{ 'flex-[2_1_0]': timeline?.getActiveConcurrentTextSegment() }"
       ></div>
-      <div
-        v-if="visibleConcurrentTextSegments.length > 0"
-        class="flex flex-col gap-4 flex-1 ml-6 mt-0"
-      >
+      <div class="flex flex-col gap-4 flex-1 ml-6 mt-0">
+
         <ConcurrentTextualSegmentView
-          v-for="textSeg in visibleConcurrentTextSegments"
-          :key="textSeg.id"
-          :segment="textSeg"
+          v-if="timeline?.getActiveConcurrentTextSegment()"
         />
+
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, onUnmounted, nextTick, inject, computed } from 'vue';
+import { ref, watch, onMounted, onUnmounted, nextTick, inject } from 'vue';
 import { useTimelineStore } from '@/timeline/stores/timelineStore';
 import { storeToRefs } from 'pinia';
-import type { VideoSegment, ConcurrentTextualSegment } from './types/index';
 import type { Logger } from '../types/logger';
 import ConcurrentTextualSegmentView from './ConcurrentTextualSegmentView.vue';
 
 const timelineStore = useTimelineStore();
-const { activeSegment, currentTime, isPaused } = storeToRefs(timelineStore);
+const { isPaused, timeline } = storeToRefs(timelineStore);
 const logger = inject<Logger>('logger');
 const youtubePlayer = ref<HTMLElement | null>(null);
 let player: YT.Player | null = null;
 const emit = defineEmits(['segment-complete']);
-
-const activeVideoSegment = computed(() => {
-  return activeSegment.value && activeSegment.value.type === 'video'
-    ? (activeSegment.value as VideoSegment)
-    : null;
-});
-
-const visibleConcurrentTextSegments = computed(() => {
-  if (!activeVideoSegment.value) return [];
-  return activeVideoSegment.value.concurrentTextSegments.filter(
-    (ct: ConcurrentTextualSegment) =>
-      currentTime.value >= ct.startAt && currentTime.value < ct.endAt,
-  );
-});
 
 function completeSegment() {
   emit('segment-complete');
@@ -62,8 +44,9 @@ function completeSegment() {
 
 function createPlayer() {
   if (!youtubePlayer.value) return;
-  if (!activeVideoSegment.value) return;
-  const { videoId, startAt, endAt, id } = activeVideoSegment.value;
+  const activeVideoSegment = timeline.value?.getActiveVideoSegment();
+  if (!activeVideoSegment) return;
+  const { videoId, startAt, endAt, id } = activeVideoSegment;
   const YT = window.YT;
   if (!YT) return;
 
@@ -135,19 +118,26 @@ function destroyPlayer() {
 }
 
 function updateCurrentTime() {
-  if (player && typeof player.getCurrentTime === 'function') {
-    currentTime.value = player.getCurrentTime();
+  if (!player) return;
+  if (typeof player.getCurrentTime !== 'function') return;
+    const activeVideoSegment = timeline.value?.getActiveVideoSegment();
+  if (!activeVideoSegment) return;
 
-    // sync timeline store with player state
-    syncPlayerStateWithStoreIfNeeded();
-  }
+  const currentTime = player.getCurrentTime();
+  activeVideoSegment.setCurrentlyAtTime(currentTime);
+
+  // sync timeline store with player state
+  syncPlayerStateWithStoreIfNeeded();
 }
 
 let interval: number | null = null;
 
 async function setupPlayer() {
-  if (!activeVideoSegment.value) return;
-  logger?.debug(`[VideoSegmentView] Setting up player for segment ${activeVideoSegment.value.id}`);
+  const activeVideoSegment = timeline.value?.getActiveVideoSegment();
+  if (!activeVideoSegment) return;
+
+  logger?.debug(`[VideoSegmentView] Setting up player for segment ${activeVideoSegment.id}`);
+
   destroyPlayer();
   await nextTick();
   createPlayer();
@@ -157,11 +147,10 @@ async function setupPlayer() {
 
 onMounted(setupPlayer);
 
-watch(activeVideoSegment, setupPlayer);
 watch(
   () => isPaused.value,
   (paused) => {
-    if (!activeVideoSegment.value) return;
+    if (!timeline.value?.getActiveVideoSegment()) return;
     if (paused) {
       pauseVideo();
     } else {
@@ -191,7 +180,10 @@ function syncPlayerStateWithStoreIfNeeded() {
   const pausedAtStore = isPaused.value;
   const playingAtStore = !isPaused.value;
 
-  const pausedAtPlayer = player && (player.getPlayerState() === YT.PlayerState.PAUSED || player.getPlayerState() === YT.PlayerState.UNSTARTED);
+  const pausedAtPlayer =
+    player &&
+    (player.getPlayerState() === YT.PlayerState.PAUSED ||
+      player.getPlayerState() === YT.PlayerState.UNSTARTED);
   const playingAtPlayer = player && player.getPlayerState() === YT.PlayerState.PLAYING;
 
   if (pausedAtStore && !pausedAtPlayer) {
@@ -202,4 +194,6 @@ function syncPlayerStateWithStoreIfNeeded() {
     playVideo();
   }
 }
+
+
 </script>

@@ -1,5 +1,5 @@
 import { Segment } from './Segment';
-import type { StanceType } from '../types/index';
+import type { StanceType } from './index';
 
 export class ConcurrentTextualSegment extends Segment {
   content: string;

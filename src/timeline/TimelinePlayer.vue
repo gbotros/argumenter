@@ -1,14 +1,14 @@
 <template>
   <div class="w-full max-w-7xl mx-auto p-6 bg-zinc-900 text-zinc-100 rounded-2xl flex flex-col gap-6">
     <StanceTheme>
-      <SegmentInfo :segment="hoveredSegment || activeSegment" />
+      <SegmentInfo :segment=" timeline?.getActiveSegment()" />
 
       <TextualSegmentView
-        v-if="activeSegment && activeSegment.type === 'text'"
+        v-if="timeline?.getActiveSegment()?.type === 'text'"
         @segment-complete="onSegmentComplete"
       />
       <VideoSegmentView
-        v-else-if="activeSegment && activeSegment.type === 'video'"
+        v-else-if="timeline?.getActiveSegment()?.type === 'video'"
         @segment-complete="onSegmentComplete"
       />
 
@@ -31,19 +31,16 @@ import SegmentInfo from './SegmentInfo.vue';
 import TimelineBarDots from './TimelineBarDots.vue';
 import TimelineControls from './TimelineControls.vue';
 import StanceTheme from './StanceTheme.vue';
+import { Timeline } from './data';
 
 const timelineStore = useTimelineStore();
-const { segments, activeIndex, activeSegment, hoveredSegment } = storeToRefs(timelineStore);
+const { timeline} = storeToRefs(timelineStore);
 
 onMounted(() => {
-  if (!segments.value.length) {
-    timelineStore.setSegments(demoSegments);
-  }
+    timeline.value = new Timeline(demoSegments);
 });
 
 function onSegmentComplete() {
-  if (activeIndex.value < segments.value.length - 1) {
-    timelineStore.activateSegmentByIndex(activeIndex.value + 1);
-  }
+  timeline.value?.activateNextSegment();
 }
 </script>

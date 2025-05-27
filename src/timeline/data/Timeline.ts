@@ -1,14 +1,16 @@
 import { Segment } from './Segment';
+import type { TextualSegment } from './TextualSegment';
+import type { VideoSegment } from './VideoSegment';
 
 export class Timeline {
   segments: Segment[];
   // Cached active segment
   // This is used to avoid recalculating the active segment multiple times
-  activeSegment: Segment | null;
+  private _activeSegment: Segment | null = null;
 
   constructor(segments: Segment[]) {
     this.segments = segments;
-    this.activeSegment = null;
+    this.activateSegmentByIndex(0);
   }
 
   getSegments(): Segment[] {
@@ -52,8 +54,35 @@ export class Timeline {
   }
 
   getActiveSegment(): Segment | null {
-    return this.activeSegment ?? null;
+    return this._activeSegment ?? null;
   }
+
+  getActiveVideoSegment(): VideoSegment | null {
+    const activeSegment = this.getActiveSegment();
+    if (!activeSegment || activeSegment.type !== 'video') {
+      return null;
+    }
+    return activeSegment as VideoSegment;
+  }
+
+  getActiveTextSegment(): TextualSegment | null {
+    const activeSegment = this.getActiveSegment();
+    if (!activeSegment || activeSegment.type !== 'text') {
+      return null;
+    }
+    return activeSegment as TextualSegment;
+  }
+
+  getActiveConcurrentTextSegment(): Segment | null {
+    const activeVideoSegment = this.getActiveVideoSegment();
+    if (!activeVideoSegment) {
+      return null;
+    }
+
+    const concurrentTextSegment = activeVideoSegment.getActiveConcurrentTextSegment();
+    return concurrentTextSegment;
+  }
+
 
   hoverSegment(id: number): void {
     this.segments.forEach((seg) => {
@@ -63,27 +92,8 @@ export class Timeline {
     });
   }
 
-  clearHover(id: number): void {
-    this.segments.forEach((seg) => {
-      if (seg.id === id) {
-        seg.isHovered = false;
-      }
-    });
-  }
-
-  setCurrentlyAtTime(time: number): void {
-    const activeSegment = this.getActiveSegment();
-    if (activeSegment) {
-      activeSegment.currentlyAt = time;
-    }
-  }
-
-  getSegmentRemainingTime(): number {
-    const activeSegment = this.getActiveSegment();
-    if (!activeSegment) return 0;
-
-    const remainingTime = activeSegment.endAt - activeSegment.currentlyAt;
-    return remainingTime >= 0 ? remainingTime : 0;
+  clearHover(): void {
+    this.segments.forEach((seg) => (seg.isHovered = false));
   }
 
   private activateSegmentByIndex(index: number): void {
@@ -91,12 +101,13 @@ export class Timeline {
     if (!segment) return;
 
     segment.isVisited = true;
+    segment.currentlyAt = segment.startAt;
     this.segments.forEach((seg) => {
       seg.isActive = seg.id === segment.id;
     });
 
     // set the active segment cached value
-    this.activeSegment = segment;
+    this._activeSegment = segment;
   }
 
   private getSegmentById(id: number): Segment | null {
@@ -118,6 +129,4 @@ export class Timeline {
     }
     return this.segments[index] ?? null;
   }
-
-
 }

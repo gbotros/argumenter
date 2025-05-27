@@ -1,14 +1,13 @@
 <template>
   <div class="flex gap-3 w-full justify-around items-center mb-2">
     <button
-      v-for="(segment, idx) in segments"
+      v-for="(segment, idx) in timeline ? timeline.getSegments() : []"
       :key="segment.id"
       :class="[
         'w-5 h-5 rounded-full border-2 transition-all duration-200 outline-none',
-        idx === activeIndex ? 'scale-125 border-blue-400' : '',
-        getDotStatusClass(idx, segment)
+        getDotStatusClass(idx, segment),
       ]"
-      @click="activateSegment(idx)"
+      @click="activateSegment(segment.id)"
       @mouseenter="handleDotMouseEnter(segment)"
       @mouseleave="handleDotMouseLeave"
       :aria-label="segment.description"
@@ -19,24 +18,17 @@
 <script setup lang="ts">
 import { useTimelineStore } from '@/timeline/stores/timelineStore';
 import { storeToRefs } from 'pinia';
+import type { Segment } from './data/Segment';
 
 const timelineStore = useTimelineStore();
-const { segments, activeIndex } = storeToRefs(timelineStore);
+const { timeline } = storeToRefs(timelineStore);
 
-function activateSegment(idx: number) {
-  timelineStore.activateSegmentByIndex(idx);
+function activateSegment(id: number) {
+  timeline.value?.activateSegment(id);
 }
 
-function handleDotMouseEnter(segment: import('./types').Segment) {
-  timelineStore.setHoveredSegment(segment);
-}
-
-function handleDotMouseLeave() {
-  timelineStore.setHoveredSegment(null);
-}
-
-function getDotStatusClass(idx: number, segment: import('./types').Segment): string {
-  if (idx === activeIndex.value) {
+function getDotStatusClass(idx: number, segment: Segment): string {
+  if (segment.isActive) {
     return 'bg-blue-500 border-blue-400';
   }
   if (segment.isVisited) {
@@ -49,5 +41,13 @@ function getDotStatusClass(idx: number, segment: import('./types').Segment): str
   if (segment.stance === 'supporting') return 'bg-zinc-800 border-green-400';
   if (segment.stance === 'against') return 'bg-zinc-800 border-red-700';
   return 'bg-zinc-800 border-zinc-700';
+}
+
+function handleDotMouseEnter(segment: Segment) {
+  timeline.value?.hoverSegment(segment.id);
+}
+
+function handleDotMouseLeave() {
+  timeline.value?.clearHover();
 }
 </script>

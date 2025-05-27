@@ -1,6 +1,6 @@
 // Demo timeline data for TimelinePlayer
-import { TextualSegment, VideoSegment, ConcurrentTextualSegment } from '../types';
-import type { StanceType } from '../types';
+import { TextualSegment, VideoSegment, ConcurrentTextualSegment } from '.';
+import type { StanceType } from '.';
 
 export const demoSegmentsRaw = [
   {
@@ -8,33 +8,33 @@ export const demoSegmentsRaw = [
     type: 'text',
     stance: 'main' as StanceType,
     content: 'Welcome to the argument!',
-    duration: 5,
     description: 'Introduction',
+    endAt: 5, // used as endAt for TextualSegment
   },
   {
     id: 2,
     type: 'video',
     stance: 'main' as StanceType,
     videoId: 'QRxR98QLXyA',
+    description: 'Opening argument video',
     startAt: 1,
     endAt: 187,
-    description: 'Opening argument video',
     concurrentTextSegments: [
       {
         id: 1.1,
+        stance: 'main' as StanceType,
         content: 'I agree with you father Luka that this is not the evolution theory.',
+        description: 'We agree',
         startAt: 40,
         endAt: 50,
-        stance: 'main' as StanceType,
-        description: 'We agree'
       },
       {
         id: 1.2,
-        content: 'I agree with you father Luka that this is not the evolution theory.',
-        startAt: 5,
-        endAt: 50,
         stance: 'main' as StanceType,
-        description: 'We agree'
+        content: 'Again we agree',
+        description: 'Again We agree',
+        startAt: 5,
+        endAt: 30,
       }
     ]
   },
@@ -43,9 +43,9 @@ export const demoSegmentsRaw = [
     type: 'video',
     stance: 'main' as StanceType,
     videoId: 'LEx3K50DQ4M',
+    description: 'Evolution hypothesis',
     startAt: 1,
     endAt: 56,
-    description: 'Evolution hypothesis',
     concurrentTextSegments: []
   },
   {
@@ -53,9 +53,9 @@ export const demoSegmentsRaw = [
     type: 'video',
     stance: 'against' as StanceType,
     videoId: 'lqk3TKuGNBA',
+    description: 'Evolution is a theory',
     startAt: 175,
     endAt: 236,
-    description: 'Evolution is a theory',
     concurrentTextSegments: []
   },
   {
@@ -63,17 +63,17 @@ export const demoSegmentsRaw = [
     type: 'video',
     stance: 'main' as StanceType,
     videoId: 'LEx3K50DQ4M',
+    description: 'Origin of life and the big bang theory',
     startAt: 56,
     endAt: 247,
-    description: 'Origin of life and the big bang theory',
     concurrentTextSegments: [
       {
         id: 1.1,
+        stance: 'main' as StanceType,
         content: 'We agree again that is not the theory of evolution.',
+        description: 'We agree',
         startAt: 56,
         endAt: 93,
-        stance: 'main' as StanceType,
-        description: 'We agree'
       }
     ]
   },
@@ -82,8 +82,8 @@ export const demoSegmentsRaw = [
     type: 'text',
     stance: 'main' as StanceType,
     content: 'The End',
-    duration: 10,
     description: 'The End',
+    endAt: 10
   }
 ];
 
@@ -96,17 +96,17 @@ export const demoSegments = demoSegmentsRaw.map((seg) => {
       seg.id,
       seg.stance,
       seg.content ?? '',
-      seg.duration ?? 0,
-      seg.description ?? ''
+      seg.description ?? '',
+      seg.endAt ?? 0
     );
   } else if (seg.type === 'video') {
     return new VideoSegment(
       seg.id,
-      seg.startAt ?? 0,
-      seg.endAt ?? 0,
       seg.stance,
       seg.videoId ?? '',
       seg.description ?? '',
+      seg.startAt ?? 0,
+      seg.endAt ?? 0,
       (seg.concurrentTextSegments ?? []).map((ct: {
         id: number;
         content: string;
@@ -116,7 +116,7 @@ export const demoSegments = demoSegmentsRaw.map((seg) => {
         description: string;
       }) =>
         new ConcurrentTextualSegment(
-          ct.id, // assign a unique id per concurrent segment (or use a better id if available)
+          ct.id,
           ct.stance,
           ct.content,
           ct.startAt,

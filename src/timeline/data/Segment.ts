@@ -1,4 +1,4 @@
-import type { SegmentType, StanceType } from '../types/index';
+import type { SegmentType, StanceType } from './index';
 
 export abstract class Segment {
   id: number;
@@ -6,7 +6,7 @@ export abstract class Segment {
   stance: StanceType;
   description: string;
   startAt: number;
-  currentlyAt: number;
+  protected currentlyAt: number;
   endAt: number;
   isVisited: boolean;
   isActive: boolean;
@@ -39,4 +39,31 @@ export abstract class Segment {
     this.currentlyAt = startAt;
     this.isHovered = false;
   }
+
+  setCurrentlyAtTime(time: number): void {
+    if (time < this.startAt) {
+      this.currentlyAt = 0;
+      return;
+    }
+    if (time > this.endAt) {
+      this.currentlyAt = this.endAt;
+      return;
+    }
+
+    this.currentlyAt = time;
+  }
+
+  getCurrentlyAtTime(): number {
+    return this.currentlyAt;
+  }
+
+  getRemainingTime(): number {
+    const remainingTime = this.endAt - this.currentlyAt;
+    return remainingTime >= 0 ? remainingTime : 0;
+  }
+
+
+
+
+
 }

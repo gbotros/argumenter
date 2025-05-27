@@ -3,7 +3,6 @@
     <button
       class="px-4 py-2 rounded bg-zinc-800 text-zinc-100 border border-zinc-700 hover:bg-zinc-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
       @click="goBack"
-      :disabled="activeIndex === 0"
     >
       Back
     </button>
@@ -16,7 +15,6 @@
     <button
       class="px-4 py-2 rounded bg-zinc-800 text-zinc-100 border border-zinc-700 hover:bg-zinc-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
       @click="goNext"
-      :disabled="activeIndex === segments.length - 1"
     >
       Next
     </button>
@@ -28,26 +26,21 @@ import { useTimelineStore } from '@/timeline/stores/timelineStore';
 import { storeToRefs } from 'pinia';
 
 const timelineStore = useTimelineStore();
-const { activeIndex, segments, isPaused } = storeToRefs(timelineStore);
-const { pause, resume } = timelineStore;
+const { timeline, isPaused } = storeToRefs(timelineStore);
 
 function goBack() {
-  if (activeIndex.value > 0) {
-    timelineStore.activateSegmentByIndex(activeIndex.value - 1);
-  }
+  timeline.value?.activatePreviousSegment();
 }
 
 function goNext() {
-  if (activeIndex.value < segments.value.length - 1) {
-    timelineStore.activateSegmentByIndex(activeIndex.value + 1);
-  }
+   timeline.value?.activateNextSegment();
 }
 
 function togglePause() {
   if (isPaused.value) {
-    resume();
+    timelineStore.resume();
   } else {
-    pause();
+    timelineStore.pause();
   }
 }
 </script>
