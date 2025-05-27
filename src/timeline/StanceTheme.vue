@@ -17,5 +17,7 @@ import { useTimelineStore } from '@/timeline/stores/timelineStore';
 import { storeToRefs } from 'pinia';
 
 const timelineStore = useTimelineStore();
-const { activeSegment } = storeToRefs(timelineStore);
+const { timeline } = storeToRefs(timelineStore);
+const activeSegment = timeline.value?.getActiveSegment();
+
 </script>
