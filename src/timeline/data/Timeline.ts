@@ -8,6 +8,9 @@ export class Timeline {
   // This is used to avoid recalculating the active segment multiple times
   private _activeSegment: Segment | null = null;
 
+  allowBack = false;
+  allowNext = false;
+
   constructor(segments: Segment[]) {
     this.segments = segments;
     this.activateSegmentByIndex(0);
@@ -83,7 +86,6 @@ export class Timeline {
     return concurrentTextSegment;
   }
 
-
   hoverSegment(id: number): void {
     this.segments.forEach((seg) => {
       if (seg.id !== id) {
@@ -101,13 +103,17 @@ export class Timeline {
     if (!segment) return;
 
     segment.isVisited = true;
-    segment.currentlyAt = segment.startAt;
+    segment.setCurrentlyAtTime(segment.startAt);
     this.segments.forEach((seg) => {
       seg.isActive = seg.id === segment.id;
     });
 
     // set the active segment cached value
     this._activeSegment = segment;
+
+    // Update allowBack and allowNext
+    this.allowBack = index > 0;
+    this.allowNext = index < this.segments.length - 1;
   }
 
   private getSegmentById(id: number): Segment | null {

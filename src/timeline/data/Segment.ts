@@ -9,7 +9,7 @@ export abstract class Segment {
   protected currentlyAt: number;
   endAt: number;
   isVisited: boolean;
-  isActive: boolean;
+  isActive: boolean; // TODO: George: make this protected and use getters/setters
   isHovered?: boolean;
 
   protected constructor(

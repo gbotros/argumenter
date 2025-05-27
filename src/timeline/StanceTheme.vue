@@ -2,10 +2,10 @@
   <div
     class="border-4 rounded-2xl p-6 mb-6 transition-colors duration-300 h-full"
     :class="{
-      'border-green-800': activeSegment?.stance === 'main',
-      'border-green-500': activeSegment?.stance === 'supporting',
-      'border-red-700': activeSegment?.stance === 'against',
-      'border-zinc-700': !activeSegment?.stance
+      'border-green-800': timeline?.getActiveSegment()?.stance === 'main',
+      'border-green-500': timeline?.getActiveSegment()?.stance === 'supporting',
+      'border-red-700': timeline?.getActiveSegment()?.stance === 'against',
+      'border-zinc-700': !timeline?.getActiveSegment()?.stance
     }"
   >
     <slot />
@@ -18,6 +18,6 @@ import { storeToRefs } from 'pinia';
 
 const timelineStore = useTimelineStore();
 const { timeline } = storeToRefs(timelineStore);
-const activeSegment = timeline.value?.getActiveSegment();
+
 
 </script>

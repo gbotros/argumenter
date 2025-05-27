@@ -3,6 +3,7 @@
     <button
       class="px-4 py-2 rounded bg-zinc-800 text-zinc-100 border border-zinc-700 hover:bg-zinc-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
       @click="goBack"
+      :disabled="!timeline || !timeline.allowBack"
     >
       Back
     </button>
@@ -15,6 +16,7 @@
     <button
       class="px-4 py-2 rounded bg-zinc-800 text-zinc-100 border border-zinc-700 hover:bg-zinc-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
       @click="goNext"
+      :disabled="!timeline || !timeline.allowNext"
     >
       Next
     </button>
@@ -29,14 +31,19 @@ const timelineStore = useTimelineStore();
 const { timeline, isPaused } = storeToRefs(timelineStore);
 
 function goBack() {
-  timeline.value?.activatePreviousSegment();
+  if (timeline.value && timeline.value.allowBack) {
+    timeline.value.activatePreviousSegment();
+  }
 }
 
 function goNext() {
-   timeline.value?.activateNextSegment();
+  if (timeline.value && timeline.value.allowNext) {
+    timeline.value.activateNextSegment();
+  }
 }
 
 function togglePause() {
+  if (!timeline.value) return;
   if (isPaused.value) {
     timelineStore.resume();
   } else {
