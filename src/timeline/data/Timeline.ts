@@ -38,7 +38,7 @@ export class Timeline {
     const nextIndex = activeIndex! + 1;
 
     if (nextIndex >= this.segments.length) {
-      throw new Error('No next segment available');
+      return;
     }
 
     this.activateSegmentByIndex(nextIndex);
@@ -53,7 +53,7 @@ export class Timeline {
     const activeIndex = this.getSegmentIndexById(activeSegment.id);
     const previousIndex = activeIndex! - 1;
     if (previousIndex < 0) {
-      throw new Error('No previous segment available');
+      return;
     }
     this.activateSegmentByIndex(previousIndex);
   }
@@ -89,9 +89,6 @@ export class Timeline {
   }
 
   getHoveredSegment(): Segment | null {
-    console.log('getHoveredSegment called');
-    debugger;
-
     return this._hoveredSegment;
   }
 
@@ -111,6 +108,7 @@ export class Timeline {
   }
 
   private activateSegmentByIndex(index: number): void {
+    debugger;
     const segment = this.getSegmentByIndex(index);
     if (!segment) return;
 
@@ -126,14 +124,6 @@ export class Timeline {
     // Update allowBack and allowNext
     this.allowBack = index > 0;
     this.allowNext = index < this.segments.length - 1;
-  }
-
-  private getSegmentById(id: number): Segment | null {
-    const index = this.getSegmentIndexById(id);
-    if (index === null) {
-      return null;
-    }
-    return this.getSegmentByIndex(index);
   }
 
   private getSegmentIndexById(id: number): number | null {

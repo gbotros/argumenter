@@ -61,8 +61,6 @@ function getDotStatusClass(idx: number, segment: Segment): string {
 }
 
 function handleDotMouseEnter(segment: Segment) {
-  logger.debug('handleDotMouseEnter', segment.id, segment.description);
-  debugger;
   timeline.value?.hoverSegment(segment.id);
 }
 
@@ -80,4 +78,5 @@ function getButtonFlexClass(segment: Segment): string {
   // If no hover, active gets flex-4, others flex-1
   return segment.isActive ? 'flex-4' : 'flex-1';
 }
+
 </script>

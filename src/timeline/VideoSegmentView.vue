@@ -69,7 +69,6 @@ function createPlayer() {
       },
       onStateChange: (event: YT.OnStateChangeEvent) => {
         if (!YT) return;
-        debugger;
 
         if (event.data === YT.PlayerState.PLAYING) {
           logger?.info(`[VideoSegmentView] Video started for segment ${id}`);
@@ -147,7 +146,18 @@ async function setupPlayer() {
 onMounted(setupPlayer);
 
 watch(
-  () => isPaused.value,
+  () => timeline.value?.getActiveVideoSegment(),
+  (newSegment, oldSegment) => {
+    if (newSegment && newSegment !== oldSegment) {
+      setupPlayer();
+    } else if (!newSegment) {
+      destroyPlayer();
+    }
+  },
+);
+
+watch(
+   isPaused,
   (paused) => {
     if (!timeline.value?.getActiveVideoSegment()) return;
     if (paused) {
