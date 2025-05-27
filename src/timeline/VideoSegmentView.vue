@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="timeline?.getActiveVideoSegment()"
-    class="flex flex-col items-center bg-zinc-800 rounded-xl p-6 h-full w-full max-w-7xl mx-auto"
+    class="flex flex-col items-center bg-zinc-700 p-6 h-full w-full mx-auto"
   >
     <div
       class="flex flex-row items-start w-full h-full gap-6"

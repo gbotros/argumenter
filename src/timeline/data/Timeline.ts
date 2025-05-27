@@ -7,6 +7,7 @@ export class Timeline {
   // Cached active segment
   // This is used to avoid recalculating the active segment multiple times
   private _activeSegment: Segment | null = null;
+  private _hoveredSegment: Segment | null = null;
 
   allowBack = false;
   allowNext = false;
@@ -86,16 +87,26 @@ export class Timeline {
     return concurrentTextSegment;
   }
 
+  getHoveredSegment(): Segment | null {
+    console.log('getHoveredSegment called');
+    debugger;
+
+    return this._hoveredSegment;
+  }
+
   hoverSegment(id: number): void {
     this.segments.forEach((seg) => {
-      if (seg.id !== id) {
-        seg.isHovered = seg.id === id;
-      }
-    });
+      seg.isHovered = seg.id === id;
+    })
+
+    const hoveredSegment = this.segments.find((seg) => seg.isHovered);
+    this._hoveredSegment = hoveredSegment ?? null;
+
   }
 
   clearHover(): void {
     this.segments.forEach((seg) => (seg.isHovered = false));
+    this._hoveredSegment = null;
   }
 
   private activateSegmentByIndex(index: number): void {

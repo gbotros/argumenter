@@ -1,17 +1,31 @@
 <template>
-  <div class="flex gap-3 w-full justify-around items-center mb-2">
-    <button
-      v-for="(segment, idx) in timeline ? timeline.getSegments() : []"
-      :key="segment.id"
-      :class="[
-        'w-5 h-5 rounded-full border-2 transition-all duration-200 outline-none',
-        getDotStatusClass(idx, segment),
-      ]"
-      @click="activateSegment(segment.id)"
-      @mouseenter="handleDotMouseEnter(segment)"
-      @mouseleave="handleDotMouseLeave"
-      :aria-label="segment.description"
-    ></button>
+  <div>
+    <div class="flex justify-between text-center bg-zinc-700 p-4">
+      <button
+        id="button-wrapper"
+        v-for="(segment, idx) in timeline ? timeline.getSegments() : []"
+        :key="segment.id"
+        @click="activateSegment(segment.id)"
+        @mouseenter="handleDotMouseEnter(segment)"
+        @mouseleave="handleDotMouseLeave"
+        :class="[
+          'flex flex-col items-center cursor-pointer gap-2 transition-all duration-200',
+          getButtonFlexClass(segment),
+        ]"
+      >
+        <div class="flex-1 truncate whitespace-normal break-words line-clamp-2">
+          {{ segment.description }}
+        </div>
+
+        <div
+          :class="[
+            'w-5 h-5 rounded-full border-2 transition-all duration-200 outline-none shrink-0',
+            getDotStatusClass(idx, segment),
+          ]"></div>
+      </button>
+    </div>
+
+    <div class="border border-b-1 border-zinc-400"></div>
   </div>
 </template>
 
@@ -19,9 +33,11 @@
 import { useTimelineStore } from '@/timeline/stores/timelineStore';
 import { storeToRefs } from 'pinia';
 import type { Segment } from './data/Segment';
+import { logger } from '@/services/loggerService';
 
 const timelineStore = useTimelineStore();
 const { timeline } = storeToRefs(timelineStore);
+
 
 function activateSegment(id: number) {
   timeline.value?.activateSegment(id);
@@ -45,10 +61,23 @@ function getDotStatusClass(idx: number, segment: Segment): string {
 }
 
 function handleDotMouseEnter(segment: Segment) {
+  logger.debug('handleDotMouseEnter', segment.id, segment.description);
+  debugger;
   timeline.value?.hoverSegment(segment.id);
 }
 
 function handleDotMouseLeave() {
   timeline.value?.clearHover();
+}
+
+function getButtonFlexClass(segment: Segment): string {
+  // If any segment is hovered, only the hovered one gets flex-4, others flex-1
+  const anyHovered = !!timeline.value?.getHoveredSegment();
+  if (anyHovered) {
+    return segment.isHovered ? 'flex-4' : 'flex-1';
+  }
+
+  // If no hover, active gets flex-4, others flex-1
+  return segment.isActive ? 'flex-4' : 'flex-1';
 }
 </script>

@@ -1,13 +1,13 @@
 <template>
   <div
     v-if="timeline?.getActiveTextSegment()"
-    class="flex flex-col items-center bg-zinc-800 rounded-xl p-6 w-full max-w-lg mx-auto mt-4"
-  >
-    <div class="text-lg text-zinc-100 mb-4 text-center">{{ timeline?.getActiveTextSegment()?.content }}</div>
-    <div class="text-base text-green-400 mb-4">
+    class="flex flex-col items-center justify-center p-6 w-full h-full mx-auto bg-zinc-700 gap-6">
+    <div class="text-4xl">
+      {{ timeline?.getActiveTextSegment()?.content }}
+    </div>
+    <div class="text-2xl">
       {{ timeline?.getActiveTextSegment()?.getRemainingTime() }}s
     </div>
-
   </div>
 </template>
 
@@ -38,7 +38,6 @@ function startTimer() {
       completeSegment();
     }
   }, 1000);
-
 }
 
 function completeSegment() {
