@@ -12,10 +12,10 @@
         class="flex-1 aspect-video rounded-lg bg-black relative overflow-hidden mb-4"
         :class="{ 'flex-[2_1_0]': timeline?.getActiveConcurrentTextSegment() }"
       ></div>
-      <div class="flex flex-col gap-4 flex-1 ml-6 mt-0">
+      <div class="flex-1 h-full"  v-if="timeline?.getActiveConcurrentTextSegment()">
 
         <ConcurrentTextualSegmentView
-          v-if="timeline?.getActiveConcurrentTextSegment()"
+
         />
 
       </div>
@@ -39,7 +39,6 @@ const emit = defineEmits(['segment-complete']);
 
 function completeSegment() {
   emit('segment-complete');
-  logger?.info(`[VideoSegmentView] Segment ${activeVideoSegment.value?.id} completed`);
 }
 
 function createPlayer() {

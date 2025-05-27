@@ -1,8 +1,8 @@
 <template>
-  <div v-if="timeline" class="flex flex-col items-center bg-zinc-800 rounded-xl p-4 w-full max-w-xs mx-auto mt-2">
-    <div class="text-base text-zinc-100 mb-2 text-center">{{ timeline?.getActiveConcurrentTextSegment()?.content }}</div>
-    <div class="text-sm text-green-400 mb-2">{{ timeline?.getActiveConcurrentTextSegment()?.startAt }}s - {{ timeline?.getActiveConcurrentTextSegment()?.endAt }}s</div>
-    <div class="text-xs text-green-400 text-center">🗒️ {{ timeline?.getActiveConcurrentTextSegment()?.description }}</div>
+  <div v-if="timeline" class="flex flex-col items-center w-full h-full justify-center border border-zinc-600 p-6 bg-zinc-800 rounded-lg">
+    <div class="text-base  mb-2 text-center">{{ timeline?.getActiveConcurrentTextSegment()?.content }}</div>
+    <div class="text-sm   mb-2">{{ timeline?.getActiveConcurrentTextSegment()?.startAt }}s - {{ timeline?.getActiveConcurrentTextSegment()?.endAt }}s</div>
+    <div class="text-xs  text-center"> {{ timeline?.getActiveConcurrentTextSegment()?.description }}</div>
   </div>
 </template>
 

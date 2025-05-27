@@ -1,3 +1,4 @@
+import type { ConcurrentTextualSegment } from '.';
 import { Segment } from './Segment';
 import type { TextualSegment } from './TextualSegment';
 import type { VideoSegment } from './VideoSegment';
@@ -77,7 +78,7 @@ export class Timeline {
     return activeSegment as TextualSegment;
   }
 
-  getActiveConcurrentTextSegment(): Segment | null {
+  getActiveConcurrentTextSegment(): ConcurrentTextualSegment | null {
     const activeVideoSegment = this.getActiveVideoSegment();
     if (!activeVideoSegment) {
       return null;
