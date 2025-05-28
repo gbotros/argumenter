@@ -16,7 +16,7 @@
           @segment-complete="onSegmentComplete" />
       </div>
 
-      <div >
+      <div>
         <TimelineControls />
       </div>
     </div>
@@ -33,14 +33,28 @@ import VideoSegmentView from './VideoSegmentView.vue';
 import SegmentInfo from './SegmentInfo.vue';
 import TimelineBarDots from './TimelineBarDots.vue';
 import TimelineControls from './TimelineControls.vue';
-import StanceTheme from './StanceTheme.vue';
+import { TimelineShareService } from './services/TimelineShareService';
 import { Timeline } from './data';
+import { logger } from '@/services/loggerService';
 
 const timelineStore = useTimelineStore();
 const { timeline } = storeToRefs(timelineStore);
-
 onMounted(() => {
-  timeline.value = new Timeline(demoSegments);
+  const demoDataAsAUrl = TimelineShareService.createShareUrl(demoSegments);
+  logger.debug('[TimelinePlayer] Demo data as shareable URL:', demoDataAsAUrl);
+
+  const sharedTimeline = TimelineShareService.getTimelineFromUrl();
+
+  if (sharedTimeline) {
+    logger.debug('[TimelinePlayer] Loaded shared timeline from URL:', sharedTimeline);
+    timeline.value = sharedTimeline;
+  } else {
+    logger.debug(
+      '[TimelinePlayer] No shared timeline found in URL. Falling back to demo segments.',
+    );
+    logger.debug('[TimelinePlayer] Initializing timeline with demo segments:', demoSegments);
+    timeline.value = new Timeline(demoSegments);
+  }
 });
 
 function onSegmentComplete() {

@@ -72,7 +72,7 @@ function getButtonFlexClass(segment: Segment): string {
   // If any segment is hovered, only the hovered one gets flex-4, others flex-1
   const anyHovered = !!timeline.value?.getHoveredSegment();
   if (anyHovered) {
-    return segment.isHovered ? 'flex-4' : 'flex-1';
+    return segment.isHovered ? 'flex-6' : 'flex-1';
   }
 
   // If no hover, active gets flex-4, others flex-1
