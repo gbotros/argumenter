@@ -2,7 +2,7 @@
 
 # Copilot Instructions
 
-This project uses Vue 3 with TypeScript and SCSS. Follow the conventions below when generating or modifying code.
+This project uses Vue 3 with TypeScript, SCSS, and Tailwind CSS. Follow the conventions below when generating or modifying code.
 
 ## Component Structure
 
@@ -31,14 +31,13 @@ This project uses Vue 3 with TypeScript and SCSS. Follow the conventions below w
 ## Styling
 
 - Use a minimalist dark theme for all UI components.
-- Use SCSS for all styles.
-- Use BEM (Block Element Modifier) naming conventions for CSS classes.
+- Use Tailwind CSS classes when ever possible.
+- If necessary use SCSS.
 - Use `scoped` styles in Vue components to avoid global style conflicts.
 - Use the `lang="scss"` attribute in the `<style>` tag for SCSS files.
-- Use CSS variables for colors and common styles defined in `variables.scss`.
 - Do not use inline styles under any circumstance.
-- Use shared CSS classes from `main.scss` whenever applicable.
 - Leave one empty line between all css classes definitions.
+- For all transitions and animations, use Tailwind CSS classes only (no custom CSS for transitions).
 
 ## Project Organization
 

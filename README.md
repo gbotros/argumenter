@@ -1,78 +1,66 @@
-# Interactive YouTube Video Player with Timeline Annotations
+# Argumenter: Interactive Timeline Argumentation App
 
-## Overview
+## What is Argumenter?
 
-This app is an interactive YouTube video player with a smart timeline. The timeline is made up of segments, each representing either a video clip or a text annotation. Users can easily jump between segments, see their progress, and understand the context of each part of the video.
+Argumenter is a web app that lets you explore and interact with arguments, debates, or presentations using a smart, visual timeline. Each point or segment is shown as a dot on a timeline, and you can jump between them, see supporting and opposing arguments, and follow the flow of a discussion or video.
 
-## Key Features
+## What Can You Do With Argumenter?
 
-- **Timeline Visualization:**
+- **See the Big Picture:**
 
-  - The timeline is shown as a line with dots for each segment.
-  - **unvisited Main and supporting segments dots** 30% lighten green
-  - **unvisited against segments dots** 30% lighten red
-  - **unvisited Main and supporting segments dots** 30% darken green
-  - **unvisited against segments dots** 30% darken red
-  - **Active segment:** larger dot, with a shadow
-  - Hovering over a dot shows a description of the segment.
-  - Clicking a dot jumps to that segment.
-  - Next and Back buttons let users move through segments in order.
+  - The timeline shows all the main points, supporting arguments, and counterpoints as colored dots.
+  - Dots grow and animate as you hover or select them, making it easy to see where you are.
 
-- **Segment Types:**
+- **Jump to Any Segment:**
 
-  - **TextualSegment:** Shows text for a set duration. Users see a countdown timer and can skip ahead with a button.
-  - **VideoSegment:** Plays a specific part of a YouTube video (from `startAt` to `endAt`).
+  - Click any dot to instantly jump to that part of the argument or video.
+  - Use Next/Back buttons to move through the discussion step by step.
 
-- **Stance Highlighting:**
+- **Understand Context at a Glance:**
 
-  - Each segment can be marked as `main`, `supporting`, or `against`.
-  - The video player border changes color based on the active segment's stance:
-    - **main:** Dark green
-    - **supporting:** Light green
-    - **against:** Red
+  - Hover over a dot to see a short description of that segment.
+  - The color and size of each dot shows if it’s a main point, supporting idea, or counterargument.
 
-- **Type Safety & Modern Stack:**
+- **Watch and Read:**
 
-  - Built with Vue 3, TypeScript, and SCSS.
-  - All code is strongly typed and follows strict linting and formatting rules.
-  - Minimalist dark theme for all UI components.
+  - Some segments play a specific part of a YouTube video.
+  - Others show text explanations or arguments, with a timer so you can read at your own pace.
 
-- **No Backend Required:**
-  - All timeline data is loaded from a local JSON file in the SPA. No backend or API calls are needed.
+- **Share and Collaborate:**
 
-## Folder Structure
+  - Share your timeline with others using a special link.
+  - Download or import timelines as files.
+  - Load timelines from public GitHub files if you want to share them widely.
 
-- Files are organized by feature for clarity and maintainability.
+- **No Account Needed:**
+  - Everything runs in your browser. No sign-up, no backend, no data tracking.
 
-## Data Model
+## How to Use Argumenter
 
-- `Segment` (abstract): Base class with `id`, `type`, `stance`, and `description`.
-- `TextualSegment`: Adds `content` and `duration` (seconds).
-- `VideoSegment`: Adds `videoId`, `startAt`, and `endAt` (seconds).
-- `Timeline`: Manages segments, tracks the active and visited segments, and provides methods to activate segments by id or index.
+1. **Open the App:**
+   - Start with a sample timeline or load your own.
+2. **Explore the Timeline:**
+   - Click or hover on dots to see details and jump around.
+3. **Follow the Argument:**
+   - Watch video clips or read text as you move through the timeline.
+4. **Share or Save:**
+   - Use the share button to get a link, or export/import timelines as files.
 
-## How It Works
+## Who Is It For?
 
-1. **Add Segments:** Use the `Timeline` class to add `TextualSegment` and `VideoSegment` objects.
-2. **Activate Segments:** Activate a segment by id or index. The timeline updates the active and visited segments.
-3. **UI Integration:**
-   - The timeline is rendered as a line of dots.
-   - Dots are colored and sized based on their state (visited, unvisited, active).
-   - Hovering over a dot shows the segment's description.
-   - Next and Back buttons allow easy navigation.
-   - The player border color reflects the stance of the active segment.
+- Students and teachers analyzing debates or lectures
+- Content creators organizing video essays
+- Anyone who wants to break down complex arguments or presentations visually
 
-## Example Usage
+## Features at a Glance
 
-```ts
-const timeline = new Timeline([]);
-timeline.addSegment(new TextualSegment(1, 'main', 'Introduction', 10, 'Intro text'));
-timeline.addSegment(new VideoSegment(2, 30, 60, 'supporting', 'abc123', 'Key argument'));
-timeline.activateSegmentById(1); // Activates the first segment
-```
+- Animated, interactive timeline with color-coded dots
+- Jump to any segment instantly
+- See supporting and opposing points at a glance
+- Share timelines via link or file
+- Minimalist dark theme for comfortable viewing
+- No installation or account required
 
-## Development
+---
 
-- **Tech Stack:** Vue 3, TypeScript, SCSS
-- **Linting & Formatting:** Enforced by ESLint and Prettier
-- **Testing:** All logic-heavy components have tests in `tests/`
+Try Argumenter now and experience a new way to explore arguments and ideas!
