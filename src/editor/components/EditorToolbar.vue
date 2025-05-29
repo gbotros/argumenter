@@ -7,15 +7,22 @@
     </label>
     <button @click="testTimeline" class="bg-green-700 hover:bg-green-600 text-white px-4 py-2 rounded transition">Test Timeline</button>
     <button @click="clearSegments" class="bg-zinc-700 hover:bg-zinc-600 text-white px-4 py-2 rounded transition">Clear</button>
+    <button @click="playTimeline" class="bg-blue-700 hover:bg-blue-600 text-white px-4 py-2 rounded transition">Play</button>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useEditorStore } from '../stores/editorStore';
+import { useTimelineStore } from '@/timeline/stores/timelineStore';
+import { TimelineFactory } from '@/timeline/services/TimelineFactory';
 import { storeToRefs } from 'pinia';
+import { useRouter } from 'vue-router';
 
 const editorStore = useEditorStore();
+const timelineStore = useTimelineStore();
 const { segments } = storeToRefs(editorStore);
+const { timeline } = storeToRefs(timelineStore);
+const router = useRouter();
 
 function exportTimeline() {
   const dataStr = JSON.stringify(segments.value, null, 2);
@@ -55,6 +62,16 @@ function testTimeline() {
 
 function clearSegments() {
   editorStore.clearSegments();
+}
+
+function playTimeline() {
+  try {
+    timeline.value = TimelineFactory.fromEditorSegments(segments.value);
+  } catch (err) {
+    console.error('Failed to create timeline from editor segments:', segments.value, err);
+    timeline.value = null;
+  }
+  router.push('/');
 }
 </script>
 

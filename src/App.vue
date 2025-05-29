@@ -32,28 +32,12 @@ async function goToPlayerWithEditorSegments() {
       timeline.value = null;
     }
   }
-   router.push('/');
+  router.push('/');
 }
 </script>
 
 <template>
-  <div>
-    <nav class="flex gap-4 mb-6 p-6">
-      <button
-        v-if="route.path === '/editor'"
-        @click="goToPlayerWithEditorSegments"
-        class="px-4 py-2 rounded bg-zinc-800 text-zinc-100 hover:bg-zinc-700 transition">
-        Play
-      </button>
-      <button
-        v-if="route.path === '/'"
-        @click="goToEditorWithPlayerSegments"
-        class="px-4 py-2 rounded bg-zinc-800 text-zinc-100 hover:bg-zinc-700 transition">
-        Edit
-      </button>
-    </nav>
-    <RouterView />
-  </div>
+  <RouterView />
 </template>
 
 <style scoped></style>
