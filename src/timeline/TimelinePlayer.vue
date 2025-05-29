@@ -39,22 +39,25 @@ import { logger } from '@/services/loggerService';
 
 const timelineStore = useTimelineStore();
 const { timeline } = storeToRefs(timelineStore);
+
 onMounted(() => {
-  const demoDataAsAUrl = TimelineShareService.createShareUrl(demoSegments);
-  logger.debug('[TimelinePlayer] Demo data as shareable URL:', demoDataAsAUrl);
-
+  // 1. Try to load from sharable URL
   const sharedTimeline = TimelineShareService.getTimelineFromUrl();
-
   if (sharedTimeline) {
     logger.debug('[TimelinePlayer] Loaded shared timeline from URL:', sharedTimeline);
     timeline.value = sharedTimeline;
-  } else {
-    logger.debug(
-      '[TimelinePlayer] No shared timeline found in URL. Falling back to demo segments.',
-    );
-    logger.debug('[TimelinePlayer] Initializing timeline with demo segments:', demoSegments);
-    timeline.value = new Timeline(demoSegments);
+    return;
   }
+
+  // 2. If timeline already exists in store (from editor), use it
+  if (timeline.value && Array.isArray(timeline.value.segments) && timeline.value.segments.length > 0) {
+    logger.debug('[TimelinePlayer] Loaded timeline from store:', timeline.value);
+    return;
+  }
+
+  // 3. Fallback to demo sample
+  logger.debug('[TimelinePlayer] No shared timeline or store timeline found. Loading demo.');
+  timeline.value = new Timeline(demoSegments);
 });
 
 function onSegmentComplete() {
