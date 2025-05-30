@@ -13,16 +13,14 @@
         @dragover="onDragOver"
         @dragleave="onDragLeave"
         @drop="onDrop"
-        @dragend="onDragEnd"
-      />
+        @dragend="onDragEnd" />
     </ul>
     <div class="flex justify-center mt-6">
       <button
         @click="addSegment"
         class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-700 hover:bg-blue-600 text-white text-2xl font-bold shadow transition"
         title="Add new segment"
-        aria-label="Add new segment"
-      >
+        aria-label="Add new segment">
         +
       </button>
     </div>
@@ -90,5 +88,4 @@ function addSegment() {
 }
 </script>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

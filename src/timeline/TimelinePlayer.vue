@@ -50,7 +50,11 @@ onMounted(() => {
   }
 
   // 2. If timeline already exists in store (from editor), use it
-  if (timeline.value && Array.isArray(timeline.value.segments) && timeline.value.segments.length > 0) {
+  if (
+    timeline.value &&
+    Array.isArray(timeline.value.segments) &&
+    timeline.value.segments.length > 0
+  ) {
     logger.debug('[TimelinePlayer] Loaded timeline from store:', timeline.value);
     return;
   }

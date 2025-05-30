@@ -1,6 +1,6 @@
 import { Timeline } from '@/timeline/data';
 import type { Segment } from '@/timeline/data';
-import { TextualSegment, VideoSegment, ConcurrentTextualSegment } from '@/timeline/data';
+import { TextualSegment, VideoSegment, VideoComment } from '@/timeline/data';
 import type { StanceType } from '@/timeline/data';
 
 export class TimelineShareService {
@@ -27,6 +27,7 @@ export class TimelineShareService {
       const segmentsRaw = JSON.parse(json);
       if (!Array.isArray(segmentsRaw)) return null;
       // Recreate class instances from raw data
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return segmentsRaw.map((seg: any) => {
         if (!seg) throw new Error('Segment is undefined');
         if (seg.type === 'text') {
@@ -35,7 +36,7 @@ export class TimelineShareService {
             seg.stance as StanceType,
             seg.content ?? '',
             seg.description ?? '',
-            seg.endAt ?? 0
+            seg.endAt ?? 0,
           );
         } else if (seg.type === 'video') {
           return new VideoSegment(
@@ -45,19 +46,22 @@ export class TimelineShareService {
             seg.description ?? '',
             seg.startAt ?? 0,
             seg.endAt ?? 0,
-            (seg.concurrentTextSegments ?? []).map((ct: any) =>
-              new ConcurrentTextualSegment(
-                ct.id,
-                ct.stance as StanceType,
-                ct.content,
-                ct.startAt,
-                ct.endAt,
-                ct.description
-              )
-            )
+
+            (seg.videoComments ?? []).map(
+              (ct: any) =>
+                new VideoComment(
+                  Number(ct.id),
+                  ct.stance as StanceType,
+                  ct.content ?? '',
+                  ct.startAt ?? 0,
+                  ct.endAt ?? 0,
+                  ct.description ?? '',
+                ),
+            ),
           );
+        } else {
+          throw new Error('Unknown segment type');
         }
-        throw new Error('Unknown segment type');
       });
     } catch (e) {
       if (import.meta.env.DEV) console.error('Failed to decode timeline from URL', e);

@@ -3,21 +3,18 @@
     <button
       class="px-4 py-2 rounded-l-lg border border-zinc-700 hover:bg-zinc-700 disabled:opacity-50 disabled:cursor-not-allowed transition text-lg"
       @click="goBack"
-      :disabled="!timeline || !timeline.allowBack"
-    >
+      :disabled="!timeline || !timeline.allowBack">
       Back
     </button>
     <button
       class="px-4 py-2 border border-zinc-700 hover:bg-zinc-700 transition text-lg"
-      @click="togglePause"
-    >
+      @click="togglePause">
       {{ isPaused ? 'Resume' : 'Pause' }}
     </button>
     <button
       class="px-4 py-2 rounded-r-lg border border-zinc-700 hover:bg-zinc-700 disabled:opacity-50 disabled:cursor-not-allowed transition text-lg"
       @click="goNext"
-      :disabled="!timeline || !timeline.allowNext"
-    >
+      :disabled="!timeline || !timeline.allowNext">
       Next
     </button>
   </div>

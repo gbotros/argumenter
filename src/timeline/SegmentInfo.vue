@@ -16,8 +16,7 @@
       <button
         v-if="route.path === '/'"
         @click="goToEditorWithPlayerSegments"
-        class="ml-4 px-3 py-1 rounded bg-blue-700 text-white hover:bg-blue-600 transition text-sm font-semibold"
-      >
+        class="ml-4 px-3 py-1 rounded bg-blue-700 text-white hover:bg-blue-600 transition text-sm font-semibold">
         Edit
       </button>
     </div>
@@ -40,7 +39,7 @@ const route = useRoute();
 
 function goToEditorWithPlayerSegments() {
   if (timeline.value && Array.isArray(timeline.value.segments)) {
-    const plainSegments = timeline.value.segments.map(seg => JSON.parse(JSON.stringify(seg)));
+    const plainSegments = timeline.value.segments.map((seg) => JSON.parse(JSON.stringify(seg)));
     editorStore.setSegments(plainSegments);
     localStorage.setItem('argumenter_editor_segments', JSON.stringify(plainSegments));
   }

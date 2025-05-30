@@ -1,6 +1,6 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import TimelinePlayer from '@/timeline/TimelinePlayer.vue'
-import TimelineEditor from '@/editor/TimelineEditor.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import TimelinePlayer from '@/timeline/TimelinePlayer.vue';
+import TimelineEditor from '@/editor/TimelineEditor.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -14,8 +14,8 @@ const router = createRouter({
       path: '/editor',
       name: 'editor',
       component: TimelineEditor,
-    }
+    },
   ],
-})
+});
 
-export default router
+export default router;

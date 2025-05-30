@@ -6,6 +6,6 @@ export type StanceType = 'main' | 'supporting' | 'against';
 
 export { Segment } from './Segment';
 export { TextualSegment } from './TextualSegment';
-export { ConcurrentTextualSegment } from './ConcurrentTextualSegment';
+export { VideoComment } from './VideoComment';
 export { VideoSegment } from './VideoSegment';
 export { Timeline } from './Timeline';

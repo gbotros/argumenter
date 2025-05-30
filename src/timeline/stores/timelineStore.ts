@@ -24,6 +24,6 @@ export const useTimelineStore = defineStore('timeline', () => {
     timeline,
     isPaused,
     pause,
-    resume
+    resume,
   };
 });

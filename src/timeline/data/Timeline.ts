@@ -1,4 +1,4 @@
-import type { ConcurrentTextualSegment } from '.';
+import type { VideoComment } from '.';
 import { Segment } from './Segment';
 import type { TextualSegment } from './TextualSegment';
 import type { VideoSegment } from './VideoSegment';
@@ -78,14 +78,13 @@ export class Timeline {
     return activeSegment as TextualSegment;
   }
 
-  getActiveConcurrentTextSegment(): ConcurrentTextualSegment | null {
+  getActiveVideoComment(): VideoComment | null {
     const activeVideoSegment = this.getActiveVideoSegment();
     if (!activeVideoSegment) {
       return null;
     }
-
-    const concurrentTextSegment = activeVideoSegment.getActiveConcurrentTextSegment();
-    return concurrentTextSegment;
+    const videoComment = activeVideoSegment.getActiveVideoComment();
+    return videoComment;
   }
 
   getHoveredSegment(): Segment | null {
@@ -95,11 +94,10 @@ export class Timeline {
   hoverSegment(id: number): void {
     this.segments.forEach((seg) => {
       seg.isHovered = seg.id === id;
-    })
+    });
 
     const hoveredSegment = this.segments.find((seg) => seg.isHovered);
     this._hoveredSegment = hoveredSegment ?? null;
-
   }
 
   clearHover(): void {

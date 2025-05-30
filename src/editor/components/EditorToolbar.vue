@@ -1,13 +1,30 @@
 <template>
   <div class="flex gap-4 mb-8">
-    <button @click="exportTimeline" class="bg-purple-700 hover:bg-purple-600 text-white px-4 py-2 rounded transition">Export Timeline</button>
-    <label class="bg-purple-700 hover:bg-purple-600 text-white px-4 py-2 rounded transition cursor-pointer">
+    <button
+      @click="exportTimeline"
+      class="bg-purple-700 hover:bg-purple-600 text-white px-4 py-2 rounded transition">
+      Export Timeline
+    </button>
+    <label
+      class="bg-purple-700 hover:bg-purple-600 text-white px-4 py-2 rounded transition cursor-pointer">
       Import Timeline
       <input type="file" accept="application/json" class="hidden" @change="importTimeline" />
     </label>
-    <button @click="testTimeline" class="bg-green-700 hover:bg-green-600 text-white px-4 py-2 rounded transition">Test Timeline</button>
-    <button @click="clearSegments" class="bg-zinc-700 hover:bg-zinc-600 text-white px-4 py-2 rounded transition">Clear</button>
-    <button @click="playTimeline" class="bg-blue-700 hover:bg-blue-600 text-white px-4 py-2 rounded transition">Play</button>
+    <button
+      @click="testTimeline"
+      class="bg-green-700 hover:bg-green-600 text-white px-4 py-2 rounded transition">
+      Test Timeline
+    </button>
+    <button
+      @click="clearSegments"
+      class="bg-zinc-700 hover:bg-zinc-600 text-white px-4 py-2 rounded transition">
+      Clear
+    </button>
+    <button
+      @click="playTimeline"
+      class="bg-blue-700 hover:bg-blue-600 text-white px-4 py-2 rounded transition">
+      Play
+    </button>
   </div>
 </template>
 
@@ -75,5 +92,4 @@ function playTimeline() {
 }
 </script>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

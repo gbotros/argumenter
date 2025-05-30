@@ -18,11 +18,10 @@ export abstract class Segment {
     stance: StanceType,
     description: string,
     startAt: number,
-    endAt: number
+    endAt: number,
   ) {
-
     if (startAt < 0 || endAt <= startAt) {
-      throw new Error('Invalid startAt/endAt values for ConcurrentTextualSegment.');
+      throw new Error('Invalid startAt/endAt values for VideoComment.');
     }
     if (!description || description.trim().length === 0) {
       throw new Error('Segment requires a non-empty description.');
@@ -61,9 +60,4 @@ export abstract class Segment {
     const remainingTime = this.endAt - this.currentlyAt;
     return remainingTime >= 0 ? remainingTime : 0;
   }
-
-
-
-
-
 }

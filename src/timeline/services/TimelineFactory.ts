@@ -1,10 +1,11 @@
 import { Timeline } from '../data/Timeline';
 import { TextualSegment } from '../data/TextualSegment';
 import { VideoSegment } from '../data/VideoSegment';
-import { ConcurrentTextualSegment } from '../data/ConcurrentTextualSegment';
+import { VideoComment } from '../data/VideoComment';
 import type { EditorSegment } from '../../editor/stores/editorStore';
 import type { Segment } from '../data/Segment';
 import type { StanceType } from '../data';
+import type { VideoCommentForm } from '../../editor/stores/editorStore';
 
 export class TimelineFactory {
   /**
@@ -18,7 +19,7 @@ export class TimelineFactory {
           seg.stance as StanceType,
           seg.content ?? '',
           seg.description ?? '',
-          seg.endAt ?? 0
+          seg.endAt ?? 0,
         );
       } else if (seg.type === 'video') {
         return new VideoSegment(
@@ -28,16 +29,17 @@ export class TimelineFactory {
           seg.description ?? '',
           seg.startAt ?? 0,
           seg.endAt ?? 0,
-          (seg.concurrentTextSegments ?? []).map((ct) =>
-            new ConcurrentTextualSegment(
-              Number(ct.id),
-              ct.stance as StanceType,
-              ct.content ?? '',
-              ct.startAt ?? 0,
-              ct.endAt ?? 0,
-              ct.description ?? ''
-            )
-          )
+          (seg.videoComments ?? []).map(
+            (ct: VideoCommentForm) =>
+              new VideoComment(
+                Number(ct.id),
+                ct.stance as StanceType,
+                ct.content ?? '',
+                ct.startAt ?? 0,
+                ct.endAt ?? 0,
+                ct.description ?? '',
+              ),
+          ),
         );
       } else {
         throw new Error('Unknown segment type');

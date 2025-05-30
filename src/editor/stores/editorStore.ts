@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { ref, watch } from 'vue';
 import type { StanceType, SegmentType } from '@/timeline/data';
 
-export interface ConcurrentTextSegmentForm {
+export interface VideoCommentForm {
   id: number | string;
   stance: StanceType;
   content: string;
@@ -22,7 +22,7 @@ export interface EditorSegment {
   // For video
   videoId?: string;
   startAt?: number;
-  concurrentTextSegments?: ConcurrentTextSegmentForm[];
+  videoComments?: VideoCommentForm[];
 }
 
 export const useEditorStore = defineStore('editor', () => {
@@ -37,9 +37,13 @@ export const useEditorStore = defineStore('editor', () => {
   }
 
   // Persist to localStorage automatically
-  watch(segments, (val) => {
-    localStorage.setItem('argumenter_editor_segments', JSON.stringify(val));
-  }, { deep: true });
+  watch(
+    segments,
+    (val) => {
+      localStorage.setItem('argumenter_editor_segments', JSON.stringify(val));
+    },
+    { deep: true },
+  );
 
   function setSegments(newSegments: EditorSegment[]) {
     segments.value = newSegments;

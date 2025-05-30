@@ -11,8 +11,7 @@
         :class="[
           'flex flex-col items-center cursor-pointer gap-2 transition-all duration-200',
           getButtonFlexClass(segment),
-        ]"
-      >
+        ]">
         <div class="flex-1 truncate whitespace-normal break-words line-clamp-2">
           {{ segment.description }}
         </div>
@@ -33,11 +32,9 @@
 import { useTimelineStore } from '@/timeline/stores/timelineStore';
 import { storeToRefs } from 'pinia';
 import type { Segment } from './data/Segment';
-import { logger } from '@/services/loggerService';
 
 const timelineStore = useTimelineStore();
 const { timeline } = storeToRefs(timelineStore);
-
 
 function activateSegment(id: number) {
   timeline.value?.activateSegment(id);
@@ -78,5 +75,4 @@ function getButtonFlexClass(segment: Segment): string {
   // If no hover, active gets flex-4, others flex-1
   return segment.isActive ? 'flex-4' : 'flex-1';
 }
-
 </script>

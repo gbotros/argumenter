@@ -1,23 +1,16 @@
 <template>
   <div
     v-if="timeline?.getActiveVideoSegment()"
-    class="flex flex-col items-center bg-zinc-700 p-6 h-full w-full mx-auto"
-  >
+    class="flex flex-col items-center bg-zinc-700 p-6 h-full w-full mx-auto">
     <div
       class="flex flex-row items-start w-full h-full gap-6"
-      :class="{ 'gap-0': timeline?.getActiveConcurrentTextSegment() }"
-    >
+      :class="{ 'gap-0': timeline?.getActiveVideoComment() }">
       <div
         ref="youtubePlayer"
         class="flex-1 aspect-video rounded-lg bg-black relative overflow-hidden mb-4"
-        :class="{ 'flex-[2_1_0]': timeline?.getActiveConcurrentTextSegment() }"
-      ></div>
-      <div class="flex-1 h-full"  v-if="timeline?.getActiveConcurrentTextSegment()">
-
-        <ConcurrentTextualSegmentView
-
-        />
-
+        :class="{ 'flex-[2_1_0]': timeline?.getActiveVideoComment() }"></div>
+      <div class="flex-1 h-full" v-if="timeline?.getActiveVideoComment()">
+        <VideoCommentView />
       </div>
     </div>
   </div>
@@ -28,7 +21,7 @@ import { ref, watch, onMounted, onUnmounted, nextTick, inject } from 'vue';
 import { useTimelineStore } from '@/timeline/stores/timelineStore';
 import { storeToRefs } from 'pinia';
 import type { Logger } from '../types/logger';
-import ConcurrentTextualSegmentView from './ConcurrentTextualSegmentView.vue';
+import VideoCommentView from './VideoCommentView.vue';
 
 const timelineStore = useTimelineStore();
 const { isPaused, timeline } = storeToRefs(timelineStore);
@@ -118,7 +111,7 @@ function destroyPlayer() {
 function updateCurrentTime() {
   if (!player) return;
   if (typeof player.getCurrentTime !== 'function') return;
-    const activeVideoSegment = timeline.value?.getActiveVideoSegment();
+  const activeVideoSegment = timeline.value?.getActiveVideoSegment();
   if (!activeVideoSegment) return;
 
   const currentTime = player.getCurrentTime();
@@ -156,17 +149,14 @@ watch(
   },
 );
 
-watch(
-   isPaused,
-  (paused) => {
-    if (!timeline.value?.getActiveVideoSegment()) return;
-    if (paused) {
-      pauseVideo();
-    } else {
-      playVideo();
-    }
-  },
-);
+watch(isPaused, (paused) => {
+  if (!timeline.value?.getActiveVideoSegment()) return;
+  if (paused) {
+    pauseVideo();
+  } else {
+    playVideo();
+  }
+});
 
 onUnmounted(() => {
   if (interval) clearInterval(interval);
@@ -203,6 +193,4 @@ function syncPlayerStateWithStoreIfNeeded() {
     playVideo();
   }
 }
-
-
 </script>

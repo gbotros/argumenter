@@ -1,5 +1,5 @@
 // Demo timeline data for TimelinePlayer
-import { TextualSegment, VideoSegment, ConcurrentTextualSegment } from '.';
+import { TextualSegment, VideoSegment, VideoComment } from '.';
 import type { StanceType } from '.';
 
 export const demoSegmentsRaw = [
@@ -19,7 +19,7 @@ export const demoSegmentsRaw = [
     description: 'Opening argument video',
     startAt: 1,
     endAt: 187,
-    concurrentTextSegments: [
+    videoComments: [
       {
         id: 1.1,
         stance: 'main' as StanceType,
@@ -35,8 +35,8 @@ export const demoSegmentsRaw = [
         description: 'Again We agree',
         startAt: 5,
         endAt: 30,
-      }
-    ]
+      },
+    ],
   },
   {
     id: 4,
@@ -46,7 +46,7 @@ export const demoSegmentsRaw = [
     description: 'Evolution hypothesis',
     startAt: 1,
     endAt: 56,
-    concurrentTextSegments: []
+    videoComments: [],
   },
   {
     id: 5,
@@ -56,7 +56,7 @@ export const demoSegmentsRaw = [
     description: 'Evolution is a theory',
     startAt: 175,
     endAt: 236,
-    concurrentTextSegments: []
+    videoComments: [],
   },
   {
     id: 6,
@@ -66,7 +66,7 @@ export const demoSegmentsRaw = [
     description: 'Origin of life and the big bang theory',
     startAt: 56,
     endAt: 247,
-    concurrentTextSegments: [
+    videoComments: [
       {
         id: 1.1,
         stance: 'main' as StanceType,
@@ -74,8 +74,8 @@ export const demoSegmentsRaw = [
         description: 'We agree',
         startAt: 56,
         endAt: 93,
-      }
-    ]
+      },
+    ],
   },
   {
     id: 10,
@@ -83,8 +83,8 @@ export const demoSegmentsRaw = [
     stance: 'main' as StanceType,
     content: 'The End',
     description: 'The End',
-    endAt: 10
-  }
+    endAt: 10,
+  },
 ];
 
 export const demoSegments = demoSegmentsRaw.map((seg) => {
@@ -97,7 +97,7 @@ export const demoSegments = demoSegmentsRaw.map((seg) => {
       seg.stance,
       seg.content ?? '',
       seg.description ?? '',
-      seg.endAt ?? 0
+      seg.endAt ?? 0,
     );
   } else if (seg.type === 'video') {
     return new VideoSegment(
@@ -107,23 +107,16 @@ export const demoSegments = demoSegmentsRaw.map((seg) => {
       seg.description ?? '',
       seg.startAt ?? 0,
       seg.endAt ?? 0,
-      (seg.concurrentTextSegments ?? []).map((ct: {
-        id: number;
-        content: string;
-        startAt: number;
-        endAt: number;
-        stance: StanceType;
-        description: string;
-      }) =>
-        new ConcurrentTextualSegment(
-          ct.id,
-          ct.stance,
-          ct.content,
-          ct.startAt,
-          ct.endAt,
-          ct.description
-        )
-      )
+      (seg.videoComments ?? []).map(
+        (ct: {
+          id: number;
+          content: string;
+          startAt: number;
+          endAt: number;
+          stance: StanceType;
+          description: string;
+        }) => new VideoComment(ct.id, ct.stance, ct.content, ct.startAt, ct.endAt, ct.description),
+      ),
     );
   }
   throw new Error('Unknown segment type');

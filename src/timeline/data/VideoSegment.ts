@@ -1,10 +1,10 @@
 import { Segment } from './Segment';
-import { ConcurrentTextualSegment } from './ConcurrentTextualSegment';
+import { VideoComment } from './VideoComment';
 import type { StanceType } from './index';
 
 export class VideoSegment extends Segment {
   videoId: string;
-  concurrentTextSegments: ConcurrentTextualSegment[];
+  videoComments: VideoComment[];
 
   constructor(
     id: number,
@@ -13,7 +13,7 @@ export class VideoSegment extends Segment {
     description: string,
     startAt: number,
     endAt: number,
-    concurrentTextSegments: ConcurrentTextualSegment[] = []
+    videoComments: VideoComment[] = [],
   ) {
     super(id, 'video', stance, description, startAt, endAt);
     if (startAt < 0 || endAt <= startAt) {
@@ -25,13 +25,14 @@ export class VideoSegment extends Segment {
     this.startAt = startAt;
     this.endAt = endAt;
     this.videoId = videoId;
-    this.concurrentTextSegments = concurrentTextSegments;
+    this.videoComments = videoComments;
   }
 
-  getActiveConcurrentTextSegment(): ConcurrentTextualSegment | null {
-    return this.concurrentTextSegments.find(
-      (concurrentSsegment) => concurrentSsegment.startAt <= this.currentlyAt && concurrentSsegment.endAt >= this.currentlyAt
-    ) ?? null;
+  getActiveVideoComment(): VideoComment | null {
+    return (
+      this.videoComments.find(
+        (comment) => comment.startAt <= this.currentlyAt && comment.endAt >= this.currentlyAt,
+      ) ?? null
+    );
   }
-
 }

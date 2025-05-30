@@ -5,21 +5,17 @@
     <div class="text-4xl">
       {{ timeline?.getActiveTextSegment()?.content }}
     </div>
-    <div class="text-2xl">
-      {{ timeline?.getActiveTextSegment()?.getRemainingTime() }}s
-    </div>
+    <div class="text-2xl">{{ timeline?.getActiveTextSegment()?.getRemainingTime() }}s</div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, inject } from 'vue';
+import { onMounted, onUnmounted } from 'vue';
 import { useTimelineStore } from '@/timeline/stores/timelineStore';
 import { storeToRefs } from 'pinia';
-import type { Logger } from '../types/logger';
 
 const timelineStore = useTimelineStore();
 const { timeline, isPaused } = storeToRefs(timelineStore);
-const logger = inject<Logger>('logger');
 const emit = defineEmits(['segment-complete']);
 
 let timer: number | null = null;
