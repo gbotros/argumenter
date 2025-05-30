@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 import type { StanceType, SegmentType } from '@/timeline/data';
 
 export interface VideoCommentForm {
@@ -27,23 +27,6 @@ export interface EditorSegment {
 
 export const useEditorStore = defineStore('editor', () => {
   const segments = ref<EditorSegment[]>([]);
-
-  // Load from localStorage on init
-  const saved = localStorage.getItem('argumenter_editor_segments');
-  if (saved) {
-    try {
-      segments.value = JSON.parse(saved);
-    } catch { }
-  }
-
-  // Persist to localStorage automatically
-  watch(
-    segments,
-    (val) => {
-      localStorage.setItem('argumenter_editor_segments', JSON.stringify(val));
-    },
-    { deep: true },
-  );
 
   function setSegments(newSegments: EditorSegment[]) {
     segments.value = newSegments;

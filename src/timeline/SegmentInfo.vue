@@ -41,7 +41,6 @@ function goToEditorWithPlayerSegments() {
   if (timeline.value && Array.isArray(timeline.value.segments)) {
     const plainSegments = timeline.value.segments.map((seg) => JSON.parse(JSON.stringify(seg)));
     editorStore.setSegments(plainSegments);
-    localStorage.setItem('argumenter_editor_segments', JSON.stringify(plainSegments));
   }
   router.push('/editor');
 }
