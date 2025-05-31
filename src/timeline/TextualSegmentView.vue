@@ -1,16 +1,50 @@
 <template>
   <div
-    v-if="timeline?.getActiveTextSegment()"
-    class="flex flex-col items-center justify-center p-6 w-full h-full mx-auto bg-zinc-700 gap-6">
-    <div class="text-4xl">
-      {{ timeline?.getActiveTextSegment()?.content }}
+    v-if="activeTextualSegment"
+    class="w-full h-full border border-zinc-600 p-6 bg-zinc-800 rounded-lg relative flex flex-col items-center">
+    <div class="max-w-2xl flex flex-col items-center">
+      <div class="text-4xl font-bold text-center mb-4">
+        {{ activeTextualSegment.title }}
+      </div>
+      <hr class="border-zinc-700 mb-4 w-full max-w-2xl" />
+
+      <div class="flex-1 flex-col items-center justify-center w-full mb-8">
+        <div class="text-3xl">
+          {{ activeTextualSegment.content }}
+        </div>
+      </div>
+
+      <div class="w-full max-w-2xl mt-4">
+        <div class="text-lg text-zinc-300 mb-2">Sources:</div>
+        <template v-if="sourcesList.length">
+          <ul class="list-disc list-inside space-y-1">
+            <li v-for="(src, idx) in sourcesList" :key="idx">
+              <a
+                :href="src"
+                target="_blank"
+                rel="noopener"
+                class="text-blue-400 underline hover:text-blue-200"
+                >{{ src }}</a
+              >
+            </li>
+          </ul>
+        </template>
+        <template v-else>
+          <div class="text-zinc-400 italic">No sources provided</div>
+        </template>
+      </div>
+
     </div>
-    <div class="text-2xl">{{ timeline?.getActiveTextSegment()?.getRemainingTime() }}s</div>
+
+    <div
+      class="absolute bottom-4 right-6 text-2xl bg-zinc-900 bg-opacity-80 px-4 py-2 rounded shadow text-blue-200 select-none">
+      {{ activeTextualSegment.getRemainingTime() }}s
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted } from 'vue';
+import { onMounted, onUnmounted, computed } from 'vue';
 import { useTimelineStore } from '@/timeline/stores/timelineStore';
 import { storeToRefs } from 'pinia';
 
@@ -18,18 +52,20 @@ const timelineStore = useTimelineStore();
 const { timeline, isPaused } = storeToRefs(timelineStore);
 const emit = defineEmits(['segment-complete']);
 
+const activeTextualSegment = computed(() => timeline.value?.getActiveTextSegment() ?? null);
+const sourcesList = computed(() => activeTextualSegment.value?.sources ?? []);
+
 let timer: number | null = null;
 
 function startTimer() {
   timer = window.setInterval(() => {
     if (isPaused.value) return;
-    const activeTextualSegment = timeline.value?.getActiveTextSegment();
-    if (!activeTextualSegment) return;
+    if (!activeTextualSegment.value) return;
 
-    const remainingTime = activeTextualSegment.getRemainingTime() ?? 0;
+    const remainingTime = activeTextualSegment.value.getRemainingTime() ?? 0;
     if (remainingTime > 0) {
-      const newAtTime = activeTextualSegment.getCurrentlyAtTime() + 1;
-      activeTextualSegment.setCurrentlyAtTime(newAtTime);
+      const newAtTime = activeTextualSegment.value.getCurrentlyAtTime() + 1;
+      activeTextualSegment.value.setCurrentlyAtTime(newAtTime);
     } else {
       completeSegment();
     }

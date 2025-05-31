@@ -20,6 +20,7 @@ export class TimelineFactory {
           seg.content ?? '',
           seg.title ?? '',
           seg.endAt ?? 0,
+          seg.sources ?? [],
         );
       } else if (seg.type === 'video') {
         return new VideoSegment(

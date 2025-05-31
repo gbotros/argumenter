@@ -123,6 +123,19 @@
           class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100" />
       </div>
     </div>
+    <div v-if="localSegment.type === 'text'" class="flex flex-col gap-2 mt-2">
+      <label class="block text-xs text-zinc-400 mb-1">Sources (URLs)</label>
+      <div v-for="(source, sIdx) in sourcesList" :key="sIdx" class="flex gap-2 items-center">
+        <input
+          v-model="localSegment.sources[sIdx]"
+          @change="save"
+          type="url"
+          placeholder="https://example.com/source"
+          class="flex-1 bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100" />
+        <button class="text-red-400 hover:text-red-200 transition" @click="removeSource(sIdx)">Remove</button>
+      </div>
+      <button class="mt-1 px-2 py-1 rounded bg-blue-700 text-white hover:bg-blue-600 transition w-fit" @click="addSource">Add Source</button>
+    </div>
     <div v-else class="flex flex-col md:flex-row gap-2">
       <div class="flex-1">
         <label class="block text-xs text-zinc-400 mb-1">YouTube Video ID</label>
@@ -173,7 +186,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, watch, computed } from 'vue';
 import type { EditorSegment } from '../stores/editorStore';
 import VideoCommentItem from './VideoCommentItem.vue';
 
@@ -201,6 +214,8 @@ watch(
   },
   { deep: true },
 );
+
+const sourcesList = computed(() => localSegment.value.sources ?? []);
 
 function save() {
   emit('save', { ...localSegment.value }, props.idx);
@@ -261,6 +276,18 @@ function addVideoComment() {
 function removeVideoComment(idx: number) {
   if (!localSegment.value.videoComments) return;
   localSegment.value.videoComments.splice(idx, 1);
+  save();
+}
+
+function addSource() {
+  if (!localSegment.value.sources) localSegment.value.sources = [];
+  localSegment.value.sources.push('');
+  save();
+}
+
+function removeSource(idx: number) {
+  if (!localSegment.value.sources) return;
+  localSegment.value.sources.splice(idx, 1);
   save();
 }
 </script>

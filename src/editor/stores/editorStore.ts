@@ -19,6 +19,7 @@ export interface EditorSegment {
   // For text
   content?: string;
   endAt?: number;
+  sources?: string[];
   // For video
   videoId?: string;
   startAt?: number;

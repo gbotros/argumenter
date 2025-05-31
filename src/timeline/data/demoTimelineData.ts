@@ -10,6 +10,7 @@ export const demoSegmentsRaw = [
     content: 'Welcome to the argument!',
     title: 'Introduction',
     endAt: 5, // used as endAt for TextualSegment
+    sources: [],
   },
   {
     id: 2,
@@ -84,6 +85,7 @@ export const demoSegmentsRaw = [
     content: 'The End',
     title: 'The End',
     endAt: 10,
+    sources: [],
   },
 ];
 
@@ -94,10 +96,11 @@ export const demoSegments = demoSegmentsRaw.map((seg) => {
   if (seg.type === 'text') {
     return new TextualSegment(
       seg.id,
-      seg.stance,
+      seg.stance as StanceType,
       seg.content ?? '',
       seg.title ?? '',
       seg.endAt ?? 0,
+      seg.sources ?? [],
     );
   } else if (seg.type === 'video') {
     return new VideoSegment(
