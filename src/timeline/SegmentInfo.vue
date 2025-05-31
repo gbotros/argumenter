@@ -6,7 +6,7 @@
         {{ timeline?.getActiveSegment()?.type === 'text' ? '📝' : '🎬' }}
       </span>
       <span class="font-bold text-lg">
-        {{ timeline?.getActiveSegment()?.description }}
+        {{ timeline?.getActiveSegment()?.title }}
       </span>
       <span class="ml-auto font-semibold flex items-center text-base">
         ⏳

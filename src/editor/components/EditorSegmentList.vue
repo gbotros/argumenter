@@ -80,7 +80,7 @@ function addSegment() {
     id: Date.now(),
     type: 'text',
     stance: 'main',
-    description: '',
+    title: '',
     content: '',
     endAt: 5,
   };

@@ -55,65 +55,61 @@
         </div>
       </div>
 
-      <div>
-        <label class="block text-xs text-zinc-400 mb-1" :for="`content-${comment.id}`"
-          >Content</label
-        >
-        <input
-          v-model="comment.content"
-          @change="save"
-          type="text"
-          maxlength="200"
-          placeholder="Comment content"
-          class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100"/>
+      <div class="flex flex-col md:flex-row gap-2">
+        <div class="flex-1"
+          :id="`video-comment-title-row-${comment.id}`"
+          :data-testid="`video-comment-title-row-${comment.id}`">
+          <label class="block text-xs text-zinc-400 mb-1" :for="`title-${comment.id}`"
+            >Title</label
+          >
+          <input
+            v-model="comment.title"
+            @change="save"
+            type="text"
+            maxlength="100"
+            placeholder="Title"
+            class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100"
+            :id="`title-${comment.id}`"
+            :data-testid="`title-${comment.id}`" />
+        </div>
+        <div class="flex-1">
+          <label class="block text-xs text-zinc-400 mb-1" :for="`content-${comment.id}`"
+            >Content</label
+          >
+          <input
+            v-model="comment.content"
+            @change="save"
+            type="text"
+            maxlength="200"
+            placeholder="Comment content"
+            class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100"/>
+        </div>
       </div>
 
-      <div
-        :id="`video-comment-description-row-${comment.id}`"
-        :data-testid="`video-comment-description-row-${comment.id}`">
-        <label class="block text-xs text-zinc-400 mb-1" :for="`description-${comment.id}`"
-          >Description</label
-        >
-        <input
-          v-model="comment.description"
-          @change="save"
-          type="text"
-          maxlength="100"
-          placeholder="Description"
-          class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100"
-          :id="`description-${comment.id}`"
-          :data-testid="`description-${comment.id}`" />
+      <div class="flex flex-col md:flex-row gap-2 w-full md:w-48 justify-between">
+        <div class="flex-1">
+          <label class="block text-xs text-zinc-400 mb-1" :for="`startAt-${comment.id}`">Start At (s)</label>
+          <input
+            v-model.number="comment.startAt"
+            @change="save"
+            type="number"
+            min="0"
+            max="36000"
+            placeholder="Start (s)"
+            class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100"/>
+        </div>
+        <div class="flex-1">
+          <label class="block text-xs text-zinc-400 mb-1" :for="`endAt-${comment.id}`">End At (s)</label>
+          <input
+            v-model.number="comment.endAt"
+            @change="save"
+            type="number"
+            min="1"
+            max="36000"
+            placeholder="End (s)"
+            class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100" />
+        </div>
       </div>
-
-    <div
-      class="flex flex-col gap-2 w-full md:w-48 justify-between">
-      <div>
-        <label class="block text-xs text-zinc-400 mb-1" :for="`startAt-${comment.id}`"
-          >Start At (s)</label
-        >
-        <input
-          v-model.number="comment.startAt"
-          @change="save"
-          type="number"
-          min="0"
-          max="36000"
-          placeholder="Start (s)"
-          class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100"/>
-      </div>
-      <div>
-        <label class="block text-xs text-zinc-400 mb-1" :for="`endAt-${comment.id}`"
-          >End At (s)</label
-        >
-        <input
-          v-model.number="comment.endAt"
-          @change="save"
-          type="number"
-          min="1"
-          max="36000"
-          placeholder="End (s)"
-          class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100" />
-      </div>
-    </div>
 
     </div>
 

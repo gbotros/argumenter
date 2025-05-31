@@ -7,7 +7,7 @@
       {{ timeline?.getActiveVideoComment()?.startAt }}s -
       {{ timeline?.getActiveVideoComment()?.endAt }}s
     </div>
-    <div class="text-xs text-center">{{ timeline?.getActiveVideoComment()?.description }}</div>
+    <div class="text-xs text-center">{{ timeline?.getActiveVideoComment()?.title }}</div>
   </div>
 </template>
 
