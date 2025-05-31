@@ -18,7 +18,7 @@ export const demoSegmentsRaw = [
     stance: 'main' as StanceType,
     videoId: 'QRxR98QLXyA',
     title: 'Opening argument video',
-    startAt: 1,
+    startAt: 2,
     endAt: 187,
     videoComments: [
       {

@@ -6,17 +6,26 @@
       class="flex flex-row w-full h-full"
       :class="isActiveComment ? 'gap-6' : 'gap-0'">
       <div
-        class="transition-all duration-5000"
+        class="transition-all duration-500 ease-in-out"
         :class="isActiveComment ? 'flex-50' : 'flex-100'">
         <div
           ref="youtubePlayer"
           class=" bg-black aspect-video rounded-lg relative overflow-hidden mb-4 "></div>
       </div>
 
-      <div class="h-full transition-all duration-5000 ease-in-out"
-       :class="isActiveComment ? 'flex-50 opacity-100' : 'flex-0 opacity-0'">
-        <VideoCommentView v-if="isActiveComment"/>
-      </div>
+      <Transition
+        enter-active-class="transition-all duration-500 ease-in-out"
+        enter-from-class="opacity-0 translate-x-64"
+        enter-to-class="opacity-100 translate-x-0"
+        leave-active-class="transition-all duration-500 ease-in-out"
+        leave-from-class="opacity-100 translate-x-0"
+        leave-to-class="opacity-0 translate-x-64"
+        mode="out-in"
+      >
+        <div class="h-full flex-50" v-if="isActiveComment">
+          <VideoCommentView />
+        </div>
+      </Transition>
     </div>
   </div>
 </template>
