@@ -8,10 +8,10 @@ export class TextualSegment extends Segment {
     id: number,
     stance: StanceType,
     content: string,
-    description: string,
+    title: string,
     endAt: number = 0,
   ) {
-    super(id, 'text', stance, description, 0, endAt);
+    super(id, 'text', stance, title, 0, endAt);
     if (!content || content.trim().length === 0) {
       throw new Error('TextualSegment requires non-empty content.');
     }

@@ -35,7 +35,7 @@ export class TimelineShareService {
             seg.id,
             seg.stance as StanceType,
             seg.content ?? '',
-            seg.description ?? '',
+            seg.title ?? '',
             seg.endAt ?? 0,
           );
         } else if (seg.type === 'video') {
@@ -43,20 +43,20 @@ export class TimelineShareService {
             seg.id,
             seg.stance as StanceType,
             seg.videoId ?? '',
-            seg.description ?? '',
+            seg.title ?? '',
             seg.startAt ?? 0,
             seg.endAt ?? 0,
 
-            (seg.videoComments ?? []).map(
-              (ct: any) =>
-                new VideoComment(
-                  Number(ct.id),
-                  ct.stance as StanceType,
-                  ct.content ?? '',
-                  ct.startAt ?? 0,
-                  ct.endAt ?? 0,
-                  ct.description ?? '',
-                ),
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (seg.videoComments ?? []).map((ct: any) =>
+              new VideoComment(
+                Number(ct.id),
+                ct.stance as StanceType,
+                ct.content ?? '',
+                ct.startAt ?? 0,
+                ct.endAt ?? 0,
+                ct.title ?? ''
+              ),
             ),
           );
         } else {

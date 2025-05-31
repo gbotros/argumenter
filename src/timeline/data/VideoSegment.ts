@@ -10,12 +10,12 @@ export class VideoSegment extends Segment {
     id: number,
     stance: StanceType,
     videoId: string,
-    description: string,
+    title: string,
     startAt: number,
     endAt: number,
     videoComments: VideoComment[] = [],
   ) {
-    super(id, 'video', stance, description, startAt, endAt);
+    super(id, 'video', stance, title, startAt, endAt);
     if (startAt < 0 || endAt <= startAt) {
       throw new Error('Invalid video segment time range.');
     }

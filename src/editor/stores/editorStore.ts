@@ -6,7 +6,7 @@ export interface VideoCommentForm {
   id: number | string;
   stance: StanceType;
   content: string;
-  description: string;
+  title: string;
   startAt: number;
   endAt: number;
 }
@@ -15,7 +15,7 @@ export interface EditorSegment {
   id: number | string;
   type: SegmentType;
   stance: StanceType;
-  description: string;
+  title: string;
   // For text
   content?: string;
   endAt?: number;

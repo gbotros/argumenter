@@ -10,9 +10,9 @@ export class VideoComment extends Segment {
         content: string,
         startAt: number,
         endAt: number,
-        description: string,
+        title: string,
     ) {
-        super(id, 'text', stance, description, startAt, endAt);
+        super(id, 'text', stance, title, startAt, endAt);
         if (!content || content.trim().length === 0) {
             throw new Error('VideoComment requires non-empty content.');
         }

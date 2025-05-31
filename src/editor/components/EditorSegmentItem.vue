@@ -43,9 +43,9 @@
     </div>
     <div class="flex flex-col md:flex-row gap-2">
       <div class="flex-1">
-        <label class="block text-xs text-zinc-400 mb-1">Description</label>
+        <label class="block text-xs text-zinc-400 mb-1">Title</label>
         <input
-          v-model="localSegment.description"
+          v-model="localSegment.title"
           @change="save"
           type="text"
           maxlength="100"
@@ -217,12 +217,14 @@ function onTypeChange() {
     delete localSegment.value.videoId;
     delete localSegment.value.startAt;
     delete localSegment.value.videoComments;
+    localSegment.value.title = '';
   } else {
     localSegment.value.videoId = '';
     localSegment.value.startAt = 0;
     localSegment.value.endAt = 5;
     localSegment.value.videoComments = [];
     delete localSegment.value.content;
+    localSegment.value.title = '';
   }
   save();
 }
@@ -249,7 +251,7 @@ function addVideoComment() {
     id: Date.now() + Math.random(),
     stance: 'main',
     content: '',
-    description: '',
+    title: '',
     startAt: 0,
     endAt: 5,
   });

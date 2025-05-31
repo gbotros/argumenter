@@ -18,7 +18,7 @@ export class TimelineFactory {
           Number(seg.id),
           seg.stance as StanceType,
           seg.content ?? '',
-          seg.description ?? '',
+          seg.title ?? '',
           seg.endAt ?? 0,
         );
       } else if (seg.type === 'video') {
@@ -26,7 +26,7 @@ export class TimelineFactory {
           Number(seg.id),
           seg.stance as StanceType,
           seg.videoId ?? '',
-          seg.description ?? '',
+          seg.title ?? '',
           seg.startAt ?? 0,
           seg.endAt ?? 0,
           (seg.videoComments ?? []).map(
@@ -37,7 +37,7 @@ export class TimelineFactory {
                 ct.content ?? '',
                 ct.startAt ?? 0,
                 ct.endAt ?? 0,
-                ct.description ?? '',
+                ct.title ?? '',
               ),
           ),
         );

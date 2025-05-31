@@ -8,7 +8,7 @@ export const demoSegmentsRaw = [
     type: 'text',
     stance: 'main' as StanceType,
     content: 'Welcome to the argument!',
-    description: 'Introduction',
+    title: 'Introduction',
     endAt: 5, // used as endAt for TextualSegment
   },
   {
@@ -16,7 +16,7 @@ export const demoSegmentsRaw = [
     type: 'video',
     stance: 'main' as StanceType,
     videoId: 'QRxR98QLXyA',
-    description: 'Opening argument video',
+    title: 'Opening argument video',
     startAt: 1,
     endAt: 187,
     videoComments: [
@@ -24,7 +24,7 @@ export const demoSegmentsRaw = [
         id: 1.1,
         stance: 'main' as StanceType,
         content: 'I agree with you father Luka that this is not the evolution theory.',
-        description: 'We agree',
+        title: 'We agree',
         startAt: 40,
         endAt: 50,
       },
@@ -32,7 +32,7 @@ export const demoSegmentsRaw = [
         id: 1.2,
         stance: 'main' as StanceType,
         content: 'Again we agree',
-        description: 'Again We agree',
+        title: 'Again We agree',
         startAt: 5,
         endAt: 30,
       },
@@ -43,7 +43,7 @@ export const demoSegmentsRaw = [
     type: 'video',
     stance: 'main' as StanceType,
     videoId: 'LEx3K50DQ4M',
-    description: 'Evolution hypothesis',
+    title: 'Evolution hypothesis',
     startAt: 1,
     endAt: 56,
     videoComments: [],
@@ -53,7 +53,7 @@ export const demoSegmentsRaw = [
     type: 'video',
     stance: 'against' as StanceType,
     videoId: 'lqk3TKuGNBA',
-    description: 'Evolution is a theory',
+    title: 'Evolution is a theory',
     startAt: 175,
     endAt: 236,
     videoComments: [],
@@ -63,7 +63,7 @@ export const demoSegmentsRaw = [
     type: 'video',
     stance: 'main' as StanceType,
     videoId: 'LEx3K50DQ4M',
-    description: 'Origin of life and the big bang theory',
+    title: 'Origin of life and the big bang theory',
     startAt: 56,
     endAt: 247,
     videoComments: [
@@ -71,7 +71,7 @@ export const demoSegmentsRaw = [
         id: 1.1,
         stance: 'main' as StanceType,
         content: 'We agree again that is not the theory of evolution.',
-        description: 'We agree',
+        title: 'We agree',
         startAt: 56,
         endAt: 93,
       },
@@ -82,7 +82,7 @@ export const demoSegmentsRaw = [
     type: 'text',
     stance: 'main' as StanceType,
     content: 'The End',
-    description: 'The End',
+    title: 'The End',
     endAt: 10,
   },
 ];
@@ -96,7 +96,7 @@ export const demoSegments = demoSegmentsRaw.map((seg) => {
       seg.id,
       seg.stance,
       seg.content ?? '',
-      seg.description ?? '',
+      seg.title ?? '',
       seg.endAt ?? 0,
     );
   } else if (seg.type === 'video') {
@@ -104,7 +104,7 @@ export const demoSegments = demoSegmentsRaw.map((seg) => {
       seg.id,
       seg.stance,
       seg.videoId ?? '',
-      seg.description ?? '',
+      seg.title ?? '',
       seg.startAt ?? 0,
       seg.endAt ?? 0,
       (seg.videoComments ?? []).map(
@@ -114,8 +114,8 @@ export const demoSegments = demoSegmentsRaw.map((seg) => {
           startAt: number;
           endAt: number;
           stance: StanceType;
-          description: string;
-        }) => new VideoComment(ct.id, ct.stance, ct.content, ct.startAt, ct.endAt, ct.description),
+          title: string;
+        }) => new VideoComment(ct.id, ct.stance, ct.content, ct.startAt, ct.endAt, ct.title),
       ),
     );
   }

@@ -13,7 +13,7 @@
           getButtonFlexClass(segment),
         ]">
         <div class="flex-1 truncate whitespace-normal break-words line-clamp-2">
-          {{ segment.description }}
+          {{ segment.title }}
         </div>
 
         <div

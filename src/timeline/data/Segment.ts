@@ -4,7 +4,7 @@ export abstract class Segment {
   id: number;
   type: SegmentType;
   stance: StanceType;
-  description: string;
+  title: string;
   startAt: number;
   protected currentlyAt: number;
   endAt: number;
@@ -16,21 +16,21 @@ export abstract class Segment {
     id: number,
     type: SegmentType,
     stance: StanceType,
-    description: string,
+    title: string,
     startAt: number,
     endAt: number,
   ) {
     if (startAt < 0 || endAt <= startAt) {
       throw new Error('Invalid startAt/endAt values for VideoComment.');
     }
-    if (!description || description.trim().length === 0) {
-      throw new Error('Segment requires a non-empty description.');
+    if (!title || title.trim().length === 0) {
+      throw new Error('Segment requires a non-empty title.');
     }
 
     this.id = id;
     this.type = type;
     this.stance = stance;
-    this.description = description;
+    this.title = title;
     this.startAt = startAt;
     this.endAt = endAt;
     this.isVisited = false;
