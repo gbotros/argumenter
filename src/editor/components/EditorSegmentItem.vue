@@ -15,13 +15,28 @@
       <span class="font-bold text-blue-300">{{
         localSegment.type === 'text' ? '📝 Text' : '🎬 Video'
       }}</span>
-      <select
-        v-model="localSegment.type"
-        @change="onTypeChange"
-        class="bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100 ml-2">
-        <option value="text">Text</option>
-        <option value="video">Video</option>
-      </select>
+      <div class="flex gap-4 items-center" id="segment-type-radio-group" >
+        <label class="inline-flex items-center gap-1 cursor-pointer">
+          <input
+            type="radio"
+            v-model="localSegment.type"
+            value="text"
+            @change="onTypeChange"
+            class="accent-blue-500"
+          />
+          <span :class="['text-blue-400', localSegment.type === 'text' ? 'font-bold' : 'font-normal']">Text</span>
+        </label>
+        <label class="inline-flex items-center gap-1 cursor-pointer">
+          <input
+            type="radio"
+            v-model="localSegment.type"
+            value="video"
+            @change="onTypeChange"
+            class="accent-green-500"
+          />
+          <span :class="['text-green-400', localSegment.type === 'video' ? 'font-bold' : 'font-normal']">Video</span>
+        </label>
+      </div>
       <button class="text-red-400 hover:text-red-200 transition ml-auto" @click="handleDelete">
         Delete
       </button>
