@@ -24,7 +24,9 @@ export class Timeline {
 
   activateSegment(id: number): void {
     const sIndex = this.getSegmentIndexById(id);
-    if (sIndex) this.activateSegmentByIndex(sIndex);
+
+    if (sIndex === null) return;
+    if (sIndex >= 0) this.activateSegmentByIndex(sIndex);
   }
 
   activateNextSegment(): void {
@@ -106,7 +108,6 @@ export class Timeline {
   }
 
   private activateSegmentByIndex(index: number): void {
-    debugger;
     const segment = this.getSegmentByIndex(index);
     if (!segment) return;
 
