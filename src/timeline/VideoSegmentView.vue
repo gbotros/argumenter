@@ -1,16 +1,21 @@
 <template>
   <div
     v-if="timeline?.getActiveVideoSegment()"
-    class="flex flex-col items-center bg-zinc-700 p-6 h-full w-full mx-auto">
+    class="flex flex-col bg-zinc-700 p-6 h-full w-full mx-auto">
     <div
-      class="flex flex-row items-start w-full h-full gap-6"
-      :class="{ 'gap-0': timeline?.getActiveVideoComment() }">
+      class="flex flex-row w-full h-full"
+      :class="isActiveComment ? 'gap-6' : 'gap-0'">
       <div
-        ref="youtubePlayer"
-        class="flex-1 aspect-video rounded-lg bg-black relative overflow-hidden mb-4"
-        :class="{ 'flex-[2_1_0]': timeline?.getActiveVideoComment() }"></div>
-      <div class="flex-1 h-full" v-if="timeline?.getActiveVideoComment()">
-        <VideoCommentView />
+        class="transition-all duration-5000"
+        :class="isActiveComment ? 'flex-50' : 'flex-100'">
+        <div
+          ref="youtubePlayer"
+          class=" bg-black aspect-video rounded-lg relative overflow-hidden mb-4 "></div>
+      </div>
+
+      <div class="h-full transition-all duration-5000 ease-in-out"
+       :class="isActiveComment ? 'flex-50 opacity-100' : 'flex-0 opacity-0'">
+        <VideoCommentView v-if="isActiveComment"/>
       </div>
     </div>
   </div>
@@ -29,6 +34,7 @@ const logger = inject<Logger>('logger');
 const youtubePlayer = ref<HTMLElement | null>(null);
 let player: YT.Player | null = null;
 const emit = defineEmits(['segment-complete']);
+const isActiveComment = ref(false);
 
 function completeSegment() {
   emit('segment-complete');
@@ -146,6 +152,14 @@ watch(
     } else if (!newSegment) {
       destroyPlayer();
     }
+  },
+);
+
+
+watch(
+  () => timeline.value?.getActiveVideoComment(),
+  (newComment, oldComment) => {
+    isActiveComment.value = !!newComment;
   },
 );
 
