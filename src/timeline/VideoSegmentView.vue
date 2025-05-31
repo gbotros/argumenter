@@ -15,11 +15,11 @@
 
       <Transition
         enter-active-class="transition-all duration-500 ease-in-out"
-        enter-from-class="opacity-0 translate-x-64"
+        enter-from-class="opacity-0 translate-x-full"
         enter-to-class="opacity-100 translate-x-0"
         leave-active-class="transition-all duration-500 ease-in-out"
         leave-from-class="opacity-100 translate-x-0"
-        leave-to-class="opacity-0 translate-x-64"
+        leave-to-class="opacity-0 translate-x-full"
         mode="out-in"
       >
         <div class="h-full flex-50" v-if="isActiveComment">
