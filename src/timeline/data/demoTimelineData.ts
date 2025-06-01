@@ -7,8 +7,10 @@ export const demoSegmentsRaw = [
     id: 1,
     type: 'text',
     stance: 'main' as StanceType,
-    content: 'Welcome to the argument!',
-    title: 'Introduction',
+    title: `
+        نظريه التطور
+        `,
+    content: 'Lets Discuss the theory of evolution',
     endAt: 5, // used as endAt for TextualSegment
     sources: [],
   },
@@ -17,25 +19,27 @@ export const demoSegmentsRaw = [
     type: 'video',
     stance: 'main' as StanceType,
     videoId: 'QRxR98QLXyA',
-    title: 'Opening argument video',
-    startAt: 2,
+    title: 'تخاريف ١ ',
+    startAt: 3,
+    endAt: 57,
+    videoComments: [],
+  },
+  {
+    id: 3,
+    type: 'video',
+    stance: 'main' as StanceType,
+    videoId: 'QRxR98QLXyA',
+    title: 'تخاريف ١ ',
+    startAt: 163,
     endAt: 187,
     videoComments: [
       {
-        id: 1.1,
-        stance: 'main' as StanceType,
-        content: 'I agree with you father Luka that this is not the evolution theory.',
-        title: 'We agree',
-        startAt: 40,
-        endAt: 50,
-      },
-      {
-        id: 1.2,
-        stance: 'main' as StanceType,
-        content: 'Again we agree',
-        title: 'Again We agree',
-        startAt: 5,
-        endAt: 30,
+        id: 3.1,
+        stance: 'supporting' as StanceType,
+        title: 'شكرا',
+        content: 'شكرا ياابونا علي التوضيح طبعا مش هيه دي نظريه التطور',
+        startAt: 180,
+        endAt: 187,
       },
     ],
   },
@@ -44,46 +48,181 @@ export const demoSegmentsRaw = [
     type: 'video',
     stance: 'main' as StanceType,
     videoId: 'LEx3K50DQ4M',
-    title: 'Evolution hypothesis',
+    title: `
+تخاريف 2
+  `,
     startAt: 1,
-    endAt: 56,
-    videoComments: [],
-  },
-  {
-    id: 5,
-    type: 'video',
-    stance: 'against' as StanceType,
-    videoId: 'lqk3TKuGNBA',
-    title: 'Evolution is a theory',
-    startAt: 175,
-    endAt: 236,
-    videoComments: [],
-  },
-  {
-    id: 6,
-    type: 'video',
-    stance: 'main' as StanceType,
-    videoId: 'LEx3K50DQ4M',
-    title: 'Origin of life and the big bang theory',
-    startAt: 56,
-    endAt: 247,
+    endAt: 57,
     videoComments: [
       {
-        id: 1.1,
-        stance: 'main' as StanceType,
-        content: 'We agree again that is not the theory of evolution.',
-        title: 'We agree',
-        startAt: 56,
-        endAt: 93,
+        id: 4.1,
+        stance: 'supporting' as StanceType,
+        title: `
+        نظريه التطور
+        `,
+        content: `
+        التطور هو نظرية علمية وليست فرضية
+        `,
+        startAt: 45,
+        endAt: 56,
       },
     ],
   },
   {
+    id: 5,
+    type: 'text',
+    stance: 'against' as StanceType,
+    title: `
+         التطور نظريه
+        `,
+    content: 'التطور هو نظرية ',
+    endAt: 10,
+    sources: ['https://www.britannica.com/science/evolution-scientific-theory'],
+  },
+  {
+    id: 6,
+    type: 'video',
+    stance: 'against' as StanceType,
+    videoId: 'lqk3TKuGNBA',
+    title: 'Fact vs. Theory vs. Hypothesis vs. Law… EXPLAINED!',
+    startAt: 35,
+    endAt: 236,
+    videoComments: [
+      {
+        id: 6.1,
+        stance: 'against' as StanceType,
+        title: 'correction',
+        content: 'I would say theories explain most of the observations, not all of them.',
+        startAt: 2 * 60 + 47,
+        endAt: 2 * 60 + 55,
+      },
+    ],
+  },
+  {
+    id: 7,
+    type: 'video',
+    stance: 'main' as StanceType,
+    videoId: 'LEx3K50DQ4M',
+    title: `
+        تخاريف 2`,
+    startAt: 48,
+    endAt: 4 * 60 + 14,
+    videoComments: [
+      {
+        id: 7.1,
+        stance: 'against' as StanceType,
+        title: `
+        متفقين
+        `,
+        content: `
+        احنا متفقين ان مش هي دي نظريه التطور
+        `,
+        startAt: 60,
+        endAt: 60 * 1 + 30,
+      },
+    ],
+  },
+  {
+    id: 8,
+    type: 'video',
+    stance: 'main' as StanceType,
+    videoId: 'qGHpQaI2P4s',
+    title: `
+        تخاريف 3
+        `,
+    startAt: 0,
+    endAt: 4 * 60 + 41,
+    videoComments: [
+      {
+        id: 8.1,
+        stance: 'against' as StanceType,
+        title: `
+        احنا متفقين
+        `,
+        content: `
+        احنا متفقين ان مش هي دي نظريه التطور
+        `,
+        startAt: 5,
+        endAt: 40,
+      },
+    ],
+  },
+  {
+    id: 9,
+    type: 'video',
+    stance: 'against' as StanceType,
+    videoId: 'GhHOjC4oxh8',
+    title: 'What is Evolution?',
+    startAt: 15,
+    endAt: 5 * 60 + 26,
+    videoComments: [],
+  },
+  {
     id: 10,
+    type: 'video',
+    stance: 'main' as StanceType,
+    videoId: 'Er08KFh9Pew',
+    title: `
+        تخاريف 4
+        `,
+    startAt: 0,
+    endAt: 4 * 60 + 38,
+    videoComments: [
+      {
+        id: 10.1,
+        stance: 'main' as StanceType,
+        title: `
+        نظريه  لامارك
+        `,
+        content: `
+        نظريه  لامارك مش هي نظريه التطور
+        `,
+        startAt: 35,
+        endAt: 2 * 60,
+      },
+      {
+        id: 10.2,
+        stance: 'main' as StanceType,
+        title: `
+        الفكره الاولي
+        `,
+        content: `
+        مش هي نظريه التطور
+        `,
+        startAt: 3 * 60 + 9,
+        endAt: 3 * 60 + 13,
+      },
+      {
+        id: 10.3,
+        stance: 'main' as StanceType,
+        title: `
+        الفكره الثانيه
+        `,
+        content: `
+        مش هي نظريه التطور
+        `,
+        startAt: 3 * 60 + 16,
+        endAt: 3 * 60 + 44,
+      },
+      {
+        id: 10.4,
+        stance: 'main' as StanceType,
+        title: `
+        الفكره الثالثه
+        `,
+        content: `
+قدسك مشرحتلناش ليه الانسان مش ممكن يكون ليه سلف مشترك مع القرده        `,
+        startAt: 3 * 60 + 49,
+        endAt: 4 * 60 + 9,
+      },
+    ],
+  },
+  {
+    id: 11,
     type: 'text',
     stance: 'main' as StanceType,
-    content: 'The End',
-    title: 'The End',
+    content: 'Thank you',
+    title: 'Thank you',
     endAt: 10,
     sources: [],
   },

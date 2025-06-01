@@ -2,15 +2,13 @@
   <div
     v-if="timeline?.getActiveVideoSegment()"
     class="flex flex-col bg-zinc-700 p-6 h-full w-full mx-auto">
-    <div
-      class="flex flex-row w-full h-full"
-      :class="isActiveComment ? 'gap-6' : 'gap-0'">
+    <div class="flex flex-row w-full h-full" :class="isActiveComment ? 'gap-6' : 'gap-0'">
       <div
         class="transition-all duration-500 ease-in-out"
         :class="isActiveComment ? 'flex-50' : 'flex-100'">
         <div
           ref="youtubePlayer"
-          class=" bg-black aspect-video rounded-lg relative overflow-hidden mb-4 "></div>
+          class="bg-black aspect-video rounded-lg relative overflow-hidden mb-4"></div>
       </div>
 
       <Transition
@@ -20,8 +18,7 @@
         leave-active-class="transition-all duration-500 ease-in-out"
         leave-from-class="opacity-100 translate-x-0"
         leave-to-class="opacity-0 translate-x-full"
-        mode="out-in"
-      >
+        mode="out-in">
         <div class="h-full flex-50" v-if="isActiveComment">
           <VideoCommentView />
         </div>
@@ -44,10 +41,6 @@ const youtubePlayer = ref<HTMLElement | null>(null);
 let player: YT.Player | null = null;
 const emit = defineEmits(['segment-complete']);
 const isActiveComment = ref(false);
-
-function completeSegment() {
-  emit('segment-complete');
-}
 
 function createPlayer() {
   if (!youtubePlayer.value) return;
@@ -123,6 +116,11 @@ function destroyPlayer() {
   }
 }
 
+function completeSegment() {
+  logger?.debug(`[VideoSegmentView] Completing segment`);
+  emit('segment-complete');
+}
+
 function updateCurrentTime() {
   if (!player) return;
   if (typeof player.getCurrentTime !== 'function') return;
@@ -134,6 +132,20 @@ function updateCurrentTime() {
 
   // sync timeline store with player state
   syncPlayerStateWithStoreIfNeeded();
+
+  completSegmentOnOrAfterEndAtTime(currentTime);
+}
+
+function completSegmentOnOrAfterEndAtTime(currentTime: number) {
+  const activeVideoSegment = timeline.value?.getActiveVideoSegment();
+  if (!activeVideoSegment) return;
+
+  if (currentTime >= activeVideoSegment.endAt) {
+    logger?.debug(
+      `[VideoSegmentView] Current time ${currentTime} reached endAt ${activeVideoSegment.endAt}. Completing segment.`,
+    );
+    completeSegment();
+  }
 }
 
 let interval: number | null = null;
@@ -163,7 +175,6 @@ watch(
     }
   },
 );
-
 
 watch(
   () => timeline.value?.getActiveVideoComment(),

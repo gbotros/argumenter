@@ -75,6 +75,7 @@ onMounted(() => {
 });
 
 function onSegmentComplete() {
+  logger.debug('[TimelinePlayer] Segment completed, activating next segment');
   timeline.value?.activateNextSegment();
 }
 </script>
