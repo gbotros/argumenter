@@ -1,5 +1,6 @@
 <template>
   <li
+    v-if="localSegment"
     :class="[
       'flex flex-col gap-2 bg-zinc-700 rounded p-4 group',
       { 'ring-2 ring-blue-400': dragOver },
