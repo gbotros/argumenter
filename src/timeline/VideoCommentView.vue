@@ -6,7 +6,7 @@
       {{ timeline?.getActiveVideoComment()?.title }}
     </div>
     <hr class="border-zinc-700 mb-4" />
-    <div class="flex flex-col items-center justify-center w-full text-3xl">
+    <div class="flex flex-col items-center justify-center w-full text-3xl whitespace-pre-line">
        {{ timeline?.getActiveVideoComment()?.content }}
     </div>
     <div

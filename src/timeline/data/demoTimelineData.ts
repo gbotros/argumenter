@@ -184,6 +184,18 @@ export const demoSegmentsRaw = [
         id: 10.2,
         stance: 'main' as StanceType,
         title: `
+          ليه لسه في ذئاب
+        `,
+        content: `
+        لو قبلنا ان الكلاب ليهم سلف مشترك مع الذئاب
+        و قياس علي نفس المنطق ليه لسه في ذئاب`,
+        startAt: 2 * 60 + 30,
+        endAt: 2 * 60 + 48,
+      },
+      {
+        id: 10.3,
+        stance: 'main' as StanceType,
+        title: `
         الفكره الاولي
         `,
         content: `
@@ -193,7 +205,7 @@ export const demoSegmentsRaw = [
         endAt: 3 * 60 + 13,
       },
       {
-        id: 10.3,
+        id: 10.4,
         stance: 'main' as StanceType,
         title: `
         الفكره الثانيه
@@ -205,13 +217,13 @@ export const demoSegmentsRaw = [
         endAt: 3 * 60 + 44,
       },
       {
-        id: 10.4,
+        id: 10.5,
         stance: 'main' as StanceType,
         title: `
         الفكره الثالثه
         `,
         content: `
-قدسك مشرحتلناش ليه الانسان مش ممكن يكون ليه سلف مشترك مع القرده        `,
+        قدسك مشرحتلناش ليه الانسان مش ممكن يكون ليه سلف مشترك مع القرده        `,
         startAt: 3 * 60 + 49,
         endAt: 4 * 60 + 9,
       },
@@ -219,6 +231,51 @@ export const demoSegmentsRaw = [
   },
   {
     id: 11,
+    type: 'video',
+    stance: 'against' as StanceType,
+    videoId: 'reXFwYEXQA0',
+    title: 'اَلْآثَار وَمِصْدَاقِيَّةِ اَلْكِتَابِ اَلْمُقَدَّسِ - القس لوقا ماهر',
+    startAt: 10 * 60 + 15,
+    endAt: 10 * 60 + 35,
+    videoComments: [],
+  },
+  {
+    id: 12,
+    type: 'video',
+    stance: 'against' as StanceType,
+    videoId: 'HhVRqC0GP0M',
+    title: `
+    حَقِيقَة اَلطُّوفَانِ اَلْكِتَابِيَّةِ - القمص أنطوني حنا
+    `,
+    startAt: 24 * 60 + 33,
+    endAt: 25 * 60 + 45,
+    videoComments: [
+      {
+        id: 12.1,
+        stance: 'against' as StanceType,
+        title: `رؤوس الاجناس`,
+        content: `Domestic Cat Chromosome Count: 38
+                  Geoffroy’s Cat Chromosome Count: 36
+                  Tiger Chromosome Count: 38
+        `,
+        startAt: 24 * 60 + 50,
+        endAt: 24 * 60 + 55,
+      }, {
+        id: 12.1,
+        stance: 'against' as StanceType,
+        title: `
+          رؤوس الاجناس`,
+        content: `Domestic Dog Chromosome Count: 78
+                  Red Fox Chromosome Count: 34
+                  Gray Wolf Chromosome Count: 78
+        `,
+        startAt: 24 * 60 + 56,
+        endAt: 25 * 60 + 10,
+      },
+    ],
+  },
+  {
+    id: 100,
     type: 'text',
     stance: 'main' as StanceType,
     content: 'Thank you',
