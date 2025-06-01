@@ -1,6 +1,5 @@
 <template>
   <li
-    v-if="localSegment"
     :class="[
       'flex flex-col gap-2 bg-zinc-700 rounded p-4 group',
       { 'ring-2 ring-blue-400': dragOver },
@@ -128,7 +127,7 @@
       <label class="block text-xs text-zinc-400 mb-1">Sources (URLs)</label>
       <div v-for="(source, sIdx) in sourcesList" :key="sIdx" class="flex gap-2 items-center">
         <input
-          v-model="localSegment.sources[sIdx]"
+          v-model="localSegment.sources![sIdx]"
           @change="save"
           type="url"
           placeholder="https://example.com/source"
