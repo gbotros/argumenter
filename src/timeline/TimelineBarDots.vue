@@ -12,6 +12,7 @@
           'flex flex-col items-center cursor-pointer gap-2 transition-all duration-200',
           getButtonFlexClass(segment),
         ]">
+
         <div class="flex-1 truncate whitespace-normal break-words line-clamp-2">
           {{ segment.title }}
         </div>
