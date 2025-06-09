@@ -1,12 +1,12 @@
 <template>
-  <div class="w-full h-full">
-    <div class="w-full h-full max-w-7xl mx-auto p-6 rounded-2xl flex flex-col">
+
+    <div id="timeline-player" class="flex-1 mx-auto p-6 rounded-2xl flex flex-col">
       <div>
         <SegmentInfo />
         <TimelineBarDots />
       </div>
 
-      <div class="w-full h-full">
+      <div class="flex-1 flex flex-col">
         <Transition
           enter-active-class="transition-all duration-500 ease-in-out"
           enter-from-class="opacity-0 translate-x-full"
@@ -30,7 +30,7 @@
         <TimelineControls />
       </div>
     </div>
-  </div>
+
 </template>
 
 <script setup lang="ts">

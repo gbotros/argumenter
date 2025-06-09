@@ -1,14 +1,15 @@
 <template>
   <div
     v-if="timeline?.getActiveVideoSegment()"
-    class="flex flex-col bg-zinc-700 p-6 h-full w-full mx-auto">
+    class="flex-1 flex flex-col bg-zinc-700 p-6 mx-auto">
     <div class="flex flex-row w-full h-full" :class="isActiveComment ? 'gap-6' : 'gap-0'">
       <div
         class="transition-all duration-500 ease-in-out"
         :class="isActiveComment ? 'flex-50' : 'flex-100'">
         <div
           ref="youtubePlayer"
-          class="bg-black aspect-video rounded-lg relative overflow-hidden mb-4"></div>
+          class="bg-black aspect-video rounded-lg relative overflow-hidden mb-4">
+        </div>
       </div>
 
       <Transition
