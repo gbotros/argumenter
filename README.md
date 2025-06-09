@@ -1,5 +1,7 @@
 # Argumenter: Interactive Timeline Argumentation App
 
+[Live Demo](https://gbotros.github.io/argumenter/)
+
 ## What is Argumenter?
 
 Argumenter is a web app that lets you explore and interact with arguments, debates, or presentations using a smart, visual timeline. Each point or segment is shown as a dot on a timeline, and you can jump between them, see supporting and opposing arguments, and follow the flow of a discussion or video.
