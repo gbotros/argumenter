@@ -13,9 +13,11 @@
           getButtonFlexClass(segment),
         ]">
 
-        <div class="flex-1 truncate whitespace-normal break-words line-clamp-2">
+        <div class="hidden sm:block">
+        <span class="truncate whitespace-normal break-words line-clamp-2">
           {{ segment.title }}
-        </div>
+        </span>
+      </div>
 
         <div
           :class="[
