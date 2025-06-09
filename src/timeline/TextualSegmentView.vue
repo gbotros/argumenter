@@ -1,20 +1,20 @@
 <template>
   <div
     v-if="activeTextualSegment"
-    class="w-full h-full border border-zinc-600 p-6 bg-zinc-800 rounded-lg relative flex flex-col items-center">
-    <div class="max-w-2xl flex flex-col items-center">
-      <div class="text-4xl font-bold text-center mb-4">
+    class="border border-zinc-600 p-6 bg-zinc-800 rounded-lg relative flex-1 flex flex-col items-center w-full">
+    <div class="flex flex-col items-center max-w-2xl">
+      <div class="text-4xl font-bold mb-4">
         {{ activeTextualSegment.title }}
       </div>
       <hr class="border-zinc-700 mb-4 w-full max-w-2xl" />
 
-      <div class="flex-1 flex-col items-center justify-center w-full mb-8">
+      <div class="flex-1 flex-col items-center justify-center w-full mb-16">
         <div class="text-3xl">
           {{ activeTextualSegment.content }}
         </div>
       </div>
 
-      <div class="w-full max-w-2xl mt-4">
+      <div class="w-full mt-4">
         <div class="text-lg text-zinc-300 mb-2">Sources:</div>
         <template v-if="sourcesList.length">
           <ul class="list-disc list-inside space-y-1">

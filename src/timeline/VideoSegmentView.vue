@@ -1,8 +1,8 @@
 <template>
   <div
     v-if="timeline?.getActiveVideoSegment()"
-    class="flex-1 flex flex-col bg-zinc-700 p-6 mx-auto">
-    <div class="flex flex-row w-full h-full" :class="isActiveComment ? 'gap-6' : 'gap-0'">
+    class="flex-1 flex flex-col items-stretch w-full bg-zinc-700 p-6">
+    <div class="flex-1 flex flex-row items-stretch" :class="isActiveComment ? 'gap-6' : 'gap-0'">
       <div
         class="transition-all duration-500 ease-in-out"
         :class="isActiveComment ? 'flex-50' : 'flex-100'">
@@ -20,7 +20,7 @@
         leave-from-class="opacity-100 translate-x-0"
         leave-to-class="opacity-0 translate-x-full"
         mode="out-in">
-        <div class="h-full flex-50" v-if="isActiveComment">
+        <div class="flex-50 flex flex-col items-stretch" v-if="isActiveComment">
           <VideoCommentView />
         </div>
       </Transition>

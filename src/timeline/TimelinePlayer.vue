@@ -1,12 +1,12 @@
 <template>
 
-    <div id="timeline-player" class="flex-1 mx-auto p-6 rounded-2xl flex flex-col">
+    <div id="timeline-player" class="flex-1 p-6 rounded-2xl flex flex-col items-stretch w-full">
       <div>
         <SegmentInfo />
         <TimelineBarDots />
       </div>
 
-      <div class="flex-1 flex flex-col">
+      <div class="flex-1 flex flex-col items-stretch w-full">
         <Transition
           enter-active-class="transition-all duration-500 ease-in-out"
           enter-from-class="opacity-0 translate-x-full"

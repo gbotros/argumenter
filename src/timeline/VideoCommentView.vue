@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="timeline?.getActiveVideoComment()"
-    class="flex flex-col w-full h-full border border-zinc-600 p-6 bg-zinc-800 rounded-lg relative">
+    class="flex-1 flex flex-col border border-zinc-600 p-6 bg-zinc-800 rounded-lg relative">
     <div class="text-4xl font-bold text-center mb-4">
       {{ timeline?.getActiveVideoComment()?.title }}
     </div>
