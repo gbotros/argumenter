@@ -1,0 +1,234 @@
+[
+    {
+        "id": 1,
+        "type": "text",
+        "stance": "main",
+        "title": "نظريه التطور",
+        "content": "Lets Discuss the theory of evolution",
+        "endAt": 5,
+        "sources": []
+    },
+    {
+        "id": 2,
+        "type": "video",
+        "stance": "main",
+        "videoId": "QRxR98QLXyA",
+        "title": "تخاريف ١ ",
+        "startAt": 3,
+        "endAt": 57,
+        "videoComments": []
+    },
+    {
+        "id": 3,
+        "type": "video",
+        "stance": "main",
+        "videoId": "QRxR98QLXyA",
+        "title": "تخاريف ١ ",
+        "startAt": 163,
+        "endAt": 187,
+        "videoComments": [
+            {
+                "id": 3.1,
+                "stance": "supporting",
+                "title": "شكرا",
+                "content": "شكرا ياابونا علي التوضيح طبعا مش هيه دي نظريه التطور",
+                "startAt": 180,
+                "endAt": 187
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "type": "video",
+        "stance": "main",
+        "videoId": "LEx3K50DQ4M",
+        "title": "تخاريف 2",
+        "startAt": 1,
+        "endAt": 57,
+        "videoComments": [
+            {
+                "id": 4.1,
+                "stance": "supporting",
+                "title": "نظريه التطور",
+                "content": "التطور هو نظرية علمية وليست فرضية",
+                "startAt": 45,
+                "endAt": 56
+            }
+        ]
+    },
+    {
+        "id": 5,
+        "type": "text",
+        "stance": "against",
+        "title": "التطور نظريه",
+        "content": "التطور هو نظرية ",
+        "endAt": 10,
+        "sources": [
+            "https://www.britannica.com/science/evolution-scientific-theory"
+        ]
+    },
+    {
+        "id": 6,
+        "type": "video",
+        "stance": "against",
+        "videoId": "lqk3TKuGNBA",
+        "title": "Fact vs. Theory vs. Hypothesis vs. Law… EXPLAINED!",
+        "startAt": 35,
+        "endAt": 236,
+        "videoComments": [
+            {
+                "id": 6.1,
+                "stance": "against",
+                "title": "correction",
+                "content": "I would say theories explain most of the observations, not all of them.",
+                "startAt": 167,
+                "endAt": 175
+            }
+        ]
+    },
+    {
+        "id": 7,
+        "type": "video",
+        "stance": "main",
+        "videoId": "LEx3K50DQ4M",
+        "title": "تخاريف 2",
+        "startAt": 48,
+        "endAt": 254,
+        "videoComments": [
+            {
+                "id": 7.1,
+                "stance": "against",
+                "title": "متفقين",
+                "content": "احنا متفقين ان مش هي دي نظريه التطور",
+                "startAt": 60,
+                "endAt": 90
+            }
+        ]
+    },
+    {
+        "id": 8,
+        "type": "video",
+        "stance": "main",
+        "videoId": "qGHpQaI2P4s",
+        "title": "تخاريف 3",
+        "startAt": 0,
+        "endAt": 281,
+        "videoComments": [
+            {
+                "id": 8.1,
+                "stance": "against",
+                "title": "احنا متفقين",
+                "content": "احنا متفقين ان مش هي دي نظريه التطور",
+                "startAt": 5,
+                "endAt": 40
+            }
+        ]
+    },
+    {
+        "id": 9,
+        "type": "video",
+        "stance": "against",
+        "videoId": "GhHOjC4oxh8",
+        "title": "What is Evolution?",
+        "startAt": 15,
+        "endAt": 326,
+        "videoComments": []
+    },
+    {
+        "id": 10,
+        "type": "video",
+        "stance": "main",
+        "videoId": "Er08KFh9Pew",
+        "title": "تخاريف 4",
+        "startAt": 0,
+        "endAt": 278,
+        "videoComments": [
+            {
+                "id": 10.1,
+                "stance": "main",
+                "title": "نظريه  لامارك",
+                "content": "نظريه  لامارك مش هي نظريه التطور",
+                "startAt": 35,
+                "endAt": 120
+            },
+            {
+                "id": 10.2,
+                "stance": "main",
+                "title": "ليه لسه في ذئاب",
+                "content": "لو قبلنا ان الكلاب ليهم سلف مشترك مع الذئاب\nو قياس علي نفس المنطق ليه لسه في ذئاب",
+                "startAt": 150,
+                "endAt": 168
+            },
+            {
+                "id": 10.3,
+                "stance": "main",
+                "title": "الفكره الاولي",
+                "content": "مش هي نظريه التطور",
+                "startAt": 189,
+                "endAt": 193
+            },
+            {
+                "id": 10.4,
+                "stance": "main",
+                "title": "الفكره الثانيه",
+                "content": "مش هي نظريه التطور",
+                "startAt": 196,
+                "endAt": 224
+            },
+            {
+                "id": 10.5,
+                "stance": "main",
+                "title": "الفكره الثالثه",
+                "content": "قدسك مشرحتلناش ليه الانسان مش ممكن يكون ليه سلف مشترك مع القرده",
+                "startAt": 229,
+                "endAt": 249
+            }
+        ]
+    },
+    {
+        "id": 11,
+        "type": "video",
+        "stance": "against",
+        "videoId": "reXFwYEXQA0",
+        "title": "اَلْآثَار وَمِصْدَاقِيَّةِ اَلْكِتَابِ اَلْمُقَدَّسِ - القس لوقا ماهر",
+        "startAt": 615,
+        "endAt": 635,
+        "videoComments": []
+    },
+    {
+        "id": 12,
+        "type": "video",
+        "stance": "against",
+        "videoId": "HhVRqC0GP0M",
+        "title": "حَقِيقَة اَلطُّوفَانِ اَلْكِتَابِيَّةِ - القمص أنطوني حنا",
+        "startAt": 1473,
+        "endAt": 1545,
+        "videoComments": [
+            {
+                "id": 12.1,
+                "stance": "against",
+                "title": "رؤوس الاجناس",
+                "content": "Domestic Cat Chromosome Count: 38\nGeoffroy’s Cat Chromosome Count: 36\nTiger Chromosome Count: 38",
+                "startAt": 1490,
+                "endAt": 1495
+            },
+            {
+                "id": 12.2,
+                "stance": "against",
+                "title": "رؤوس الاجناس",
+                "content": "Domestic Dog Chromosome Count: 78\nRed Fox Chromosome Count: 34\nGray Wolf Chromosome Count: 78",
+                "startAt": 1496,
+                "endAt": 1510
+            }
+        ]
+    },
+    {
+        "id": 100,
+        "type": "text",
+        "stance": "main",
+        "content": "Thank you",
+        "title": "Thank you",
+        "endAt": 10,
+        "sources": []
+    }
+]

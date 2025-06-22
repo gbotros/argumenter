@@ -3,10 +3,10 @@
 </script>
 
 <template>
-    <!-- <header>
+    <header>
       <h1>Argumenter</h1>
       <nav>Hello, this is the App.vue file.</nav>
-    </header> -->
+    </header>
     <main class="flex-1 flex flex-col items-stretch w-full">
 
       <router-view />
