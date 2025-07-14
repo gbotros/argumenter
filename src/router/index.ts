@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import TimelinePlayer from '@/timeline/TimelinePlayer.vue';
+import TimelinePlayer from '@/player/TimelinePlayer.vue';
 import TimelineEditor from '@/editor/TimelineEditor.vue';
 
 const router = createRouter({

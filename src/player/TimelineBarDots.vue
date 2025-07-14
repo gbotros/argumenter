@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { useTimelineStore } from '@/timeline/stores/timelineStore';
+import { useTimelineStore } from '@/player/stores/timelineStore';
 import { storeToRefs } from 'pinia';
 import type { Segment } from './data/Segment';
 

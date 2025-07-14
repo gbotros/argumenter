@@ -1,7 +1,7 @@
-import { Timeline } from '@/timeline/data';
-import type { Segment } from '@/timeline/data';
-import { TextualSegment, VideoSegment, VideoComment } from '@/timeline/data';
-import type { StanceType } from '@/timeline/data';
+import { Timeline } from '@/player/data';
+import type { Segment } from '@/player/data';
+import { TextualSegment, VideoSegment, VideoComment } from '@/player/data';
+import type { StanceType } from '@/player/data';
 
 export class TimelineShareService {
   /**

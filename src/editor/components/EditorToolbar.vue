@@ -30,8 +30,8 @@
 
 <script setup lang="ts">
 import { useEditorStore } from '../stores/editorStore';
-import { useTimelineStore } from '@/timeline/stores/timelineStore';
-import { TimelineFactory } from '@/timeline/services/TimelineFactory';
+import { useTimelineStore } from '@/player/stores/timelineStore';
+import { TimelineFactory } from '@/player/services/TimelineFactory';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
 

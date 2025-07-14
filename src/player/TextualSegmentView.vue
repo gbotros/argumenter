@@ -45,7 +45,7 @@
 
 <script setup lang="ts">
 import { onMounted, onUnmounted, computed } from 'vue';
-import { useTimelineStore } from '@/timeline/stores/timelineStore';
+import { useTimelineStore } from '@/player/stores/timelineStore';
 import { storeToRefs } from 'pinia';
 
 const timelineStore = useTimelineStore();

@@ -30,7 +30,7 @@
 
 <script setup lang="ts">
 import { ref, watch, onMounted, onUnmounted, nextTick, inject } from 'vue';
-import { useTimelineStore } from '@/timeline/stores/timelineStore';
+import { useTimelineStore } from '@/player/stores/timelineStore';
 import { storeToRefs } from 'pinia';
 import type { Logger } from '../types/logger';
 import VideoCommentView from './VideoCommentView.vue';

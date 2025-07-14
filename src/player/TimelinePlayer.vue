@@ -35,7 +35,7 @@
 
 <script setup lang="ts">
 import { onMounted } from 'vue';
-import { useTimelineStore } from '@/timeline/stores/timelineStore';
+import { useTimelineStore } from '@/player/stores/timelineStore';
 import { storeToRefs } from 'pinia';
 import { demoSegments } from './data/demoTimelineData';
 import TextualSegmentView from './TextualSegmentView.vue';

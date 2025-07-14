@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-import { useTimelineStore } from '@/timeline/stores/timelineStore';
+import { useTimelineStore } from '@/player/stores/timelineStore';
 import { useEditorStore } from '@/editor/stores/editorStore';
 import { storeToRefs } from 'pinia';
 import { useRouter, useRoute } from 'vue-router';

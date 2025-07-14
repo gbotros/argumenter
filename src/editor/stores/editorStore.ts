@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import type { StanceType, SegmentType } from '@/timeline/data';
+import type { StanceType, SegmentType } from '@/player/data';
 
 export interface VideoCommentForm {
   id: number | string;

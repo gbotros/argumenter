@@ -11,8 +11,8 @@ import EditorToolbar from './components/EditorToolbar.vue';
 import EditorSegmentList from './components/EditorSegmentList.vue';
 import { useRouter } from 'vue-router';
 import { useEditorStore } from './stores/editorStore';
-import { useTimelineStore } from '@/timeline/stores/timelineStore';
-import { TimelineFactory } from '@/timeline/services/TimelineFactory';
+import { useTimelineStore } from '@/player/stores/timelineStore';
+import { TimelineFactory } from '@/player/services/TimelineFactory';
 import { storeToRefs } from 'pinia';
 
 const router = useRouter();
