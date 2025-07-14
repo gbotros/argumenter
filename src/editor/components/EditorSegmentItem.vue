@@ -190,7 +190,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useEditorStore } from '../stores/editorStore';
-import type { EditorSegment } from '../stores/editorStore';
+import type { EditorSegment } from '../data/EditorSegment';
 import VideoCommentItem from './VideoCommentItem.vue';
 
 const props = defineProps<{

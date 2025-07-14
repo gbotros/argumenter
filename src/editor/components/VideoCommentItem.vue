@@ -107,7 +107,7 @@
 
 <script setup lang="ts">
 import { toRefs, computed } from 'vue';
-import type { EditorVideoComment } from '../stores/editorStore';
+import type { EditorVideoComment } from '../data/EditorVideoComment';
 import { useEditorStore } from '../stores/editorStore';
 
 const editorStore = useEditorStore();

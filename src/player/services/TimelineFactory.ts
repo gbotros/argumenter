@@ -2,7 +2,7 @@ import { Timeline } from '../data/Timeline';
 import { TextualSegment } from '../data/TextualSegment';
 import { VideoSegment } from '../data/VideoSegment';
 import { VideoComment } from '../data/VideoComment';
-import type { EditorSegment } from '../../editor/stores/editorStore';
+import type { EditorSegment } from '@/editor/data/EditorSegment';
 import type { Segment } from '../data/Segment';
 import type { StanceType } from '../data';
 import type { VideoCommentForm } from '../../editor/stores/editorStore';

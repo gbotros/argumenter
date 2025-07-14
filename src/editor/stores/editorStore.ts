@@ -1,30 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import type { StanceType, SegmentType } from '@/player/data';
-
-export interface EditorVideoComment {
-  id: string;
-  stance: StanceType;
-  content: string;
-  title: string;
-  startAt: number;
-  endAt: number;
-}
-
-export interface EditorSegment {
-  id: string;
-  type: SegmentType;
-  stance: StanceType;
-  title: string;
-  // For text
-  content?: string;
-  endAt?: number;
-  sources?: string[];
-  // For video
-  videoId?: string;
-  startAt?: number;
-  videoComments?: EditorVideoComment[];
-}
+import type { EditorSegment } from '../data/EditorSegment';
 
 export const useEditorStore = defineStore('editor', () => {
   const segments = ref<EditorSegment[]>([]);
