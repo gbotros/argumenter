@@ -1,7 +1,7 @@
 import type { SegmentType, StanceType } from './index';
 
 export abstract class Segment {
-  id: number;
+  id: string;
   type: SegmentType;
   stance: StanceType;
   title: string;
@@ -13,7 +13,7 @@ export abstract class Segment {
   isHovered?: boolean;
 
   protected constructor(
-    id: number,
+    id: string,
     type: SegmentType,
     stance: StanceType,
     title: string,

@@ -54,7 +54,6 @@ export const useEditorStore = defineStore('editor', () => {
     if (!segment.videoComments) segment.videoComments = [];
     segment.videoComments.push({
       id: (Date.now() + Math.random()).toString(),
-      stance: 'main',
       content: '',
       title: '',
       startAt: segment.startAt ?? 0,

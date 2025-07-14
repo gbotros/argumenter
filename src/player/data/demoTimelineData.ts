@@ -4,7 +4,7 @@ import type { StanceType } from '.';
 
 export const demoSegmentsRaw = [
   {
-    id: 1,
+    id: '1',
     type: 'text',
     stance: 'main' as StanceType,
     title: `What is Argumenter`,
@@ -13,7 +13,7 @@ export const demoSegmentsRaw = [
     sources: [],
   },
   {
-    id: 2,
+    id: '2',
     type: 'video',
     stance: 'main' as StanceType,
     videoId: '1A_CAkYt3GY',
@@ -22,16 +22,14 @@ export const demoSegmentsRaw = [
     endAt: 33,
     videoComments: [
       {
-        id: 2.1,
-        stance: 'supporting' as StanceType,
+        id: '2.1',
         title: 'Video Comment',
         content: 'Here you can express your opinion about the video content.',
         startAt: 14,
         endAt: 19,
       },
       {
-        id: 2.2,
-        stance: 'supporting' as StanceType,
+        id: '2.2',
         title: '2nd Video Comment',
         content: 'You can have many of these comments. on different time stamps.',
         startAt: 24,
@@ -40,7 +38,7 @@ export const demoSegmentsRaw = [
     ],
   },
   {
-    id: 3,
+    id: '3',
     type: 'text',
     stance: 'against' as StanceType,
     title: `Opposing Textual segment`,
@@ -50,7 +48,7 @@ export const demoSegmentsRaw = [
     sources: ['https://www.wikipedia.org/', 'https://www.britannica.com/'],
   },
   {
-    id: 4,
+    id: '4',
     type: 'video',
     stance: 'main' as StanceType,
     videoId: '1A_CAkYt3GY',
@@ -59,8 +57,7 @@ export const demoSegmentsRaw = [
     endAt: 60 + 28,
     videoComments: [
       {
-        id: 4.1,
-        stance: 'supporting' as StanceType,
+        id: '4.1',
         title: 'Did you notice the colored bars?',
         content:
           'They represent the stance of the segment. You can use them to quickly identify if the segment supports or opposes the main argument.',
@@ -70,7 +67,7 @@ export const demoSegmentsRaw = [
     ],
   },
   {
-    id: 5,
+    id: '5',
     type: 'text',
     stance: 'against' as StanceType,
     title: `Finally`,
@@ -105,13 +102,12 @@ export const demoSegments = demoSegmentsRaw.map((seg) => {
       seg.endAt ?? 0,
       (seg.videoComments ?? []).map(
         (ct: {
-          id: number;
+          id: string;
+          title: string;
           content: string;
           startAt: number;
           endAt: number;
-          stance: StanceType;
-          title: string;
-        }) => new VideoComment(ct.id, ct.stance, ct.content, ct.startAt, ct.endAt, ct.title),
+        }) => new VideoComment(ct.id, ct.content, ct.startAt, ct.endAt, ct.title),
       ),
     );
   }

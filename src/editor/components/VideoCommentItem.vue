@@ -1,45 +1,6 @@
 <template>
   <div class="flex flex-col md:flex-row gap-4 mb-2 p-3 rounded bg-zinc-800 border border-zinc-700">
     <div class="flex-1 flex flex-col gap-2">
-      <div>
-        <label class="block text-xs text-zinc-400 mb-1" :for="`stance-${comment.id}`">Stance</label>
-        <div class="flex gap-4">
-          <label
-            class="inline-flex items-center gap-1 cursor-pointer"
-            :for="`stance-main-${comment.id}`">
-            <input type="radio" v-model="comment.stance" value="main" class="accent-blue-500" />
-            <span
-              :class="['text-blue-400', comment.stance === 'main' ? 'font-bold' : 'font-normal']"
-              >Main</span
-            >
-          </label>
-          <label
-            class="inline-flex items-center gap-1 cursor-pointer"
-            :for="`stance-supporting-${comment.id}`">
-            <input
-              type="radio"
-              v-model="comment.stance"
-              value="supporting"
-              class="accent-green-500" />
-            <span
-              :class="[
-                'text-green-400',
-                comment.stance === 'supporting' ? 'font-bold' : 'font-normal',
-              ]"
-              >Supporting</span
-            >
-          </label>
-          <label
-            class="inline-flex items-center gap-1 cursor-pointer"
-            :for="`stance-against-${comment.id}`">
-            <input type="radio" v-model="comment.stance" value="against" class="accent-red-500" />
-            <span
-              :class="['text-red-400', comment.stance === 'against' ? 'font-bold' : 'font-normal']"
-              >Against</span
-            >
-          </label>
-        </div>
-      </div>
 
       <div class="flex flex-col md:flex-row gap-2">
         <div

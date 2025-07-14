@@ -1,21 +1,22 @@
-import { Segment } from './Segment';
-import type { StanceType } from './index';
-
-export class VideoComment extends Segment {
-  content: string;
-
+export class VideoComment {
   constructor(
-    id: number,
-    stance: StanceType,
-    content: string,
-    startAt: number,
-    endAt: number,
-    title: string,
+    public id: string,
+    public content: string,
+    public startAt: number,
+    public endAt: number,
+    public title: string,
   ) {
-    super(id, 'text', stance, title, startAt, endAt);
     if (!content || content.trim().length === 0) {
       throw new Error('VideoComment requires non-empty content.');
     }
-    this.content = content;
+
+    if (!title || title.trim().length === 0) {
+      throw new Error('VideoComment requires a non-empty title.');
+    }
+
+    if (startAt < 0 || endAt <= startAt) {
+      throw new Error('Invalid startAt/endAt values for VideoComment.');
+    }
+
   }
 }
