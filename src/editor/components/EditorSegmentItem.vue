@@ -37,7 +37,7 @@
           <span :class="['text-green-400', localSegment.type === 'video' ? 'font-bold' : 'font-normal']">Video</span>
         </label>
       </div>
-      <button class="text-red-400 hover:text-red-200 transition ml-auto" @click="handleDelete">
+      <button class="text-red-400 hover:text-red-200 transition ml-auto" @click="deleteSegment">
         Delete
       </button>
     </div>
@@ -46,7 +46,6 @@
         <label class="block text-xs text-zinc-400 mb-1">Title</label>
         <input
           v-model="localSegment.title"
-          @change="save"
           type="text"
           maxlength="100"
           class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100" />
@@ -59,7 +58,6 @@
               type="radio"
               v-model="localSegment.stance"
               value="main"
-              @change="save"
               class="accent-blue-500" />
             <span
               :class="[
@@ -74,7 +72,6 @@
               type="radio"
               v-model="localSegment.stance"
               value="supporting"
-              @change="save"
               class="accent-green-500" />
             <span
               :class="[
@@ -89,7 +86,6 @@
               type="radio"
               v-model="localSegment.stance"
               value="against"
-              @change="save"
               class="accent-red-500" />
             <span
               :class="[
@@ -107,7 +103,6 @@
         <label class="block text-xs text-zinc-400 mb-1">Content</label>
         <textarea
           v-model="localSegment.content"
-          @change="save"
           rows="2"
           maxlength="500"
           class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100"></textarea>
@@ -116,7 +111,6 @@
         <label class="block text-xs text-zinc-400 mb-1">Duration (s)</label>
         <input
           v-model.number="localSegment.endAt"
-          @change="save"
           type="number"
           min="1"
           max="600"
@@ -125,10 +119,9 @@
     </div>
     <div v-if="localSegment.type === 'text'" class="flex flex-col gap-2 mt-2">
       <label class="block text-xs text-zinc-400 mb-1">Sources (URLs)</label>
-      <div v-for="(source, sIdx) in sourcesList" :key="sIdx" class="flex gap-2 items-center">
+      <div v-for="(source, sIdx) in localSegment.sources" :key="sIdx" class="flex gap-2 items-center">
         <input
           v-model="localSegment.sources![sIdx]"
-          @change="save"
           type="url"
           placeholder="https://example.com/source"
           class="flex-1 bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100" />
@@ -141,7 +134,6 @@
         <label class="block text-xs text-zinc-400 mb-1">YouTube Video ID</label>
         <input
           v-model="localSegment.videoId"
-          @change="save"
           type="text"
           maxlength="20"
           class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100" />
@@ -150,7 +142,6 @@
         <label class="block text-xs text-zinc-400 mb-1">Start At (s)</label>
         <input
           v-model.number="localSegment.startAt"
-          @change="save"
           type="number"
           min="0"
           max="36000"
@@ -160,7 +151,6 @@
         <label class="block text-xs text-zinc-400 mb-1">End At (s)</label>
         <input
           v-model.number="localSegment.endAt"
-          @change="save"
           type="number"
           min="1"
           max="36000"
@@ -170,11 +160,10 @@
     <div v-if="localSegment.type === 'video'" class="mt-4">
       <label class="block text-xs text-zinc-400 mb-2">Video Comments</label>
       <VideoCommentItem
-        v-for="(comment, cIdx) in localSegment.videoComments"
+        v-for="(comment) in localSegment.videoComments"
         :key="comment.id"
         :comment="comment"
-        @save="save"
-        @remove="removeVideoComment(cIdx)"
+        :segmentId="localSegment.id"
       />
       <button
         class="mt-2 px-3 py-1 rounded bg-blue-700 text-white hover:bg-blue-600 transition"
@@ -186,43 +175,25 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue';
+import { ref } from 'vue';
+import { useEditorStore } from '../stores/editorStore';
 import type { EditorSegment } from '../stores/editorStore';
 import VideoCommentItem from './VideoCommentItem.vue';
 
 const props = defineProps<{
   segment: EditorSegment;
-  idx: number;
-  dragOver: boolean;
 }>();
 const emit = defineEmits([
-  'save',
-  'delete',
   'dragstart',
-  'dragover',
-  'dragleave',
-  'drop',
-  'dragend',
+  'drop'
 ]);
 
-const localSegment = ref({ ...props.segment });
+const localSegment = ref(props.segment);
+const dragOver = ref(false);
+const editorStore = useEditorStore();
 
-watch(
-  () => props.segment,
-  (newVal) => {
-    localSegment.value = { ...newVal };
-  },
-  { deep: true },
-);
-
-const sourcesList = computed(() => localSegment.value.sources ?? []);
-
-function save() {
-  emit('save', { ...localSegment.value }, props.idx);
-}
-
-function handleDelete() {
-  emit('delete', props.idx);
+function deleteSegment() {
+  editorStore.deleteSegment(props.segment.id);
 }
 
 function onTypeChange() {
@@ -241,55 +212,36 @@ function onTypeChange() {
     delete localSegment.value.content;
     localSegment.value.title = '';
   }
-  save();
 }
 
 function onDragStart(e: DragEvent) {
-  emit('dragstart', props.idx, e);
+  emit('dragstart', localSegment.value.id, e);
 }
+
 function onDragOverHandler(e: DragEvent) {
-  emit('dragover', props.idx, e);
+  dragOver.value = true;
 }
+
 function onDragLeave(e: DragEvent) {
-  emit('dragleave', props.idx, e);
+  dragOver.value = false;
 }
+
 function onDrop(e: DragEvent) {
-  emit('drop', props.idx, e);
-}
-function onDragEnd(e: DragEvent) {
-  emit('dragend', props.idx, e);
+  emit('drop', localSegment.value.id, e);
 }
 
 function addVideoComment() {
-  if (!localSegment.value.videoComments) localSegment.value.videoComments = [];
-  localSegment.value.videoComments.push({
-    id: Date.now() + Math.random(),
-    stance: 'main',
-    content: '',
-    title: '',
-    startAt: 0,
-    endAt: 5,
-  });
-  save();
-}
-
-function removeVideoComment(idx: number) {
-  if (!localSegment.value.videoComments) return;
-  localSegment.value.videoComments.splice(idx, 1);
-  save();
+  editorStore.addVideoComment(localSegment.value.id);
 }
 
 function addSource() {
-  if (!localSegment.value.sources) localSegment.value.sources = [];
-  localSegment.value.sources.push('');
-  save();
+  editorStore.addSource(localSegment.value.id);
 }
 
-function removeSource(idx: number) {
-  if (!localSegment.value.sources) return;
-  localSegment.value.sources.splice(idx, 1);
-  save();
+function removeSource(sourceIdx: number) {
+  editorStore.removeSource(localSegment.value.id, sourceIdx);
 }
+
 </script>
 
 <style scoped lang="scss"></style>

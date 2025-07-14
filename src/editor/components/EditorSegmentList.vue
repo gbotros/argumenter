@@ -2,18 +2,11 @@
   <div class="mb-8">
     <ul class="space-y-4">
       <EditorSegmentItem
-        v-for="(segment, idx) in segments"
+        v-for="segment in segments"
         :key="segment.id"
         :segment="segment"
-        :idx="idx"
-        :dragOver="dragOverIndex === idx"
-        @save="onSave"
-        @delete="handleDelete"
         @dragstart="onDragStart"
-        @dragover="onDragOver"
-        @dragleave="onDragLeave"
-        @drop="onDrop"
-        @dragend="onDragEnd" />
+        @drop="onDrop"/>
     </ul>
     <div class="flex justify-center mt-6">
       <button
@@ -32,60 +25,28 @@ import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useEditorStore } from '../stores/editorStore';
 import EditorSegmentItem from './EditorSegmentItem.vue';
-import type { EditorSegment } from '../stores/editorStore';
 
 const editorStore = useEditorStore();
 const { segments } = storeToRefs(editorStore);
 
-function handleDelete(idx: number) {
-  editorStore.deleteSegment(idx);
+const dragId = ref<string | null>(null);
+
+function onDragStart(id: string) {
+  dragId.value = id;
 }
 
-const dragIndex = ref<number | null>(null);
-const dragOverIndex = ref<number | null>(null);
-
-function onDragStart(idx: number) {
-  dragIndex.value = idx;
-}
-
-function onDragOver(idx: number) {
-  if (dragOverIndex.value !== idx) {
-    dragOverIndex.value = idx;
+function onDrop(id: string) {
+  if (dragId.value !== null && dragId.value !== id) {
+    editorStore.reorderSegments(dragId.value, id);
   }
-}
-
-function onDragLeave() {
-  dragOverIndex.value = null;
-}
-
-function onDrop(idx: number) {
-  if (dragIndex.value !== null && dragIndex.value !== idx) {
-    editorStore.reorderSegments(dragIndex.value, idx);
-  }
-  dragIndex.value = null;
-  dragOverIndex.value = null;
-}
-
-function onDragEnd() {
-  dragIndex.value = null;
-  dragOverIndex.value = null;
-}
-
-function onSave(segment: EditorSegment, idx: number) {
-  editorStore.updateSegment(idx, { ...segment });
+  dragId.value = null;
 }
 
 function addSegment() {
-  const newSegment: EditorSegment = {
-    id: Date.now(),
-    type: 'text',
-    stance: 'main',
-    title: '',
-    content: '',
-    endAt: 5,
-  };
-  editorStore.addSegment(newSegment);
+  editorStore.addNewSegment();
 }
+
+
 </script>
 
 <style scoped lang="scss"></style>

@@ -14,7 +14,6 @@
               type="radio"
               v-model="comment.stance"
               value="main"
-              @change="save"
               class="accent-blue-500" />
             <span
               :class="['text-blue-400', comment.stance === 'main' ? 'font-bold' : 'font-normal']"
@@ -28,7 +27,6 @@
               type="radio"
               v-model="comment.stance"
               value="supporting"
-              @change="save"
               class="accent-green-500" />
             <span
               :class="[
@@ -45,7 +43,6 @@
               type="radio"
               v-model="comment.stance"
               value="against"
-              @change="save"
               class="accent-red-500" />
             <span
               :class="['text-red-400', comment.stance === 'against' ? 'font-bold' : 'font-normal']"
@@ -64,7 +61,6 @@
           >
           <input
             v-model="comment.title"
-            @change="save"
             type="text"
             maxlength="100"
             placeholder="Title"
@@ -78,7 +74,6 @@
           >
           <input
             v-model="comment.content"
-            @change="save"
             type="text"
             maxlength="200"
             placeholder="Comment content"
@@ -91,7 +86,6 @@
           <label class="block text-xs text-zinc-400 mb-1" :for="`startAt-${comment.id}`">Start At (s)</label>
           <input
             v-model.number="comment.startAt"
-            @change="save"
             type="number"
             min="0"
             max="36000"
@@ -102,7 +96,6 @@
           <label class="block text-xs text-zinc-400 mb-1" :for="`endAt-${comment.id}`">End At (s)</label>
           <input
             v-model.number="comment.endAt"
-            @change="save"
             type="number"
             min="1"
             max="36000"
@@ -128,21 +121,21 @@
 
 <script setup lang="ts">
 import { toRefs } from 'vue';
-import type { VideoCommentForm } from '../stores/editorStore';
+import type { EditorVideoComment } from '../stores/editorStore';
+import { useEditorStore } from '../stores/editorStore';
 
+const editorStore = useEditorStore();
 const props = defineProps<{
-  comment: VideoCommentForm;
+  segmentId: string;
+  comment: EditorVideoComment;
 }>();
-const emit = defineEmits(['save', 'remove']);
 
 const { comment } = toRefs(props);
 
-function save() {
-  emit('save');
-}
 function remove() {
-  emit('remove');
+  editorStore.removeVideoComment(props.segmentId, props.comment.id);
 }
+
 </script>
 
 <style scoped lang="scss"></style>
