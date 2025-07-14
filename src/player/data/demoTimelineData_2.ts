@@ -260,7 +260,8 @@ export const demoSegmentsRaw = [
         `,
         startAt: 24 * 60 + 50,
         endAt: 24 * 60 + 55,
-      }, {
+      },
+      {
         id: 12.1,
         stance: 'against' as StanceType,
         title: `

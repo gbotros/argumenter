@@ -6,7 +6,7 @@
         :key="segment.id"
         :segment="segment"
         @dragstart="onDragStart"
-        @drop="onDrop"/>
+        @drop="onDrop" />
     </ul>
     <div class="flex justify-center mt-6">
       <button
@@ -45,8 +45,6 @@ function onDrop(id: string) {
 function addSegment() {
   editorStore.addNewSegment();
 }
-
-
 </script>
 
 <style scoped lang="scss"></style>

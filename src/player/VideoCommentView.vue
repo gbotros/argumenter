@@ -7,7 +7,7 @@
     </div>
     <hr class="border-zinc-700 mb-4" />
     <div class="flex flex-col items-center justify-center w-full text-3xl whitespace-pre-line">
-       {{ timeline?.getActiveVideoComment()?.content }}
+      {{ timeline?.getActiveVideoComment()?.content }}
     </div>
     <div
       class="absolute bottom-4 right-6 text-2xl bg-zinc-900 bg-opacity-80 px-4 py-2 rounded shadow text-blue-200 select-none">

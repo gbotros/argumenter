@@ -33,7 +33,6 @@
           <div class="text-zinc-400 italic">No sources provided</div>
         </template>
       </div>
-
     </div>
 
     <div

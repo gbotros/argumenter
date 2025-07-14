@@ -8,8 +8,7 @@
         :class="isActiveComment ? 'flex-50' : 'flex-100'">
         <div
           ref="youtubePlayer"
-          class="bg-black aspect-video rounded-lg relative overflow-hidden mb-4">
-        </div>
+          class="bg-black aspect-video rounded-lg relative overflow-hidden mb-4"></div>
       </div>
 
       <Transition
@@ -179,7 +178,7 @@ watch(
 
 watch(
   () => timeline.value?.getActiveVideoComment(),
-  (newComment, oldComment) => {
+  (newComment) => {
     isActiveComment.value = !!newComment;
   },
 );

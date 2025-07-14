@@ -8,23 +8,24 @@
     @dragstart="onDragStart"
     @dragover.prevent="onDragOverHandler"
     @dragleave="onDragLeave"
-    @drop="onDrop"
-    @dragend="onDragEnd">
+    @drop="onDrop">
     <div class="flex items-center gap-4">
       <span class="font-bold text-blue-300 cursor-move">☰</span>
       <span class="font-bold text-blue-300">{{
         localSegment.type === 'text' ? '📝 Text' : '🎬 Video'
       }}</span>
-      <div class="flex gap-4 items-center" id="segment-type-radio-group" >
+      <div class="flex gap-4 items-center" id="segment-type-radio-group">
         <label class="inline-flex items-center gap-1 cursor-pointer">
           <input
             type="radio"
             v-model="localSegment.type"
             value="text"
             @change="onTypeChange"
-            class="accent-blue-500"
-          />
-          <span :class="['text-blue-400', localSegment.type === 'text' ? 'font-bold' : 'font-normal']">Text</span>
+            class="accent-blue-500" />
+          <span
+            :class="['text-blue-400', localSegment.type === 'text' ? 'font-bold' : 'font-normal']"
+            >Text</span
+          >
         </label>
         <label class="inline-flex items-center gap-1 cursor-pointer">
           <input
@@ -32,9 +33,11 @@
             v-model="localSegment.type"
             value="video"
             @change="onTypeChange"
-            class="accent-green-500"
-          />
-          <span :class="['text-green-400', localSegment.type === 'video' ? 'font-bold' : 'font-normal']">Video</span>
+            class="accent-green-500" />
+          <span
+            :class="['text-green-400', localSegment.type === 'video' ? 'font-bold' : 'font-normal']"
+            >Video</span
+          >
         </label>
       </div>
       <button class="text-red-400 hover:text-red-200 transition ml-auto" @click="deleteSegment">
@@ -119,15 +122,24 @@
     </div>
     <div v-if="localSegment.type === 'text'" class="flex flex-col gap-2 mt-2">
       <label class="block text-xs text-zinc-400 mb-1">Sources (URLs)</label>
-      <div v-for="(source, sIdx) in localSegment.sources" :key="sIdx" class="flex gap-2 items-center">
+      <div
+        v-for="(source, sIdx) in localSegment.sources"
+        :key="sIdx"
+        class="flex gap-2 items-center">
         <input
           v-model="localSegment.sources![sIdx]"
           type="url"
           placeholder="https://example.com/source"
           class="flex-1 bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100" />
-        <button class="text-red-400 hover:text-red-200 transition" @click="removeSource(sIdx)">Remove</button>
+        <button class="text-red-400 hover:text-red-200 transition" @click="removeSource(sIdx)">
+          Remove
+        </button>
       </div>
-      <button class="mt-1 px-2 py-1 rounded bg-blue-700 text-white hover:bg-blue-600 transition w-fit" @click="addSource">Add Source</button>
+      <button
+        class="mt-1 px-2 py-1 rounded bg-blue-700 text-white hover:bg-blue-600 transition w-fit"
+        @click="addSource">
+        Add Source
+      </button>
     </div>
     <div v-else class="flex flex-col md:flex-row gap-2">
       <div class="flex-1">
@@ -160,13 +172,12 @@
     <div v-if="localSegment.type === 'video'" class="mt-4">
       <label class="block text-xs text-zinc-400 mb-2">Video Comments</label>
       <VideoCommentItem
-        v-for="(comment) in localSegment.videoComments"
+        v-for="comment in localSegment.videoComments"
         :key="comment.id"
         :comment="comment"
         :segmentId="localSegment.id"
         :minStartAt="localSegment.startAt ?? 0"
-        :maxEndAt="localSegment.endAt ?? 99"
-      />
+        :maxEndAt="localSegment.endAt ?? 99" />
       <button
         class="mt-2 px-3 py-1 rounded bg-blue-700 text-white hover:bg-blue-600 transition"
         @click="addVideoComment">
@@ -185,10 +196,7 @@ import VideoCommentItem from './VideoCommentItem.vue';
 const props = defineProps<{
   segment: EditorSegment;
 }>();
-const emit = defineEmits([
-  'dragstart',
-  'drop'
-]);
+const emit = defineEmits(['dragstart', 'drop']);
 
 const localSegment = ref(props.segment);
 const dragOver = ref(false);
@@ -220,11 +228,11 @@ function onDragStart(e: DragEvent) {
   emit('dragstart', localSegment.value.id, e);
 }
 
-function onDragOverHandler(e: DragEvent) {
+function onDragOverHandler() {
   dragOver.value = true;
 }
 
-function onDragLeave(e: DragEvent) {
+function onDragLeave() {
   dragOver.value = false;
 }
 
@@ -243,7 +251,6 @@ function addSource() {
 function removeSource(sourceIdx: number) {
   editorStore.removeSource(localSegment.value.id, sourceIdx);
 }
-
 </script>
 
 <style scoped lang="scss"></style>

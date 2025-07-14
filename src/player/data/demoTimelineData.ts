@@ -47,10 +47,7 @@ export const demoSegmentsRaw = [
     content: `This is a textual segment that can be used to explain something or add context to the discussion.
               here you can add sources and references to support your argument.`,
     endAt: 5,
-    sources: [
-      'https://www.wikipedia.org/',
-      'https://www.britannica.com/'
-    ],
+    sources: ['https://www.wikipedia.org/', 'https://www.britannica.com/'],
   },
   {
     id: 4,
@@ -65,10 +62,11 @@ export const demoSegmentsRaw = [
         id: 4.1,
         stance: 'supporting' as StanceType,
         title: 'Did you notice the colored bars?',
-        content: 'They represent the stance of the segment. You can use them to quickly identify if the segment supports or opposes the main argument.',
+        content:
+          'They represent the stance of the segment. You can use them to quickly identify if the segment supports or opposes the main argument.',
         startAt: 65,
         endAt: 75,
-      }
+      },
     ],
   },
   {
@@ -82,9 +80,6 @@ export const demoSegmentsRaw = [
     endAt: 5,
     sources: [],
   },
-
-
-
 ];
 
 export const demoSegments = demoSegmentsRaw.map((seg) => {

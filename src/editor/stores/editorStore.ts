@@ -51,18 +51,18 @@ export const useEditorStore = defineStore('editor', () => {
   }
 
   function updateSegment(segmentId: string, segment: EditorSegment) {
-    const idx = segments.value.findIndex(s => s.id === segmentId);
+    const idx = segments.value.findIndex((s) => s.id === segmentId);
     if (idx !== -1) segments.value[idx] = segment;
   }
 
   function deleteSegment(segmentId: string) {
-    const idx = segments.value.findIndex(s => s.id === segmentId);
+    const idx = segments.value.findIndex((s) => s.id === segmentId);
     if (idx !== -1) segments.value.splice(idx, 1);
   }
 
   function reorderSegments(fromId: string, toId: string) {
-    const fromIdx = segments.value.findIndex(s => s.id === fromId);
-    const toIdx = segments.value.findIndex(s => s.id === toId);
+    const fromIdx = segments.value.findIndex((s) => s.id === fromId);
+    const toIdx = segments.value.findIndex((s) => s.id === toId);
     if (fromIdx === -1 || toIdx === -1) return;
     const moved = segments.value.splice(fromIdx, 1)[0];
     segments.value.splice(toIdx, 0, moved);
@@ -73,7 +73,7 @@ export const useEditorStore = defineStore('editor', () => {
   }
 
   function addVideoComment(segmentId: string) {
-    const segment = segments.value.find(s => s.id === segmentId);
+    const segment = segments.value.find((s) => s.id === segmentId);
     if (!segment || segment.type !== 'video') return;
     if (!segment.videoComments) segment.videoComments = [];
     segment.videoComments.push({
@@ -87,21 +87,21 @@ export const useEditorStore = defineStore('editor', () => {
   }
 
   function removeVideoComment(segmentId: string, commentId: string) {
-    const segment = segments.value.find(s => s.id === segmentId);
+    const segment = segments.value.find((s) => s.id === segmentId);
     if (!segment || segment.type !== 'video' || !segment.videoComments) return;
-    const idx = segment.videoComments.findIndex(c => c.id === commentId);
+    const idx = segment.videoComments.findIndex((c) => c.id === commentId);
     if (idx !== -1) segment.videoComments.splice(idx, 1);
   }
 
   function addSource(segmentId: string) {
-    const segment = segments.value.find(s => s.id === segmentId);
+    const segment = segments.value.find((s) => s.id === segmentId);
     if (!segment || segment.type !== 'text') return;
     if (!segment.sources) segment.sources = [];
     segment.sources.push('');
   }
 
   function removeSource(segmentId: string, sourceIdx: number) {
-    const segment = segments.value.find(s => s.id === segmentId);
+    const segment = segments.value.find((s) => s.id === segmentId);
     if (!segment || segment.type !== 'text' || !segment.sources) return;
     segment.sources.splice(sourceIdx, 1);
   }
