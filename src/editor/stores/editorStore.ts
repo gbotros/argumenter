@@ -81,8 +81,8 @@ export const useEditorStore = defineStore('editor', () => {
       stance: 'main',
       content: '',
       title: '',
-      startAt: 0,
-      endAt: 5,
+      startAt: segment.startAt ?? 0,
+      endAt: segment.endAt ?? 99,
     });
   }
 

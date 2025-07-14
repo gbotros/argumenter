@@ -87,8 +87,8 @@
           <input
             v-model.number="comment.startAt"
             type="number"
-            min="0"
-            max="36000"
+            :min="minStart"
+            :max="maxStart"
             placeholder="Start (s)"
             class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100"/>
         </div>
@@ -97,8 +97,8 @@
           <input
             v-model.number="comment.endAt"
             type="number"
-            min="1"
-            max="36000"
+            :min="minEnd"
+            :max="maxEnd"
             placeholder="End (s)"
             class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100" />
         </div>
@@ -120,7 +120,7 @@
 </template>
 
 <script setup lang="ts">
-import { toRefs } from 'vue';
+import { toRefs, computed } from 'vue';
 import type { EditorVideoComment } from '../stores/editorStore';
 import { useEditorStore } from '../stores/editorStore';
 
@@ -128,9 +128,17 @@ const editorStore = useEditorStore();
 const props = defineProps<{
   segmentId: string;
   comment: EditorVideoComment;
+  minStartAt: number;
+  maxEndAt: number;
 }>();
 
 const { comment } = toRefs(props);
+
+// Computed limits for startAt and endAt
+const minStart = computed(() => props.minStartAt);
+const maxStart = computed(() => Math.min(props.maxEndAt, comment.value.endAt - 1));
+const minEnd = computed(() => Math.max(props.minStartAt, comment.value.startAt + 1));
+const maxEnd = computed(() => props.maxEndAt);
 
 function remove() {
   editorStore.removeVideoComment(props.segmentId, props.comment.id);

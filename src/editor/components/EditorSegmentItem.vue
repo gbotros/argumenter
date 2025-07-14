@@ -164,6 +164,8 @@
         :key="comment.id"
         :comment="comment"
         :segmentId="localSegment.id"
+        :minStartAt="localSegment.startAt ?? 0"
+        :maxEndAt="localSegment.endAt ?? 99"
       />
       <button
         class="mt-2 px-3 py-1 rounded bg-blue-700 text-white hover:bg-blue-600 transition"
