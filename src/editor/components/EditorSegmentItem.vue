@@ -11,7 +11,7 @@
     @dragleave="onDragLeave"
     @drop="onDrop">
     <div class="flex items-center gap-4">
-      <span class="font-bold text-blue-300 cursor-move">☰</span>
+      <span id="drag-handle" class="font-bold text-blue-300 cursor-move">☰</span>
       <span class="font-bold text-blue-300">{{
         localSegment.type === 'text' ? '📝 Text' : '🎬 Video'
       }}</span>
@@ -55,7 +55,9 @@
           v-model="localSegment.title"
           type="text"
           maxlength="100"
-          class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100" />
+          class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100"
+          title="Enter a descriptive title for this segment."
+          placeholder="Enter a descriptive title for this segment." />
       </div>
       <div class="flex-1">
         <label class="block text-xs text-zinc-400 mb-1">Stance</label>
@@ -65,7 +67,8 @@
               type="radio"
               v-model="localSegment.stance"
               value="main"
-              class="accent-blue-500" />
+              class="accent-blue-500"
+              title="Select the stance for this segment" />
             <span
               :class="[
                 'text-blue-400',
@@ -79,7 +82,8 @@
               type="radio"
               v-model="localSegment.stance"
               value="supporting"
-              class="accent-green-500" />
+              class="accent-green-500"
+              title="Select the stance for this segment" />
             <span
               :class="[
                 'text-green-400',
@@ -93,7 +97,8 @@
               type="radio"
               v-model="localSegment.stance"
               value="against"
-              class="accent-red-500" />
+              class="accent-red-500"
+              title="Select the stance for this segment" />
             <span
               :class="[
                 'text-red-400',
@@ -112,7 +117,9 @@
           v-model="localSegment.content"
           rows="2"
           maxlength="500"
-          class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100"></textarea>
+          class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100"
+          title="Enter the main content for this segment"
+          placeholder="Write the main content or claim for this segment here" ></textarea>
       </div>
       <div class="flex-1">
         <label class="block text-xs text-zinc-400 mb-1">Duration (s)</label>
@@ -121,7 +128,9 @@
           type="number"
           min="1"
           max="600"
-          class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100" />
+          class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100"
+          title="Set the duration for this segment in seconds"
+          placeholder="00" />
       </div>
     </div>
     <div v-if="localSegment.type === 'text'" class="flex flex-col gap-2 mt-2">
@@ -136,8 +145,9 @@
         <input
           v-model="localSegment.sources![sIdx]"
           type="url"
-          placeholder="https://example.com/source"
-          class="flex-1 bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100" />
+          placeholder="https://example.com/article"
+          class="flex-1 bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100"
+          title="Add reference URLs for this segment" />
 
         <ButtonRemoveIcon
           @click="removeSource(sIdx)"
@@ -157,7 +167,9 @@
           v-model="localSegment.videoId"
           type="text"
           maxlength="20"
-          class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100" />
+          class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100"
+          title="Enter the YouTube video identifier"
+          placeholder="Enter the YouTube video identifier" />
       </div>
       <div class="flex-1">
         <label class="block text-xs text-zinc-400 mb-1">Start At (s)</label>
@@ -166,7 +178,9 @@
           type="number"
           min="0"
           max="36000"
-          class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100" />
+          class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100"
+          title="Set the start time for this video segment in seconds"
+          placeholder="00" />
       </div>
       <div class="flex-1">
         <label class="block text-xs text-zinc-400 mb-1">End At (s)</label>
@@ -175,7 +189,9 @@
           type="number"
           min="1"
           max="36000"
-          class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100" />
+          class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100"
+          title="Set the end time for this video segment in seconds"
+          placeholder="00" />
       </div>
     </div>
     <div v-if="localSegment.type === 'video'" class="mt-4">

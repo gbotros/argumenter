@@ -11,10 +11,10 @@
     <div class="flex justify-center mt-6">
       <button
         @click="addSegment"
-        class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-700 hover:bg-blue-600 text-white text-2xl font-bold shadow transition"
-        title="Add new segment"
+        class="flex items-center justify-center rounded bg-blue-700 hover:bg-blue-600 text-white text-2xl font-bold shadow transition w-fit px-4 py-2"
+        title="Add a new segment to the timeline"
         aria-label="Add new segment">
-        +
+        Add New Segment
       </button>
     </div>
   </div>
