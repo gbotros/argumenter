@@ -5,13 +5,19 @@
       { 'ring-2 ring-blue-400': dragOver },
       { 'ring-2 ring-red-400': dangerBorder },
     ]"
-    draggable="true"
-    @dragstart="onDragStart"
     @dragover.prevent="onDragOverHandler"
     @dragleave="onDragLeave"
-    @drop="onDrop">
+    @drop="onDrop"
+
+    >
     <div class="flex items-center gap-4">
-      <span id="drag-handle" class="font-bold text-blue-300 cursor-move">☰</span>
+      <span
+        id="drag-handle"
+        class="font-bold text-blue-300 cursor-move"
+        draggable="true"
+        @dragstart="onDragStart"
+        title="Drag to reorder segment"
+      >☰</span>
       <span class="font-bold text-blue-300">{{
         localSegment.type === 'text' ? '📝 Text' : '🎬 Video'
       }}</span>
@@ -62,13 +68,13 @@
       <div class="flex-1">
         <label class="block text-xs text-zinc-400 mb-1">Stance</label>
         <div class="flex gap-4 items-center">
-          <label class="inline-flex items-center gap-1 cursor-pointer">
+          <label class="inline-flex items-center gap-1 cursor-pointer"
+              title="Main: The primary argument or claim for this segment." >
             <input
               type="radio"
               v-model="localSegment.stance"
               value="main"
-              class="accent-blue-500"
-              title="Select the stance for this segment" />
+              class="accent-blue-500"/>
             <span
               :class="[
                 'text-blue-400',
@@ -77,13 +83,13 @@
               >Main</span
             >
           </label>
-          <label class="inline-flex items-center gap-1 cursor-pointer">
+          <label class="inline-flex items-center gap-1 cursor-pointer"
+              title="Supporting: Provides supporting evidence or context for the main argument." >
             <input
               type="radio"
               v-model="localSegment.stance"
               value="supporting"
-              class="accent-green-500"
-              title="Select the stance for this segment" />
+              class="accent-green-500" />
             <span
               :class="[
                 'text-green-400',
@@ -92,13 +98,13 @@
               >Supporting</span
             >
           </label>
-          <label class="inline-flex items-center gap-1 cursor-pointer">
+          <label class="inline-flex items-center gap-1 cursor-pointer"
+              title="Against: Presents an opposing view or counterargument to the main claim." >
             <input
               type="radio"
               v-model="localSegment.stance"
               value="against"
-              class="accent-red-500"
-              title="Select the stance for this segment" />
+              class="accent-red-500"/>
             <span
               :class="[
                 'text-red-400',
@@ -283,6 +289,7 @@ function onDragLeave() {
 
 function onDrop(e: DragEvent) {
   emit('drop', localSegment.value.id, e);
+  dragOver.value = false;
 }
 
 function addVideoComment() {
