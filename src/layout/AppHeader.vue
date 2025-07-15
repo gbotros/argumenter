@@ -15,19 +15,16 @@
 
       <a
         href="#"
-        v-if="route.path.startsWith('/editor')"
+        v-if="!route.path.startsWith('/player')"
         @click="playTimeline"
         class="text-white hover:text-blue-400 font-medium transition"
         >🎬 Open the player</a
       >
 
-      <a
-        href="https://argumenter-docs.example.com"
-        target="_blank"
-        rel="noopener"
+      <router-link
+        to="/help"
         class="text-white hover:text-blue-400 font-medium transition"
-        >❓ Help</a
-      >
+        >❓ Help</router-link>
     </nav>
   </header>
 </template>
@@ -67,7 +64,7 @@ function playTimeline() {
     console.error('Failed to create timeline from editor segments:', segments.value, err);
     timeline.value = null;
   }
-  router.push('/');
+  router.push('/player');
 }
 
 function reloadDemoData() {
