@@ -163,7 +163,7 @@
       <button
         class="mt-1 px-2 py-1 rounded bg-blue-700 text-white hover:bg-blue-600 transition w-fit"
         @click="addSource">
-        Add Source
+        + Add Source
       </button>
     </div>
     <div v-else class="flex flex-col md:flex-row gap-2">
@@ -212,7 +212,7 @@
       <button
         class="mt-2 px-3 py-1 rounded bg-blue-700 text-white hover:bg-blue-600 transition"
         @click="addVideoComment">
-        Add Comment
+        +Add Comment
       </button>
     </div>
   </li>
