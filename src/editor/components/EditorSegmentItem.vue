@@ -69,7 +69,7 @@
         <label class="block text-xs text-zinc-400 mb-1">Stance</label>
         <div class="flex gap-4 items-center">
           <label class="inline-flex items-center gap-1 cursor-pointer"
-              title="Main: The primary argument or claim for this segment." >
+              title="Main: The primary argument or claim." >
             <input
               type="radio"
               v-model="localSegment.stance"

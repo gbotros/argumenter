@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col min-h-screen bg-zinc-900 text-zinc-100 p-8">
-    <h1 class="text-3xl font-bold mb-6">Create a New Argument Timeline</h1>
+    <h1 class="text-3xl font-bold mb-6">Argument Timeline Editor</h1>
     <EditorToolbar @play="onPlay" />
     <EditorSegmentList />
   </div>

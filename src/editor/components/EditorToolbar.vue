@@ -1,54 +1,42 @@
 <template>
-  <div class="flex flex-col gap-6 mb-8">
-    <!-- Section 1: Import/Export -->
+  <div class="flex flex-row justify-between mb-8 gap-6">
+    <!-- Section: Play & Clear -->
     <div>
-      <h2 class="mb-2 text-zinc-300 text-2xl">Share or load argument timelines without any authentication:</h2>
-      <div class="flex gap-4">
-        <button
-          @click="exportTimeline"
-          class="bg-purple-700 hover:bg-purple-600 text-white px-4 py-2 rounded transition"
-          title="Export the current timeline as a JSON file">
-          Export Timeline (JSON)
-        </button>
-        <label
-          class="bg-purple-700 hover:bg-purple-600 text-white px-4 py-2 rounded transition cursor-pointer"
-          title="Import a timeline from a JSON file">
-          Import Timeline (JSON)
-          <input type="file" accept="application/json" class="hidden" @change="importTimeline" />
-        </label>
-      </div>
-    </div>
-
-    <!-- Section 2: Shareable Link -->
-    <div>
-      <div class="mb-2 text-zinc-300 text-2xl">Share timeline with argument data encoded in the URL (easy to share, but limited by URL length):</div>
-      <div class="flex gap-4">
-        <button
-          @click="testTimeline"
-          class="bg-green-700 hover:bg-green-600 text-white px-4 py-2 rounded transition"
-          title="Preview the timeline in a new tab">
-          Generate Sharable Link
-        </button>
-      </div>
-    </div>
-
-    <!-- Section 3: Play & Clear -->
-    <div>
-      <div class="mb-2 text-zinc-300 text-2xl">Test or reset your timeline. Play will load a demo timeline if the timeline is empty:</div>
       <div class="flex gap-4">
         <button
           @click="playTimeline"
           class="bg-blue-700 hover:bg-blue-600 text-white px-4 py-2 rounded transition"
-          title="Play the timeline from the beginning">
+          title="Play the argument timeline">
           Play
         </button>
         <button
           @click="clearSegments"
           class="bg-zinc-700 hover:bg-zinc-600 text-white px-4 py-2 rounded transition"
           title="Remove all segments from the timeline">
-          Clear
+          Clear All
         </button>
       </div>
+    </div>
+
+    <div class="flex flex-col gap-4">
+      <!-- Section: Import/Export/Shareable Link -->
+      <button
+        @click="testTimeline"
+        class="bg-green-700 hover:bg-green-600 text-white px-4 py-2 rounded transition"
+        title="Preview the timeline in a new tab">
+        Copy and Test Sharable Link
+      </button>
+
+      <button
+        @click="exportTimeline"
+        class="bg-purple-700 hover:bg-purple-600 text-white px-4 py-2 rounded transition">
+        Export Timeline as a JSON file
+      </button>
+      <label
+        class="bg-purple-700 hover:bg-purple-600 text-white px-4 py-2 rounded transition cursor-pointer">
+        Import Timeline from a JSON file
+        <input type="file" accept="application/json" class="hidden" @change="importTimeline" />
+      </label>
     </div>
   </div>
 </template>
@@ -109,7 +97,7 @@ function clearSegments() {
 function playTimeline() {
   if (!segments.value || segments.value.length === 0) {
     // Load demo timeline if empty
-    import('@/player/data/demoTimelineData').then(module => {
+    import('@/player/data/demoTimelineData').then((module) => {
       timeline.value = module.demoSegments;
       router.push('/');
     });
