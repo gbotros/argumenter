@@ -1,67 +1,66 @@
-# Argumenter: Interactive Timeline Argumentation App
+# Argumenter Help & Documentation
 
 [Live Demo](https://gbotros.github.io/argumenter/)
 
 ## What is Argumenter?
 
-Argumenter is a web app that lets you explore and interact with arguments, debates, or presentations using a smart, visual timeline. Each point or segment is shown as a dot on a timeline, and you can jump between them, see supporting and opposing arguments, and follow the flow of a discussion or video.
+Argumenter makes it easy to share feedback✍️, ask questions❓, or add notes on any video📺, presentation, or topic. Add your thoughts or questions exactly when the presenter is making a point ⏱️, so your feedback is always clear and in context🎯.
 
-## What Can You Do With Argumenter?
+Turn lectures and arguments into interactive discussions💬: add your own comments, start a conversation, or just keep organized notes for yourself🗣️. Use timelines to keep debates🤯, responses, and ideas💡 in order, and bring together info from different sources🗂️ or videos.
 
-- **See the Big Picture:**
+Great for learning, teaching🧑‍🏫, or just making sure everyone’s on the same page. Whether you’re working alone or with others, it’s a simple way to keep your ideas clear and connected🤝.
 
-  - The timeline shows all the main points, supporting arguments, and counterpoints as colored dots.
-  - Dots grow and animate as you hover or select them, making it easy to see where you are.
+---
 
-- **Jump to Any Segment:**
+## Features
 
-  - Click any dot to instantly jump to that part of the argument or video.
-  - Use Next/Back buttons to move through the discussion step by step.
+- **No Account Required:** No account or login needed—everything works offline using JSON files or instantly with sharable links. 🔒
+- **Sharable Links:** Send your timeline to anyone: the link contains all the timeline data, so others can open and view your argument or notes right away.
+- **Timeline Editor:** Add, edit, and reorder argument segments using a drag-and-drop interface.
+- **Segment Types:** Supports text, video, and more for comprehensive argument representation.
+- **Player Mode:** Watch and follow someone else's argument timeline or test your own by viewing the argument step by step, just like a presentation.
+- **Import/Export:** Save timelines as JSON files or import existing ones.
+- **Demo Data:** Access built-in demo arguments for quick learning and testing.
+- **Dark Theme:** Minimalist dark interface for comfortable viewing.
 
-- **Understand Context at a Glance:**
+---
 
-  - Hover over a dot to see a short description of that segment.
-  - The color and size of each dot shows if it’s a main point, supporting idea, or counterargument.
+## How to Use
 
-- **Watch and Read:**
+1. **Open the Player:** Click 🎬 Open the player in the header to view and follow an argument timeline step by step.
+2. **Open the Editor:** Click 📝 Open the editor in the header to begin editing a timeline.
+3. **Add Segments:** Use the + Add Segment button to add new argument segments.
+4. **Edit & Organize:** Click on segments to edit their content, drag to reorder, and use stance buttons to set positions.
+5. **Play Timeline:** Click ▶️ Play to preview the argument timeline.
+6. **Share or Export:** Use the 📤 Export or 🔗 Copy Link buttons to export or share your timeline.
+7. **Access Help:** Click ❓ Help in the header for this documentation at any time.
 
-  - Some segments play a specific part of a YouTube video.
-  - Others show text explanations or arguments, with a timer so you can read at your own pace.
+---
 
-- **Share and Collaborate:**
+## Best Practices
 
-  - Share your timeline with others using a special link.
-  - Download or import timelines as files.
-  - Load timelines from public GitHub files if you want to share them widely.
+- Use clear and concise segment titles and content for better understanding.
+- Utilize demo data to familiarize yourself with the application's features.
+- Export your work regularly to prevent data loss.
+- **Note:** Argumenter does not store your data—it's your responsibility to save and version your argument files as needed.
 
-- **No Account Needed:**
-  - Everything runs in your browser. No sign-up, no backend, no data tracking.
-
-## How to Use Argumenter
-
-1. **Open the App:**
-   - Start with a sample timeline or load your own.
-2. **Explore the Timeline:**
-   - Click or hover on dots to see details and jump around.
-3. **Follow the Argument:**
-   - Watch video clips or read text as you move through the timeline.
-4. **Share or Save:**
-   - Use the share button to get a link, or export/import timelines as files.
+---
 
 ## Who Is It For?
 
-- Students and teachers analyzing debates or lectures
-- Content creators organizing video essays
 - Anyone who wants to break down complex arguments or presentations visually
+- Content creators organizing video essays
+- Students and teachers analyzing debates or lectures
 
-## Features at a Glance
+---
 
-- Animated, interactive timeline with color-coded dots
-- Jump to any segment instantly
-- See supporting and opposing points at a glance
-- Share timelines via link or file
-- Minimalist dark theme for comfortable viewing
-- No installation or account required
+Interested in contributing, customizing, or learning from Argumenter’s code? Here’s what you need to know:
+
+- Contributions and suggestions are welcome!
+- Built with **Vue 3**, **TypeScript**, **Tailwind CSS**
+- Organized by feature for clarity and maintainability
+- Feel free to [fork, star, or open issues on GitHub](https://github.com/gbotros/argumenter/issues)!
+- Built with help from 🤖Copilot. [See Copilot instructions](https://github.com/gbotros/argumenter/blob/main/.github/copilot-instructions.md)
 
 ---
 
