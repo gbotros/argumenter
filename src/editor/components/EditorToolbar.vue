@@ -5,15 +5,23 @@
       <div class="flex gap-4">
         <button
           @click="playTimeline"
-          class="bg-blue-700 hover:bg-blue-600 text-white px-4 py-2 rounded transition"
+          class="bg-blue-700 hover:bg-blue-600 text-white px-4 py-2 rounded transition text-left"
           title="Play the argument timeline">
-          Play
+          ▶️ Play
         </button>
+
+        <button
+          @click="reloadDemoData"
+          class="bg-indigo-700 hover:bg-indigo-600 text-white px-4 py-2 rounded transition text-left"
+          title="Reload demo timeline data">
+          🔄 Reload Demo Timeline
+        </button>
+
         <button
           @click="clearSegments"
-          class="bg-zinc-700 hover:bg-zinc-600 text-white px-4 py-2 rounded transition"
+          class="bg-zinc-700 hover:bg-zinc-600 text-white px-4 py-2 rounded transition text-left"
           title="Remove all segments from the timeline">
-          Clear All
+          🗑️ Clear All
         </button>
       </div>
     </div>
@@ -22,19 +30,19 @@
       <!-- Section: Import/Export/Shareable Link -->
       <button
         @click="testTimeline"
-        class="bg-green-700 hover:bg-green-600 text-white px-4 py-2 rounded transition"
+        class="bg-green-700 hover:bg-green-600 text-white px-4 py-2 rounded transition text-left"
         title="Preview the timeline in a new tab">
-        Copy and Test Sharable Link
+        🔗 Copy and Test Sharable Link
       </button>
 
       <button
         @click="exportTimeline"
-        class="bg-purple-700 hover:bg-purple-600 text-white px-4 py-2 rounded transition">
-        Export Timeline as a JSON file
+        class="bg-purple-700 hover:bg-purple-600 text-white px-4 py-2 rounded transition text-left">
+        📤 Export Timeline as a JSON file
       </button>
       <label
-        class="bg-purple-700 hover:bg-purple-600 text-white px-4 py-2 rounded transition cursor-pointer">
-        Import Timeline from a JSON file
+        class="bg-purple-700 hover:bg-purple-600 text-white px-4 py-2 rounded transition cursor-pointer text-left">
+        📥 Import Timeline from a JSON file
         <input type="file" accept="application/json" class="hidden" @change="importTimeline" />
       </label>
     </div>
@@ -87,6 +95,9 @@ function testTimeline() {
   const json = JSON.stringify(segments.value);
   const encoded = btoa(encodeURIComponent(json));
   const url = `${window.location.origin}/?timeline=${encoded}`;
+  navigator.clipboard.writeText(url).then(() => {
+    //  alert('Sharable link copied to clipboard!');
+  });
   window.open(url, '_blank');
 }
 
@@ -95,21 +106,24 @@ function clearSegments() {
 }
 
 function playTimeline() {
+  // If no segments, load demo data first
   if (!segments.value || segments.value.length === 0) {
-    // Load demo timeline if empty
-    import('@/player/data/demoTimelineData').then((module) => {
-      timeline.value = module.demoSegments;
-      router.push('/');
-    });
-  } else {
-    try {
-      timeline.value = TimelineFactory.fromEditorSegments(segments.value);
-    } catch (err) {
-      console.error('Failed to create timeline from editor segments:', segments.value, err);
-      timeline.value = null;
-    }
-    router.push('/');
+    reloadDemoData();
   }
+
+  try {
+    timeline.value = TimelineFactory.fromEditorSegments(segments.value);
+  } catch (err) {
+    console.error('Failed to create timeline from editor segments:', segments.value, err);
+    timeline.value = null;
+  }
+  router.push('/');
+}
+
+function reloadDemoData() {
+  import('@/player/data/demoTimelineData').then((module) => {
+    segments.value = module.demoSegments;
+  });
 }
 </script>
 
