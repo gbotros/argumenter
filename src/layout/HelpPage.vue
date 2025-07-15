@@ -1,8 +1,8 @@
 <template>
-  <section class="max-w-3xl mx-auto p-8 bg-zinc-900 rounded-lg shadow-lg text-white">
-    <h1 class="text-4xl font-extrabold mb-4 text-blue-400 flex items-center gap-2">
-      <span>❓</span> Argumenter Help
-    </h1>
+  <section class="max-w-3xl mx-auto p-8 ">
+    <!-- <h1 class="text-4xl font-extrabold mb-4 text-blue-400 flex items-center gap-2">
+      Argumenter
+    </h1> -->
     <div class="mb-6">
       <!-- <img src="/public/help-hero-placeholder.png" alt="App Hero" class="w-full h-48 object-cover rounded mb-4 border-2 border-blue-700" /> -->
       <h2 class="text-2xl font-bold text-green-400 mb-2">Argumenter</h2>
@@ -71,18 +71,16 @@
 
     <h2 class="text-2xl font-bold text-green-400 mb-2">How to Use</h2>
     <ol class="list-decimal pl-6 mb-6">
-
-
-
       <li class="mb-4">
         <span class="font-semibold">Open the Player:</span> Click
-        <span class="px-2 py-1 rounded">🎬 Open the player</span> in the header to view and follow an argument timeline step by step.
+        <span class="px-2 py-1 rounded">🎬 Open the player</span> in the header to view and follow
+        an argument timeline step by step.
       </li>
 
       <li class="mb-4">
         <span class="font-semibold">Open the Editor:</span> Click
-        <span class="px-2 py-1 rounded ">📝 Open the editor</span> in the header to begin
-        editing a timeline.
+        <span class="px-2 py-1 rounded">📝 Open the editor</span> in the header to begin editing a
+        timeline.
       </li>
 
       <li class="mb-4">
@@ -104,7 +102,6 @@
         <span class="bg-green-800 px-2 py-1 rounded">🔗 Copy Link</span> buttons to export or share
         your timeline.
       </li>
-
     </ol>
 
     <h2 class="text-2xl font-bold text-green-400 mb-2">Best Practices</h2>
@@ -119,29 +116,48 @@
         >
       </li>
     </ul>
-
-
-
-<!-- Developer Section -->
-<section class="max-w-3xl mx-auto p-8 mt-8 bg-zinc-800 rounded-lg shadow text-white">
-  <h2 class="text-2xl font-bold text-yellow-400 mb-2 flex items-center gap-2">
-    <span>👩‍💻</span> Are You a Developer?
-  </h2>
-  <p class="mb-3">
-    Interested in contributing, customizing, Here’s what you need to know:
-  </p>
-  <ul class="list-disc pl-6 mb-4">
-    <li class="mb-2">Contributions and suggestions are welcome! <a href="https://github.com/gbotros/argumenter" target="_blank" class="underline text-blue-400 hover:text-blue-200">Argumenter on github.</a> </li>
-    <li class="mb-2">Built with <span class="font-semibold text-blue-300">Vue 3</span>, <span class="font-semibold text-blue-300">TypeScript</span>, <span class="font-semibold text-blue-300">Tailwind CSS</span>.</li>
-    <li class="mb-2">Organized by feature for clarity and maintainability.</li>
-    <li class="mb-2">Feel free to fork, star, or open issues on GitHub!</li>
-    <li class="mb-2">Built with help from 🤖Copilot. <a href="https://github.com/gbotros/argumenter/blob/main/.github/copilot-instructions.md" target="_blank" class="underline text-blue-400 hover:text-blue-200">See Copilot instructions</a>.</li>
-  </ul>
-  <p class="text-blue-300">Happy coding! 🚀</p>
-</section>
-
-
   </section>
+
+  <!-- Developer Section -->
+  <section class="max-w-3xl mx-auto p-8 mt-8 bg-zinc-800 rounded-lg shadow text-white">
+    <h2 class="text-2xl font-bold text-yellow-400 mb-2 flex items-center gap-2">
+      <span>👩‍💻</span> Are You a Developer?
+    </h2>
+    <p class="mb-3">Interested in contributing, customizing, Here’s what you need to know:</p>
+    <ul class="list-disc pl-6 mb-4">
+      <li class="mb-2">
+        Contributions and suggestions are welcome!
+        <a
+          href="https://github.com/gbotros/argumenter"
+          target="_blank"
+          class="underline text-blue-400 hover:text-blue-200"
+          >Argumenter on github.</a
+        >
+      </li>
+      <li class="mb-2">
+        Built with <span class="font-semibold text-blue-300">Vue 3</span>,
+        <span class="font-semibold text-blue-300">TypeScript</span>,
+        <span class="font-semibold text-blue-300">Tailwind CSS</span>.
+      </li>
+      <li class="mb-2">Organized by feature for clarity and maintainability.</li>
+      <li class="mb-2">Feel free to fork, star, or open issues on GitHub!</li>
+      <li class="mb-2">
+        Built with help from 🤖Copilot.
+        <a
+          href="https://github.com/gbotros/argumenter/blob/main/.github/copilot-instructions.md"
+          target="_blank"
+          class="underline text-blue-400 hover:text-blue-200"
+          >See Copilot instructions</a
+        >.
+      </li>
+    </ul>
+    <p class="text-blue-300">Happy coding! 🚀</p>
+  </section>
+
+  <div class="text-center mt-8">
+    <a href="#top" class="text-blue-400 underline hover:text-blue-200">Back to Top ↑</a>
+  </div>
+
 </template>
 
 <script setup lang="ts">
