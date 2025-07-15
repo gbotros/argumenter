@@ -55,6 +55,7 @@ import { useTimelineStore } from '@/player/stores/timelineStore';
 import { TimelineFactory } from '@/player/services/TimelineFactory';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
+import { demoSegments } from '@/player/data/demoTimelineData';
 
 const editorStore = useEditorStore();
 const timelineStore = useTimelineStore();
@@ -121,10 +122,9 @@ function playTimeline() {
 }
 
 function reloadDemoData() {
-  import('@/player/data/demoTimelineData').then((module) => {
-    segments.value = module.demoSegments;
-  });
+    segments.value = demoSegments;
 }
+
 </script>
 
 <style scoped lang="scss"></style>

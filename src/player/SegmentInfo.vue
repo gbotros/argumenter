@@ -13,12 +13,7 @@
         {{ Number(timeline?.getActiveSegment()?.getCurrentlyAtTime()).toFixed(0) }}s -
         {{ Number(timeline?.getActiveSegment()?.endAt).toFixed(0) }}s
       </span>
-      <button
-        v-if="route.path === '/'"
-        @click="goToEditorWithPlayerSegments"
-        class="ml-4 px-3 py-1 rounded bg-blue-700 text-white hover:bg-blue-600 transition text-sm font-semibold">
-        Edit
-      </button>
+
     </div>
     <StanceTheme></StanceTheme>
   </div>
@@ -26,22 +21,11 @@
 
 <script setup lang="ts">
 import { useTimelineStore } from '@/player/stores/timelineStore';
-import { useEditorStore } from '@/editor/stores/editorStore';
 import { storeToRefs } from 'pinia';
-import { useRouter, useRoute } from 'vue-router';
 import StanceTheme from './StanceTheme.vue';
 
 const timelineStore = useTimelineStore();
-const editorStore = useEditorStore();
-const { timeline } = storeToRefs(timelineStore);
-const router = useRouter();
-const route = useRoute();
 
-function goToEditorWithPlayerSegments() {
-  if (timeline.value && Array.isArray(timeline.value.segments)) {
-    const plainSegments = timeline.value.segments.map((seg) => JSON.parse(JSON.stringify(seg)));
-    editorStore.setSegments(plainSegments);
-  }
-  router.push('/editor');
-}
+const { timeline } = storeToRefs(timelineStore);
+
 </script>
