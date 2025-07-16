@@ -17,6 +17,5 @@ export class VideoComment {
     if (startAt < 0 || endAt <= startAt) {
       throw new Error('Invalid startAt/endAt values for VideoComment.');
     }
-
   }
 }

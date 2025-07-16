@@ -22,7 +22,7 @@ export class Timeline {
     return [...this.segments];
   }
 
-  activateSegment(id: number): void {
+  activateSegment(id: string): void {
     const sIndex = this.getSegmentIndexById(id);
 
     if (sIndex === null) return;
@@ -93,7 +93,7 @@ export class Timeline {
     return this._hoveredSegment;
   }
 
-  hoverSegment(id: number): void {
+  hoverSegment(id: string): void {
     this.segments.forEach((seg) => {
       seg.isHovered = seg.id === id;
     });
@@ -125,7 +125,7 @@ export class Timeline {
     this.allowNext = index < this.segments.length - 1;
   }
 
-  private getSegmentIndexById(id: number): number | null {
+  private getSegmentIndexById(id: string): number | null {
     const index = this.segments.findIndex((segment) => segment.id === id);
     return index >= 0 ? index : null;
   }

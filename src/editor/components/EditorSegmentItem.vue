@@ -7,9 +7,7 @@
     ]"
     @dragover.prevent="onDragOverHandler"
     @dragleave="onDragLeave"
-    @drop="onDrop"
-
-    >
+    @drop="onDrop">
     <div class="flex items-center gap-4">
       <span
         id="drag-handle"
@@ -17,7 +15,8 @@
         draggable="true"
         @dragstart="onDragStart"
         title="Drag to reorder segment"
-      >☰</span>
+        >☰</span
+      >
       <span class="font-bold text-blue-300">{{
         localSegment.type === 'text' ? '📝 Text' : '🎬 Video'
       }}</span>
@@ -68,13 +67,14 @@
       <div class="flex-1">
         <label class="block text-xs text-zinc-400 mb-1">Stance</label>
         <div class="flex gap-4 items-center">
-          <label class="inline-flex items-center gap-1 cursor-pointer"
-              title="Main: The primary argument or claim." >
+          <label
+            class="inline-flex items-center gap-1 cursor-pointer"
+            title="Main: The primary argument or claim.">
             <input
               type="radio"
               v-model="localSegment.stance"
               value="main"
-              class="accent-blue-500"/>
+              class="accent-blue-500" />
             <span
               :class="[
                 'text-blue-400',
@@ -83,8 +83,9 @@
               >Main</span
             >
           </label>
-          <label class="inline-flex items-center gap-1 cursor-pointer"
-              title="Supporting: Provides supporting evidence or context for the main argument." >
+          <label
+            class="inline-flex items-center gap-1 cursor-pointer"
+            title="Supporting: Provides supporting evidence or context for the main argument.">
             <input
               type="radio"
               v-model="localSegment.stance"
@@ -98,13 +99,14 @@
               >Supporting</span
             >
           </label>
-          <label class="inline-flex items-center gap-1 cursor-pointer"
-              title="Against: Presents an opposing view or counterargument to the main claim." >
+          <label
+            class="inline-flex items-center gap-1 cursor-pointer"
+            title="Against: Presents an opposing view or counterargument to the main claim.">
             <input
               type="radio"
               v-model="localSegment.stance"
               value="against"
-              class="accent-red-500"/>
+              class="accent-red-500" />
             <span
               :class="[
                 'text-red-400',
@@ -125,7 +127,7 @@
           maxlength="500"
           class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100"
           title="Enter the main content for this segment"
-          placeholder="Write the main content or claim for this segment here" ></textarea>
+          placeholder="Write the main content or claim for this segment here"></textarea>
       </div>
       <div class="flex-1">
         <label class="block text-xs text-zinc-400 mb-1">Duration (s)</label>
@@ -146,7 +148,7 @@
         :key="sIdx"
         :class="[
           'flex gap-2 items-center p-1 rounded',
-          sourceDangerBorder[sIdx] ? 'ring-2 ring-red-400' : ''
+          sourceDangerBorder[sIdx] ? 'ring-2 ring-red-400' : '',
         ]">
         <input
           v-model="localSegment.sources![sIdx]"

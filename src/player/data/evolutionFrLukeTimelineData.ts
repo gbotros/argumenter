@@ -298,13 +298,8 @@ export const demoSegments = demoSegmentsRaw.map((seg) => {
       seg.startAt ?? 0,
       seg.endAt ?? 0,
       (seg.videoComments ?? []).map(
-        (ct: {
-          id: string;
-          content: string;
-          startAt: number;
-          endAt: number;
-          title: string;
-        }) => new VideoComment(ct.id, ct.content, ct.startAt, ct.endAt, ct.title),
+        (ct: { id: string; content: string; startAt: number; endAt: number; title: string }) =>
+          new VideoComment(ct.id, ct.content, ct.startAt, ct.endAt, ct.title),
       ),
     );
   }

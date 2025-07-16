@@ -38,7 +38,7 @@ import type { Segment } from './data/Segment';
 const timelineStore = useTimelineStore();
 const { timeline } = storeToRefs(timelineStore);
 
-function activateSegment(id: number) {
+function activateSegment(id: string) {
   timeline.value?.activateSegment(id);
 }
 

@@ -15,16 +15,15 @@
 
       <a
         href="#"
-        v-if="!route.path.startsWith('/player')"
+        v-if="!route.path.startsWith('/player') && route.fullPath !== '/'"
         @click="playTimeline"
         class="text-white hover:text-blue-400 font-medium transition"
         >🎬 Open the player</a
       >
 
-      <router-link
-        to="/help"
-        class="text-white hover:text-blue-400 font-medium transition"
-        >❓ Help</router-link>
+      <router-link to="/help" class="text-white hover:text-blue-400 font-medium transition"
+        >❓ Help</router-link
+      >
     </nav>
   </header>
 </template>
@@ -68,10 +67,8 @@ function playTimeline() {
 }
 
 function reloadDemoData() {
-    segments.value = demoSegments;
+  segments.value = demoSegments;
 }
-
-
 </script>
 
 <style scoped lang="scss"></style>

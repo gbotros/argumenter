@@ -1,6 +1,5 @@
 import type { SegmentType, StanceType } from '@/player/data';
-import type { EditorVideoComment } from '../stores/EditorVideoComment';
-
+import type { EditorVideoComment } from './EditorVideoComment';
 
 export interface EditorSegment {
   id: string;

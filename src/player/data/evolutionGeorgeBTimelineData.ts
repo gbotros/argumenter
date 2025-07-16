@@ -1,5 +1,5 @@
 // Demo timeline data for TimelinePlayer
-import { TextualSegment, VideoSegment, VideoComment } from '.';
+import { TextualSegment } from '.';
 import type { StanceType } from '.';
 
 export const demoSegmentsRaw = [
@@ -27,33 +27,13 @@ export const demoSegments = demoSegmentsRaw.map((seg) => {
   if (!seg) {
     throw new Error('Segment is undefined');
   }
-  if (seg.type === 'text') {
-    return new TextualSegment(
-      seg.id,
-      seg.stance as StanceType,
-      seg.content ?? '',
-      seg.title ?? '',
-      seg.endAt ?? 0,
-      seg.sources ?? [],
-    );
-  } else if (seg.type === 'video') {
-    return new VideoSegment(
-      seg.id,
-      seg.stance,
-      seg.videoId ?? '',
-      seg.title ?? '',
-      seg.startAt ?? 0,
-      seg.endAt ?? 0,
-      (seg.videoComments ?? []).map(
-        (ct: {
-          id: string;
-          title: string;
-          content: string;
-          startAt: number;
-          endAt: number;
-        }) => new VideoComment(ct.id, ct.content, ct.startAt, ct.endAt, ct.title),
-      ),
-    );
-  }
-  throw new Error('Unknown segment type');
+
+  return new TextualSegment(
+    seg.id,
+    seg.stance as StanceType,
+    seg.content ?? '',
+    seg.title ?? '',
+    seg.endAt ?? 0,
+    seg.sources ?? [],
+  );
 });

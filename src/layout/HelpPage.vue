@@ -1,5 +1,5 @@
 <template>
-  <section class="max-w-3xl mx-auto p-8 ">
+  <section class="max-w-3xl mx-auto p-8">
     <!-- <h1 class="text-4xl font-extrabold mb-4 text-blue-400 flex items-center gap-2">
       Argumenter
     </h1> -->
@@ -157,7 +157,6 @@
   <div class="text-center mt-8">
     <a href="#top" class="text-blue-400 underline hover:text-blue-200">Back to Top ↑</a>
   </div>
-
 </template>
 
 <script setup lang="ts">

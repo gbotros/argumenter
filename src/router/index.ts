@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import TimelinePlayer from '@/player/TimelinePlayer.vue';
 import TimelineEditor from '@/editor/TimelineEditor.vue';
-import Dashboard from '../dashboard/Dashboard.vue';
 import HelpPage from '@/layout/HelpPage.vue';
+import PersonalDashboard from '../dashboard/PersonalDashboard.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -30,7 +30,7 @@ const router = createRouter({
     {
       path: '/dashboard',
       name: 'dashboard',
-      component: Dashboard,
+      component: PersonalDashboard,
     },
   ],
 });

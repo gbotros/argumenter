@@ -13,7 +13,6 @@
         {{ Number(timeline?.getActiveSegment()?.getCurrentlyAtTime()).toFixed(0) }}s -
         {{ Number(timeline?.getActiveSegment()?.endAt).toFixed(0) }}s
       </span>
-
     </div>
     <StanceTheme></StanceTheme>
   </div>
@@ -27,5 +26,4 @@ import StanceTheme from './StanceTheme.vue';
 const timelineStore = useTimelineStore();
 
 const { timeline } = storeToRefs(timelineStore);
-
 </script>

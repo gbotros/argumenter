@@ -27,8 +27,8 @@ export class TimelineShareService {
       const segmentsRaw = JSON.parse(json);
       if (!Array.isArray(segmentsRaw)) return null;
       // Recreate class instances from raw data
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return segmentsRaw.map((seg: any) => {
+
+      return segmentsRaw.map((seg) => {
         if (!seg) throw new Error('Segment is undefined');
         if (seg.type === 'text') {
           return new TextualSegment(
@@ -48,12 +48,16 @@ export class TimelineShareService {
             seg.startAt ?? 0,
             seg.endAt ?? 0,
 
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             (seg.videoComments ?? []).map(
-              (ct: any) =>
+              (ct: {
+                id: string;
+                content: string;
+                startAt: number;
+                endAt: number;
+                title: string;
+              }) =>
                 new VideoComment(
-                  Number(ct.id),
-                  ct.stance as StanceType,
+                  ct.id,
                   ct.content ?? '',
                   ct.startAt ?? 0,
                   ct.endAt ?? 0,
@@ -62,7 +66,14 @@ export class TimelineShareService {
             ),
           );
         } else {
-          throw new Error('Unknown segment type');
+          return new TextualSegment(
+            new Date().toISOString(), // Generate a new ID if not provided
+            seg.stance as StanceType,
+            seg.content ?? 'Failed to decode segment',
+            seg.title ?? 'Failed to decode segment',
+            seg.endAt ?? 0,
+            seg.sources ?? [],
+          );
         }
       });
     } catch (e) {
