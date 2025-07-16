@@ -30,7 +30,7 @@ function onPlay() {
       timeline.value = null;
     }
   }
-  router.push('/');
+  router.push({ name: 'player' });
 }
 </script>
 

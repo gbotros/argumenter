@@ -74,16 +74,16 @@ function exportTimeline() {
   URL.revokeObjectURL(url);
 }
 
-function importTimeline(event: Event) {
+async function importTimeline(event: Event) {
   const input = event.target as HTMLInputElement;
   if (!input.files || !input.files[0]) return;
   const file = input.files[0];
   const reader = new FileReader();
-  reader.onload = (e) => {
+  reader.onload = async (e) => {
     try {
       const imported = JSON.parse(e.target?.result as string);
       if (Array.isArray(imported)) {
-        editorStore.setSegments(imported);
+        await editorStore.setSegments(imported);
       }
     } catch {
       alert('Invalid timeline file.');
@@ -95,7 +95,7 @@ function importTimeline(event: Event) {
 function testTimeline() {
   const json = JSON.stringify(segments.value);
   const encoded = btoa(encodeURIComponent(json));
-  const url = `${window.location.origin}/?timeline=${encoded}`;
+  const url = `${window.location.origin}/argumenter/player/?timeline=${encoded}`;
   navigator.clipboard.writeText(url).then(() => {
     //  alert('Sharable link copied to clipboard!');
   });
@@ -118,13 +118,12 @@ function playTimeline() {
     console.error('Failed to create timeline from editor segments:', segments.value, err);
     timeline.value = null;
   }
-  router.push('/');
+  router.push({ name: 'player' });
 }
 
 function reloadDemoData() {
-    segments.value = demoSegments;
+  editorStore.setSegments(demoSegments);
 }
-
 </script>
 
 <style scoped lang="scss"></style>

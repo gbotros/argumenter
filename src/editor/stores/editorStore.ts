@@ -1,16 +1,14 @@
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { nextTick, ref } from 'vue';
 import type { EditorSegment } from '../data/EditorSegment';
 
 export const useEditorStore = defineStore('editor', () => {
   const segments = ref<EditorSegment[]>([]);
 
-  function setSegments(newSegments: EditorSegment[]) {
+  async function setSegments(newSegments: EditorSegment[]) {
+    clearSegments();
+    await nextTick();
     segments.value = newSegments;
-  }
-
-  function addSegment(segment: EditorSegment) {
-    segments.value.push(segment);
   }
 
   function addNewSegment() {
@@ -23,12 +21,7 @@ export const useEditorStore = defineStore('editor', () => {
       endAt: 5,
       sources: [],
     };
-    addSegment(newSegment);
-  }
-
-  function updateSegment(segmentId: string, segment: EditorSegment) {
-    const idx = segments.value.findIndex((s) => s.id === segmentId);
-    if (idx !== -1) segments.value[idx] = segment;
+    segments.value.push(newSegment);
   }
 
   function deleteSegment(segmentId: string) {
@@ -84,8 +77,6 @@ export const useEditorStore = defineStore('editor', () => {
   return {
     segments,
     setSegments,
-    addSegment,
-    updateSegment,
     deleteSegment,
     reorderSegments,
     clearSegments,

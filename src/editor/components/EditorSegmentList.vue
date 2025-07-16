@@ -10,7 +10,7 @@
     </ul>
     <div class="flex justify-center mt-6">
       <button
-        @click="addSegment"
+        @click="addNewSegment"
         class="rounded bg-blue-700 hover:bg-blue-600 text-white text-2xl font-bold px-4 py-2"
         title="Add a new segment to the timeline"
         aria-label="Add new segment">
@@ -42,7 +42,7 @@ function onDrop(id: string) {
   dragId.value = null;
 }
 
-function addSegment() {
+function addNewSegment() {
   editorStore.addNewSegment();
 }
 </script>

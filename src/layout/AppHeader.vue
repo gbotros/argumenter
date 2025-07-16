@@ -49,7 +49,7 @@ function goToEditorWithPlayerSegments() {
     const plainSegments = timeline.value.segments.map((seg) => JSON.parse(JSON.stringify(seg)));
     editorStore.setSegments(plainSegments);
   }
-  router.push('/editor');
+  router.push({ name: 'editor' });
 }
 
 function playTimeline() {
@@ -64,7 +64,7 @@ function playTimeline() {
     console.error('Failed to create timeline from editor segments:', segments.value, err);
     timeline.value = null;
   }
-  router.push('/player');
+  router.push({ name: 'player' });
 }
 
 function reloadDemoData() {
