@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import TimelinePlayer from '@/player/TimelinePlayer.vue';
 import TimelineEditor from '@/editor/TimelineEditor.vue';
+import Dashboard from '../dashboard/Dashboard.vue';
 import HelpPage from '@/layout/HelpPage.vue';
 
 const router = createRouter({
@@ -20,6 +21,11 @@ const router = createRouter({
       path: '/help',
       name: 'help',
       component: HelpPage,
+    },
+    {
+      path: '/dashboard',
+      name: 'dashboard',
+      component: Dashboard,
     },
   ],
 });

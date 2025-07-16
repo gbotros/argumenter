@@ -56,7 +56,7 @@ onMounted(() => {
     return;
   }
 
-  // 2. If timeline already exists in store (from editor), use it
+  // 2. If timeline already exists in store populated by the editor or loaded by the dashboard, use it
   if (
     timeline.value &&
     Array.isArray(timeline.value.segments) &&
