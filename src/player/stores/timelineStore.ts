@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { Timeline } from '@/timeline/data/Timeline';
+import { Timeline } from '@/player/data/Timeline';
 
 // Pinia store for timeline state management
 export const useTimelineStore = defineStore('timeline', () => {

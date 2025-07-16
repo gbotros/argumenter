@@ -1,70 +1,16 @@
 <template>
-  <div
-    class="flex flex-col md:flex-row gap-4 mb-2 p-3 rounded bg-zinc-800 border border-zinc-700">
-    <div
-      class="flex-1 flex flex-col gap-2">
-      <div>
-        <label class="block text-xs text-zinc-400 mb-1" :for="`stance-${comment.id}`">Stance</label>
-        <div
-          class="flex gap-4">
-          <label
-            class="inline-flex items-center gap-1 cursor-pointer"
-            :for="`stance-main-${comment.id}`">
-            <input
-              type="radio"
-              v-model="comment.stance"
-              value="main"
-              @change="save"
-              class="accent-blue-500" />
-            <span
-              :class="['text-blue-400', comment.stance === 'main' ? 'font-bold' : 'font-normal']"
-              >Main</span
-            >
-          </label>
-          <label
-            class="inline-flex items-center gap-1 cursor-pointer"
-            :for="`stance-supporting-${comment.id}`">
-            <input
-              type="radio"
-              v-model="comment.stance"
-              value="supporting"
-              @change="save"
-              class="accent-green-500" />
-            <span
-              :class="[
-                'text-green-400',
-                comment.stance === 'supporting' ? 'font-bold' : 'font-normal',
-              ]"
-              >Supporting</span
-            >
-          </label>
-          <label
-            class="inline-flex items-center gap-1 cursor-pointer"
-            :for="`stance-against-${comment.id}`">
-            <input
-              type="radio"
-              v-model="comment.stance"
-              value="against"
-              @change="save"
-              class="accent-red-500" />
-            <span
-              :class="['text-red-400', comment.stance === 'against' ? 'font-bold' : 'font-normal']"
-              >Against</span
-            >
-          </label>
-        </div>
-      </div>
+  <div :class="['flex flex-col md:flex-row gap-4 mb-2 p-3 rounded bg-zinc-800 border',
+   dangerBorder ? 'border-red-400 ring-2 ring-red-400' : 'border-zinc-700']">
+    <div class="flex-1 flex flex-col gap-2">
 
       <div class="flex flex-col md:flex-row gap-2">
-        <div class="flex-1"
+        <div
+          class="flex-1"
           :id="`video-comment-title-row-${comment.id}`"
           :data-testid="`video-comment-title-row-${comment.id}`">
-          <label class="block text-xs text-zinc-400 mb-1" :for="`title-${comment.id}`"
-            >Title</label
-          >
+          <label class="block text-xs text-zinc-400 mb-1" :for="`title-${comment.id}`">Title</label>
           <input
             v-model="comment.title"
-            @change="save"
             type="text"
             maxlength="100"
             placeholder="Title"
@@ -78,70 +24,81 @@
           >
           <input
             v-model="comment.content"
-            @change="save"
             type="text"
             maxlength="200"
             placeholder="Comment content"
-            class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100"/>
+            class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100" />
         </div>
       </div>
 
       <div class="flex flex-col md:flex-row gap-2 w-full md:w-48 justify-between">
         <div class="flex-1">
-          <label class="block text-xs text-zinc-400 mb-1" :for="`startAt-${comment.id}`">Start At (s)</label>
+          <label class="block text-xs text-zinc-400 mb-1" :for="`startAt-${comment.id}`"
+            >Start At (s)</label
+          >
           <input
             v-model.number="comment.startAt"
-            @change="save"
             type="number"
-            min="0"
-            max="36000"
+            :min="minStart"
+            :max="maxStart"
             placeholder="Start (s)"
-            class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100"/>
+            class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100" />
         </div>
         <div class="flex-1">
-          <label class="block text-xs text-zinc-400 mb-1" :for="`endAt-${comment.id}`">End At (s)</label>
+          <label class="block text-xs text-zinc-400 mb-1" :for="`endAt-${comment.id}`"
+            >End At (s)</label
+          >
           <input
             v-model.number="comment.endAt"
-            @change="save"
             type="number"
-            min="1"
-            max="36000"
+            :min="minEnd"
+            :max="maxEnd"
             placeholder="End (s)"
             class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100" />
         </div>
       </div>
-
     </div>
 
-
-    <div>
-
-      <button
-        class="text-red-400 hover:text-red-200 transition mt-2 w-full"
-        @click="remove">
-        Remove
+    <div class="flex flex-col justify-end">
+      <button class="text-red-400 hover:text-red-200 py-2 px-3" @click="remove" @mouseenter="showRemoveBorderMethod" @mouseleave="hideRemoveBorderMethod">
+        <svg class="h-5 w-5" fill="currentColor" width="64px" height="64px" viewBox="0 0 52 52" data-name="Layer 1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M50,8H38V2a2,2,0,0,0-2-2H16a2,2,0,0,0-2,2V8H2a2,2,0,0,0,0,4H9V50a2,2,0,0,0,2,2H41a2,2,0,0,0,2-2V12h7a2,2,0,0,0,0-4ZM18,4H34V8H18ZM39,48H13V12H39Z"></path><path d="M26,14.45a2,2,0,0,0-2,2V44.89a2,2,0,0,0,4,0V16.45A2,2,0,0,0,26,14.45Z"></path><path d="M33.56,14.45a2,2,0,0,0-2,2V44.89a2,2,0,1,0,4,0V16.45A2,2,0,0,0,33.56,14.45Z"></path><path d="M18.44,14.45a2,2,0,0,0-2,2V44.89a2,2,0,0,0,4,0V16.45A2,2,0,0,0,18.44,14.45Z"></path></g></svg>
       </button>
-
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { toRefs } from 'vue';
-import type { VideoCommentForm } from '../stores/editorStore';
+import { toRefs, computed, ref } from 'vue';
+import type { EditorVideoComment } from '../data/EditorVideoComment';
+import { useEditorStore } from '../stores/editorStore';
 
+const editorStore = useEditorStore();
 const props = defineProps<{
-  comment: VideoCommentForm;
+  segmentId: string;
+  comment: EditorVideoComment;
+  minStartAt: number;
+  maxEndAt: number;
 }>();
-const emit = defineEmits(['save', 'remove']);
 
 const { comment } = toRefs(props);
+const dangerBorder = ref(false);
 
-function save() {
-  emit('save');
+function showRemoveBorderMethod() {
+  dangerBorder.value = true;
 }
+
+function hideRemoveBorderMethod() {
+  dangerBorder.value = false;
+}
+
+// Computed limits for startAt and endAt
+const minStart = computed(() => props.minStartAt);
+const maxStart = computed(() => Math.min(props.maxEndAt, comment.value.endAt - 1));
+const minEnd = computed(() => Math.max(props.minStartAt, comment.value.startAt + 1));
+const maxEnd = computed(() => props.maxEndAt);
+
 function remove() {
-  emit('remove');
+  editorStore.removeVideoComment(props.segmentId, props.comment.id);
 }
 </script>
 

@@ -7,7 +7,7 @@ export class VideoSegment extends Segment {
   videoComments: VideoComment[];
 
   constructor(
-    id: number,
+    id: string,
     stance: StanceType,
     videoId: string,
     title: string,

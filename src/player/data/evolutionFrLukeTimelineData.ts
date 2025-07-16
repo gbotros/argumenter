@@ -4,7 +4,7 @@ import type { StanceType } from '.';
 
 export const demoSegmentsRaw = [
   {
-    id: 1,
+    id: '1',
     type: 'text',
     stance: 'main' as StanceType,
     title: `
@@ -15,7 +15,7 @@ export const demoSegmentsRaw = [
     sources: [],
   },
   {
-    id: 2,
+    id: '2',
     type: 'video',
     stance: 'main' as StanceType,
     videoId: 'QRxR98QLXyA',
@@ -25,7 +25,7 @@ export const demoSegmentsRaw = [
     videoComments: [],
   },
   {
-    id: 3,
+    id: '3',
     type: 'video',
     stance: 'main' as StanceType,
     videoId: 'QRxR98QLXyA',
@@ -34,7 +34,7 @@ export const demoSegmentsRaw = [
     endAt: 187,
     videoComments: [
       {
-        id: 3.1,
+        id: '3.1',
         stance: 'supporting' as StanceType,
         title: 'شكرا',
         content: 'شكرا ياابونا علي التوضيح طبعا مش هيه دي نظريه التطور',
@@ -44,7 +44,7 @@ export const demoSegmentsRaw = [
     ],
   },
   {
-    id: 4,
+    id: '4',
     type: 'video',
     stance: 'main' as StanceType,
     videoId: 'LEx3K50DQ4M',
@@ -55,8 +55,7 @@ export const demoSegmentsRaw = [
     endAt: 57,
     videoComments: [
       {
-        id: 4.1,
-        stance: 'supporting' as StanceType,
+        id: '4.1',
         title: `
         نظريه التطور
         `,
@@ -69,7 +68,7 @@ export const demoSegmentsRaw = [
     ],
   },
   {
-    id: 5,
+    id: '5',
     type: 'text',
     stance: 'against' as StanceType,
     title: `
@@ -80,7 +79,7 @@ export const demoSegmentsRaw = [
     sources: ['https://www.britannica.com/science/evolution-scientific-theory'],
   },
   {
-    id: 6,
+    id: '6',
     type: 'video',
     stance: 'against' as StanceType,
     videoId: 'lqk3TKuGNBA',
@@ -89,8 +88,7 @@ export const demoSegmentsRaw = [
     endAt: 236,
     videoComments: [
       {
-        id: 6.1,
-        stance: 'against' as StanceType,
+        id: '6.1',
         title: 'correction',
         content: 'I would say theories explain most of the observations, not all of them.',
         startAt: 2 * 60 + 47,
@@ -99,7 +97,7 @@ export const demoSegmentsRaw = [
     ],
   },
   {
-    id: 7,
+    id: '7',
     type: 'video',
     stance: 'main' as StanceType,
     videoId: 'LEx3K50DQ4M',
@@ -109,8 +107,7 @@ export const demoSegmentsRaw = [
     endAt: 4 * 60 + 14,
     videoComments: [
       {
-        id: 7.1,
-        stance: 'against' as StanceType,
+        id: '7.1',
         title: `
         متفقين
         `,
@@ -123,7 +120,7 @@ export const demoSegmentsRaw = [
     ],
   },
   {
-    id: 8,
+    id: '8',
     type: 'video',
     stance: 'main' as StanceType,
     videoId: 'qGHpQaI2P4s',
@@ -134,8 +131,7 @@ export const demoSegmentsRaw = [
     endAt: 4 * 60 + 41,
     videoComments: [
       {
-        id: 8.1,
-        stance: 'against' as StanceType,
+        id: '8.1',
         title: `
         احنا متفقين
         `,
@@ -148,7 +144,7 @@ export const demoSegmentsRaw = [
     ],
   },
   {
-    id: 9,
+    id: '9',
     type: 'video',
     stance: 'against' as StanceType,
     videoId: 'GhHOjC4oxh8',
@@ -158,7 +154,7 @@ export const demoSegmentsRaw = [
     videoComments: [],
   },
   {
-    id: 10,
+    id: '10',
     type: 'video',
     stance: 'main' as StanceType,
     videoId: 'Er08KFh9Pew',
@@ -169,8 +165,7 @@ export const demoSegmentsRaw = [
     endAt: 4 * 60 + 38,
     videoComments: [
       {
-        id: 10.1,
-        stance: 'main' as StanceType,
+        id: '10.1',
         title: `
         نظريه  لامارك
         `,
@@ -181,7 +176,7 @@ export const demoSegmentsRaw = [
         endAt: 2 * 60,
       },
       {
-        id: 10.2,
+        id: '10.2',
         stance: 'main' as StanceType,
         title: `
           ليه لسه في ذئاب
@@ -193,8 +188,7 @@ export const demoSegmentsRaw = [
         endAt: 2 * 60 + 48,
       },
       {
-        id: 10.3,
-        stance: 'main' as StanceType,
+        id: '10.3',
         title: `
         الفكره الاولي
         `,
@@ -205,8 +199,7 @@ export const demoSegmentsRaw = [
         endAt: 3 * 60 + 13,
       },
       {
-        id: 10.4,
-        stance: 'main' as StanceType,
+        id: '10.4',
         title: `
         الفكره الثانيه
         `,
@@ -217,8 +210,7 @@ export const demoSegmentsRaw = [
         endAt: 3 * 60 + 44,
       },
       {
-        id: 10.5,
-        stance: 'main' as StanceType,
+        id: '10.5',
         title: `
         الفكره الثالثه
         `,
@@ -230,7 +222,7 @@ export const demoSegmentsRaw = [
     ],
   },
   {
-    id: 11,
+    id: '11',
     type: 'video',
     stance: 'against' as StanceType,
     videoId: 'reXFwYEXQA0',
@@ -240,7 +232,7 @@ export const demoSegmentsRaw = [
     videoComments: [],
   },
   {
-    id: 12,
+    id: '12',
     type: 'video',
     stance: 'against' as StanceType,
     videoId: 'HhVRqC0GP0M',
@@ -251,8 +243,7 @@ export const demoSegmentsRaw = [
     endAt: 25 * 60 + 45,
     videoComments: [
       {
-        id: 12.1,
-        stance: 'against' as StanceType,
+        id: '12.1',
         title: `رؤوس الاجناس`,
         content: `Domestic Cat Chromosome Count: 38
                   Geoffroy’s Cat Chromosome Count: 36
@@ -260,9 +251,9 @@ export const demoSegmentsRaw = [
         `,
         startAt: 24 * 60 + 50,
         endAt: 24 * 60 + 55,
-      }, {
-        id: 12.1,
-        stance: 'against' as StanceType,
+      },
+      {
+        id: '12.1',
         title: `
           رؤوس الاجناس`,
         content: `Domestic Dog Chromosome Count: 78
@@ -275,7 +266,7 @@ export const demoSegmentsRaw = [
     ],
   },
   {
-    id: 100,
+    id: '100',
     type: 'text',
     stance: 'main' as StanceType,
     content: 'Thank you',
@@ -308,13 +299,12 @@ export const demoSegments = demoSegmentsRaw.map((seg) => {
       seg.endAt ?? 0,
       (seg.videoComments ?? []).map(
         (ct: {
-          id: number;
+          id: string;
           content: string;
           startAt: number;
           endAt: number;
-          stance: StanceType;
           title: string;
-        }) => new VideoComment(ct.id, ct.stance, ct.content, ct.startAt, ct.endAt, ct.title),
+        }) => new VideoComment(ct.id, ct.content, ct.startAt, ct.endAt, ct.title),
       ),
     );
   }

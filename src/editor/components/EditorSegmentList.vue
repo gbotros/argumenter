@@ -2,26 +2,19 @@
   <div class="mb-8">
     <ul class="space-y-4">
       <EditorSegmentItem
-        v-for="(segment, idx) in segments"
+        v-for="segment in segments"
         :key="segment.id"
         :segment="segment"
-        :idx="idx"
-        :dragOver="dragOverIndex === idx"
-        @save="onSave"
-        @delete="handleDelete"
         @dragstart="onDragStart"
-        @dragover="onDragOver"
-        @dragleave="onDragLeave"
-        @drop="onDrop"
-        @dragend="onDragEnd" />
+        @drop="onDrop" />
     </ul>
     <div class="flex justify-center mt-6">
       <button
-        @click="addSegment"
-        class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-700 hover:bg-blue-600 text-white text-2xl font-bold shadow transition"
-        title="Add new segment"
+        @click="addNewSegment"
+        class="rounded bg-blue-700 hover:bg-blue-600 text-white text-2xl font-bold px-4 py-2"
+        title="Add a new segment to the timeline"
         aria-label="Add new segment">
-        +
+           + Add New Segment
       </button>
     </div>
   </div>
@@ -32,59 +25,25 @@ import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useEditorStore } from '../stores/editorStore';
 import EditorSegmentItem from './EditorSegmentItem.vue';
-import type { EditorSegment } from '../stores/editorStore';
 
 const editorStore = useEditorStore();
 const { segments } = storeToRefs(editorStore);
 
-function handleDelete(idx: number) {
-  editorStore.deleteSegment(idx);
+const dragId = ref<string | null>(null);
+
+function onDragStart(id: string) {
+  dragId.value = id;
 }
 
-const dragIndex = ref<number | null>(null);
-const dragOverIndex = ref<number | null>(null);
-
-function onDragStart(idx: number) {
-  dragIndex.value = idx;
-}
-
-function onDragOver(idx: number) {
-  if (dragOverIndex.value !== idx) {
-    dragOverIndex.value = idx;
+function onDrop(id: string) {
+  if (dragId.value !== null && dragId.value !== id) {
+    editorStore.reorderSegments(dragId.value, id);
   }
+  dragId.value = null;
 }
 
-function onDragLeave() {
-  dragOverIndex.value = null;
-}
-
-function onDrop(idx: number) {
-  if (dragIndex.value !== null && dragIndex.value !== idx) {
-    editorStore.reorderSegments(dragIndex.value, idx);
-  }
-  dragIndex.value = null;
-  dragOverIndex.value = null;
-}
-
-function onDragEnd() {
-  dragIndex.value = null;
-  dragOverIndex.value = null;
-}
-
-function onSave(segment: EditorSegment, idx: number) {
-  editorStore.updateSegment(idx, { ...segment });
-}
-
-function addSegment() {
-  const newSegment: EditorSegment = {
-    id: Date.now(),
-    type: 'text',
-    stance: 'main',
-    title: '',
-    content: '',
-    endAt: 5,
-  };
-  editorStore.addSegment(newSegment);
+function addNewSegment() {
+  editorStore.addNewSegment();
 }
 </script>
 

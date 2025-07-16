@@ -6,7 +6,7 @@ export class TextualSegment extends Segment {
   sources: string[];
 
   constructor(
-    id: number,
+    id: string,
     stance: StanceType,
     content: string,
     title: string,

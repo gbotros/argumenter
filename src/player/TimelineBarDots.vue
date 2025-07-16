@@ -12,12 +12,11 @@
           'flex flex-col items-center cursor-pointer gap-2 transition-all duration-200',
           getButtonFlexClass(segment),
         ]">
-
         <div class="hidden sm:block">
-        <span class="truncate whitespace-normal break-words line-clamp-2">
-          {{ segment.title }}
-        </span>
-      </div>
+          <span class="truncate whitespace-normal break-words line-clamp-2">
+            {{ segment.title }}
+          </span>
+        </div>
 
         <div
           :class="[
@@ -32,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { useTimelineStore } from '@/timeline/stores/timelineStore';
+import { useTimelineStore } from '@/player/stores/timelineStore';
 import { storeToRefs } from 'pinia';
 import type { Segment } from './data/Segment';
 

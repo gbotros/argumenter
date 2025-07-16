@@ -3,28 +3,36 @@
     :class="[
       'flex flex-col gap-2 bg-zinc-700 rounded p-4 group',
       { 'ring-2 ring-blue-400': dragOver },
+      { 'ring-2 ring-red-400': dangerBorder },
     ]"
-    draggable="true"
-    @dragstart="onDragStart"
     @dragover.prevent="onDragOverHandler"
     @dragleave="onDragLeave"
     @drop="onDrop"
-    @dragend="onDragEnd">
+
+    >
     <div class="flex items-center gap-4">
-      <span class="font-bold text-blue-300 cursor-move">☰</span>
+      <span
+        id="drag-handle"
+        class="font-bold text-blue-300 cursor-move"
+        draggable="true"
+        @dragstart="onDragStart"
+        title="Drag to reorder segment"
+      >☰</span>
       <span class="font-bold text-blue-300">{{
         localSegment.type === 'text' ? '📝 Text' : '🎬 Video'
       }}</span>
-      <div class="flex gap-4 items-center" id="segment-type-radio-group" >
+      <div class="flex gap-4 items-center" id="segment-type-radio-group">
         <label class="inline-flex items-center gap-1 cursor-pointer">
           <input
             type="radio"
             v-model="localSegment.type"
             value="text"
             @change="onTypeChange"
-            class="accent-blue-500"
-          />
-          <span :class="['text-blue-400', localSegment.type === 'text' ? 'font-bold' : 'font-normal']">Text</span>
+            class="accent-blue-500" />
+          <span
+            :class="['text-blue-400', localSegment.type === 'text' ? 'font-bold' : 'font-normal']"
+            >Text</span
+          >
         </label>
         <label class="inline-flex items-center gap-1 cursor-pointer">
           <input
@@ -32,35 +40,41 @@
             v-model="localSegment.type"
             value="video"
             @change="onTypeChange"
-            class="accent-green-500"
-          />
-          <span :class="['text-green-400', localSegment.type === 'video' ? 'font-bold' : 'font-normal']">Video</span>
+            class="accent-green-500" />
+          <span
+            :class="['text-green-400', localSegment.type === 'video' ? 'font-bold' : 'font-normal']"
+            >Video</span
+          >
         </label>
       </div>
-      <button class="text-red-400 hover:text-red-200 transition ml-auto" @click="handleDelete">
-        Delete
-      </button>
+
+      <ButtonRemoveIcon
+        class="ml-auto"
+        @click="deleteSegment"
+        @mouseenter="showRemoveBorder"
+        @mouseleave="hideRemoveBorder" />
     </div>
     <div class="flex flex-col md:flex-row gap-2">
       <div class="flex-1">
         <label class="block text-xs text-zinc-400 mb-1">Title</label>
         <input
           v-model="localSegment.title"
-          @change="save"
           type="text"
           maxlength="100"
-          class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100" />
+          class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100"
+          title="Enter a descriptive title for this segment."
+          placeholder="Enter a descriptive title for this segment." />
       </div>
       <div class="flex-1">
         <label class="block text-xs text-zinc-400 mb-1">Stance</label>
         <div class="flex gap-4 items-center">
-          <label class="inline-flex items-center gap-1 cursor-pointer">
+          <label class="inline-flex items-center gap-1 cursor-pointer"
+              title="Main: The primary argument or claim." >
             <input
               type="radio"
               v-model="localSegment.stance"
               value="main"
-              @change="save"
-              class="accent-blue-500" />
+              class="accent-blue-500"/>
             <span
               :class="[
                 'text-blue-400',
@@ -69,12 +83,12 @@
               >Main</span
             >
           </label>
-          <label class="inline-flex items-center gap-1 cursor-pointer">
+          <label class="inline-flex items-center gap-1 cursor-pointer"
+              title="Supporting: Provides supporting evidence or context for the main argument." >
             <input
               type="radio"
               v-model="localSegment.stance"
               value="supporting"
-              @change="save"
               class="accent-green-500" />
             <span
               :class="[
@@ -84,13 +98,13 @@
               >Supporting</span
             >
           </label>
-          <label class="inline-flex items-center gap-1 cursor-pointer">
+          <label class="inline-flex items-center gap-1 cursor-pointer"
+              title="Against: Presents an opposing view or counterargument to the main claim." >
             <input
               type="radio"
               v-model="localSegment.stance"
               value="against"
-              @change="save"
-              class="accent-red-500" />
+              class="accent-red-500"/>
             <span
               :class="[
                 'text-red-400',
@@ -107,122 +121,140 @@
         <label class="block text-xs text-zinc-400 mb-1">Content</label>
         <textarea
           v-model="localSegment.content"
-          @change="save"
           rows="2"
           maxlength="500"
-          class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100"></textarea>
+          class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100"
+          title="Enter the main content for this segment"
+          placeholder="Write the main content or claim for this segment here" ></textarea>
       </div>
       <div class="flex-1">
         <label class="block text-xs text-zinc-400 mb-1">Duration (s)</label>
         <input
           v-model.number="localSegment.endAt"
-          @change="save"
           type="number"
           min="1"
           max="600"
-          class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100" />
+          class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100"
+          title="Set the duration for this segment in seconds"
+          placeholder="00" />
       </div>
     </div>
     <div v-if="localSegment.type === 'text'" class="flex flex-col gap-2 mt-2">
       <label class="block text-xs text-zinc-400 mb-1">Sources (URLs)</label>
-      <div v-for="(source, sIdx) in sourcesList" :key="sIdx" class="flex gap-2 items-center">
+      <div
+        v-for="(source, sIdx) in localSegment.sources"
+        :key="sIdx"
+        :class="[
+          'flex gap-2 items-center p-1 rounded',
+          sourceDangerBorder[sIdx] ? 'ring-2 ring-red-400' : ''
+        ]">
         <input
           v-model="localSegment.sources![sIdx]"
-          @change="save"
           type="url"
-          placeholder="https://example.com/source"
-          class="flex-1 bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100" />
-        <button class="text-red-400 hover:text-red-200 transition" @click="removeSource(sIdx)">Remove</button>
+          placeholder="https://example.com/article"
+          class="flex-1 bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100"
+          title="Add reference URLs for this segment" />
+
+        <ButtonRemoveIcon
+          @click="removeSource(sIdx)"
+          @mouseenter="showSourceRemoveBorder(sIdx)"
+          @mouseleave="hideSourceRemoveBorder(sIdx)" />
       </div>
-      <button class="mt-1 px-2 py-1 rounded bg-blue-700 text-white hover:bg-blue-600 transition w-fit" @click="addSource">Add Source</button>
+      <button
+        class="mt-1 px-2 py-1 rounded bg-blue-700 text-white hover:bg-blue-600 transition w-fit"
+        @click="addSource">
+        + Add Source
+      </button>
     </div>
     <div v-else class="flex flex-col md:flex-row gap-2">
       <div class="flex-1">
         <label class="block text-xs text-zinc-400 mb-1">YouTube Video ID</label>
         <input
           v-model="localSegment.videoId"
-          @change="save"
           type="text"
           maxlength="20"
-          class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100" />
+          class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100"
+          title="Enter the YouTube video identifier"
+          placeholder="Enter the YouTube video identifier" />
       </div>
       <div class="flex-1">
         <label class="block text-xs text-zinc-400 mb-1">Start At (s)</label>
         <input
           v-model.number="localSegment.startAt"
-          @change="save"
           type="number"
           min="0"
           max="36000"
-          class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100" />
+          class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100"
+          title="Set the start time for this video segment in seconds"
+          placeholder="00" />
       </div>
       <div class="flex-1">
         <label class="block text-xs text-zinc-400 mb-1">End At (s)</label>
         <input
           v-model.number="localSegment.endAt"
-          @change="save"
           type="number"
           min="1"
           max="36000"
-          class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100" />
+          class="w-full bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100"
+          title="Set the end time for this video segment in seconds"
+          placeholder="00" />
       </div>
     </div>
     <div v-if="localSegment.type === 'video'" class="mt-4">
       <label class="block text-xs text-zinc-400 mb-2">Video Comments</label>
       <VideoCommentItem
-        v-for="(comment, cIdx) in localSegment.videoComments"
+        v-for="comment in localSegment.videoComments"
         :key="comment.id"
         :comment="comment"
-        @save="save"
-        @remove="removeVideoComment(cIdx)"
-      />
+        :segmentId="localSegment.id"
+        :minStartAt="localSegment.startAt ?? 0"
+        :maxEndAt="localSegment.endAt ?? 99" />
       <button
         class="mt-2 px-3 py-1 rounded bg-blue-700 text-white hover:bg-blue-600 transition"
         @click="addVideoComment">
-        Add Comment
+        +Add Comment
       </button>
     </div>
   </li>
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue';
-import type { EditorSegment } from '../stores/editorStore';
+import { ref } from 'vue';
+import { useEditorStore } from '../stores/editorStore';
+import type { EditorSegment } from '../data/EditorSegment';
 import VideoCommentItem from './VideoCommentItem.vue';
+import ButtonRemoveIcon from './ButtonRemoveIcon.vue';
 
 const props = defineProps<{
   segment: EditorSegment;
-  idx: number;
-  dragOver: boolean;
 }>();
-const emit = defineEmits([
-  'save',
-  'delete',
-  'dragstart',
-  'dragover',
-  'dragleave',
-  'drop',
-  'dragend',
-]);
+const emit = defineEmits(['dragstart', 'drop']);
 
-const localSegment = ref({ ...props.segment });
+const localSegment = ref(props.segment);
+const dragOver = ref(false);
+const dangerBorder = ref(false);
+const sourceDangerBorder = ref<Record<number, boolean>>({});
 
-watch(
-  () => props.segment,
-  (newVal) => {
-    localSegment.value = { ...newVal };
-  },
-  { deep: true },
-);
-
-const sourcesList = computed(() => localSegment.value.sources ?? []);
-
-function save() {
-  emit('save', { ...localSegment.value }, props.idx);
+function showRemoveBorder() {
+  dangerBorder.value = true;
 }
 
-function handleDelete() {
-  emit('delete', props.idx);
+function hideRemoveBorder() {
+  dangerBorder.value = false;
+}
+
+function showSourceRemoveBorder(idx: number) {
+  sourceDangerBorder.value[idx] = true;
+}
+
+function hideSourceRemoveBorder(idx: number) {
+  sourceDangerBorder.value[idx] = false;
+}
+
+const editorStore = useEditorStore();
+
+function deleteSegment() {
+  editorStore.deleteSegment(props.segment.id);
 }
 
 function onTypeChange() {
@@ -241,54 +273,35 @@ function onTypeChange() {
     delete localSegment.value.content;
     localSegment.value.title = '';
   }
-  save();
 }
 
 function onDragStart(e: DragEvent) {
-  emit('dragstart', props.idx, e);
+  emit('dragstart', localSegment.value.id, e);
 }
-function onDragOverHandler(e: DragEvent) {
-  emit('dragover', props.idx, e);
+
+function onDragOverHandler() {
+  dragOver.value = true;
 }
-function onDragLeave(e: DragEvent) {
-  emit('dragleave', props.idx, e);
+
+function onDragLeave() {
+  dragOver.value = false;
 }
+
 function onDrop(e: DragEvent) {
-  emit('drop', props.idx, e);
-}
-function onDragEnd(e: DragEvent) {
-  emit('dragend', props.idx, e);
+  emit('drop', localSegment.value.id, e);
+  dragOver.value = false;
 }
 
 function addVideoComment() {
-  if (!localSegment.value.videoComments) localSegment.value.videoComments = [];
-  localSegment.value.videoComments.push({
-    id: Date.now() + Math.random(),
-    stance: 'main',
-    content: '',
-    title: '',
-    startAt: 0,
-    endAt: 5,
-  });
-  save();
-}
-
-function removeVideoComment(idx: number) {
-  if (!localSegment.value.videoComments) return;
-  localSegment.value.videoComments.splice(idx, 1);
-  save();
+  editorStore.addVideoComment(localSegment.value.id);
 }
 
 function addSource() {
-  if (!localSegment.value.sources) localSegment.value.sources = [];
-  localSegment.value.sources.push('');
-  save();
+  editorStore.addSource(localSegment.value.id);
 }
 
-function removeSource(idx: number) {
-  if (!localSegment.value.sources) return;
-  localSegment.value.sources.splice(idx, 1);
-  save();
+function removeSource(sourceIdx: number) {
+  editorStore.removeSource(localSegment.value.id, sourceIdx);
 }
 </script>
 

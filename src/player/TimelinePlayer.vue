@@ -1,41 +1,38 @@
 <template>
-
-    <div id="timeline-player" class="flex-1 p-6 rounded-2xl flex flex-col items-stretch w-full">
-      <div>
-        <SegmentInfo />
-        <TimelineBarDots />
-      </div>
-
-      <div class="flex-1 flex flex-col items-stretch w-full">
-        <Transition
-          enter-active-class="transition-all duration-500 ease-in-out"
-          enter-from-class="opacity-0 translate-x-full"
-          enter-to-class="opacity-100 translate-x-0"
-          leave-active-class="transition-all duration-500 ease-in-out"
-          leave-from-class="opacity-100 translate-x-0"
-          leave-to-class="opacity-0 translate-x-full"
-          mode="out-in"
-        >
-          <TextualSegmentView
-            v-if="timeline?.getActiveSegment()?.type === 'text'"
-            @segment-complete="onSegmentComplete" />
-
-          <VideoSegmentView
-            v-else-if="timeline?.getActiveSegment()?.type === 'video'"
-            @segment-complete="onSegmentComplete" />
-        </Transition>
-      </div>
-
-      <div>
-        <TimelineControls />
-      </div>
+  <div id="timeline-player" class="flex-1 p-6 rounded-2xl flex flex-col items-stretch w-full">
+    <div>
+      <SegmentInfo />
+      <TimelineBarDots />
     </div>
 
+    <div class="flex-1 flex flex-col items-stretch w-full">
+      <Transition
+        enter-active-class="transition-all duration-500 ease-in-out"
+        enter-from-class="opacity-0 translate-x-full"
+        enter-to-class="opacity-100 translate-x-0"
+        leave-active-class="transition-all duration-500 ease-in-out"
+        leave-from-class="opacity-100 translate-x-0"
+        leave-to-class="opacity-0 translate-x-full"
+        mode="out-in">
+        <TextualSegmentView
+          v-if="timeline?.getActiveSegment()?.type === 'text'"
+          @segment-complete="onSegmentComplete" />
+
+        <VideoSegmentView
+          v-else-if="timeline?.getActiveSegment()?.type === 'video'"
+          @segment-complete="onSegmentComplete" />
+      </Transition>
+    </div>
+
+    <div>
+      <TimelineControls />
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { onMounted } from 'vue';
-import { useTimelineStore } from '@/timeline/stores/timelineStore';
+import { useTimelineStore } from '@/player/stores/timelineStore';
 import { storeToRefs } from 'pinia';
 import { demoSegments } from './data/demoTimelineData';
 import TextualSegmentView from './TextualSegmentView.vue';
@@ -59,7 +56,7 @@ onMounted(() => {
     return;
   }
 
-  // 2. If timeline already exists in store (from editor), use it
+  // 2. If timeline already exists in store populated by the editor or loaded by the dashboard, use it
   if (
     timeline.value &&
     Array.isArray(timeline.value.segments) &&

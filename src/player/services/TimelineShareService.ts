@@ -1,7 +1,7 @@
-import { Timeline } from '@/timeline/data';
-import type { Segment } from '@/timeline/data';
-import { TextualSegment, VideoSegment, VideoComment } from '@/timeline/data';
-import type { StanceType } from '@/timeline/data';
+import { Timeline } from '@/player/data';
+import type { Segment } from '@/player/data';
+import { TextualSegment, VideoSegment, VideoComment } from '@/player/data';
+import type { StanceType } from '@/player/data';
 
 export class TimelineShareService {
   /**
@@ -37,7 +37,7 @@ export class TimelineShareService {
             seg.content ?? '',
             seg.title ?? '',
             seg.endAt ?? 0,
-            seg.sources ?? []
+            seg.sources ?? [],
           );
         } else if (seg.type === 'video') {
           return new VideoSegment(
@@ -49,15 +49,16 @@ export class TimelineShareService {
             seg.endAt ?? 0,
 
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            (seg.videoComments ?? []).map((ct: any) =>
-              new VideoComment(
-                Number(ct.id),
-                ct.stance as StanceType,
-                ct.content ?? '',
-                ct.startAt ?? 0,
-                ct.endAt ?? 0,
-                ct.title ?? ''
-              ),
+            (seg.videoComments ?? []).map(
+              (ct: any) =>
+                new VideoComment(
+                  Number(ct.id),
+                  ct.stance as StanceType,
+                  ct.content ?? '',
+                  ct.startAt ?? 0,
+                  ct.endAt ?? 0,
+                  ct.title ?? '',
+                ),
             ),
           );
         } else {

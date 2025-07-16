@@ -2,10 +2,10 @@ import { Timeline } from '../data/Timeline';
 import { TextualSegment } from '../data/TextualSegment';
 import { VideoSegment } from '../data/VideoSegment';
 import { VideoComment } from '../data/VideoComment';
-import type { EditorSegment } from '../../editor/stores/editorStore';
+import type { EditorSegment } from '@/editor/data/EditorSegment';
 import type { Segment } from '../data/Segment';
 import type { StanceType } from '../data';
-import type { VideoCommentForm } from '../../editor/stores/editorStore';
+import type { EditorVideoComment } from '@/editor/data/EditorVideoComment';
 
 export class TimelineFactory {
   /**
@@ -15,7 +15,7 @@ export class TimelineFactory {
     const segments: Segment[] = editorSegments.map((seg) => {
       if (seg.type === 'text') {
         return new TextualSegment(
-          Number(seg.id),
+          seg.id,
           seg.stance as StanceType,
           seg.content ?? '',
           seg.title ?? '',
@@ -24,17 +24,16 @@ export class TimelineFactory {
         );
       } else if (seg.type === 'video') {
         return new VideoSegment(
-          Number(seg.id),
+          seg.id,
           seg.stance as StanceType,
           seg.videoId ?? '',
           seg.title ?? '',
           seg.startAt ?? 0,
           seg.endAt ?? 0,
           (seg.videoComments ?? []).map(
-            (ct: VideoCommentForm) =>
+            (ct: EditorVideoComment) =>
               new VideoComment(
-                Number(ct.id),
-                ct.stance as StanceType,
+                ct.id,
                 ct.content ?? '',
                 ct.startAt ?? 0,
                 ct.endAt ?? 0,

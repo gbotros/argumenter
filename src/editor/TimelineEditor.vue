@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col min-h-screen bg-zinc-900 text-zinc-100 p-8">
-    <h1 class="text-3xl font-bold mb-6">Create a New Argument Timeline</h1>
+    <h1 class="text-3xl font-bold mb-6">Argument Timeline Editor</h1>
     <EditorToolbar @play="onPlay" />
     <EditorSegmentList />
   </div>
@@ -11,8 +11,8 @@ import EditorToolbar from './components/EditorToolbar.vue';
 import EditorSegmentList from './components/EditorSegmentList.vue';
 import { useRouter } from 'vue-router';
 import { useEditorStore } from './stores/editorStore';
-import { useTimelineStore } from '@/timeline/stores/timelineStore';
-import { TimelineFactory } from '@/timeline/services/TimelineFactory';
+import { useTimelineStore } from '@/player/stores/timelineStore';
+import { TimelineFactory } from '@/player/services/TimelineFactory';
 import { storeToRefs } from 'pinia';
 
 const router = useRouter();
@@ -30,7 +30,7 @@ function onPlay() {
       timeline.value = null;
     }
   }
-  router.push('/');
+  router.push({ name: 'player' });
 }
 </script>
 
